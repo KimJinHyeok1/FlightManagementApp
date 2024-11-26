@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>icon/drawer_menu.png</file>
+        <file>icon/findIcon.png</file>
+        <file>icon/homeIcon.png</file>
+        <file>icon/vessel.png</file>
+        <file>aircraftRegisterView.qml</file>
+        <file>homeView.qml</file>
+        <file>batteryRegisterView.qml</file>
+        <file>flightDataRegisterView.qml</file>
+        <file>flightLogView.qml</file>
+        <file>CustomComponent/MessageDialog.qml</file>
+    </qresource>
+</RCC>
