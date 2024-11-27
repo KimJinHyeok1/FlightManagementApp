@@ -4,7 +4,6 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.12
 
 MessageDialog {
-    id: messageDialog
     title: "알림"
     text: "등록하시겠습니까?"
     contentItem:

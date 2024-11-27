@@ -47,6 +47,10 @@ Item {
                     font.bold : true
                     color: "orange"
                   }
+                  ListViewDialog{
+                    id : listView
+                  }
+
                   RowLayout
                   {
                     Layout.preferredWidth : parent.width * 0.9
@@ -58,14 +62,30 @@ Item {
                     Button
                     {
                       icon.source : "./icon/findIcon.png"
+                      onClicked : listView.open()
                     }
+                  }
+
+                  Label
+                  {
+                    id : aircraftProductNumber
+                    text : "2. 기체 제작번호"
+                    Layout.topMargin: 20
+                    font.pointSize: 15
+                    font.bold : true
+                    color: "orange"
+                  }
+                  TextField
+                  {
+                    Layout.preferredWidth: parent.width * 0.9
+                    placeholderText: qsTr("기체 제작번호를 입력하세요...")
                   }
 
 
                   Label
                   {
                     id : aircraftSerialNumber
-                    text : "2. 기체 등록번호"
+                    text : "3. 기체 등록번호"
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
@@ -79,7 +99,7 @@ Item {
                   Label
                   {
                     id : aircraftType
-                    text : "3. 기체 형식"
+                    text : "4. 기체 형식"
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
@@ -94,7 +114,7 @@ Item {
                   Label
                   {
                     id : mtow
-                    text : "4. 기체 최대 이륙중량(MTOW)"
+                    text : "5. 기체 최대 이륙중량(MTOW)"
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
@@ -133,6 +153,10 @@ Item {
                     Layout.preferredWidth: parent.width * 0.9
                     Layout.preferredHeight: 150
                     placeholderText: qsTr("기타 특이사항을 입력하세요...")
+                  }
+
+                  CustomMessageDialog{
+                      id : messageDialog
                   }
 
                   RowLayout

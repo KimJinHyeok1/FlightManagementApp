@@ -10,6 +10,7 @@
         <file>batteryRegisterView.qml</file>
         <file>flightDataRegisterView.qml</file>
         <file>flightLogView.qml</file>
-        <file>CustomComponent/MessageDialog.qml</file>
+        <file>CustomComponent/CustomMessageDialog.qml</file>
+        <file>CustomComponent/ListViewDialog.qml</file>
     </qresource>
 </RCC>

@@ -93,7 +93,7 @@ Item {
                     }
                   }
 
-                  MessageDialog{
+                  CustomMessageDialog{
                       id : messageDialog
                   }
 
