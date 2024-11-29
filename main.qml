@@ -76,7 +76,6 @@ ApplicationWindow {
                 }
               }
 
-
               ToolButton {
                 Layout.preferredWidth: drawer.width
                 font.pointSize: fontSize_data

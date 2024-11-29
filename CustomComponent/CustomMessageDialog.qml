@@ -14,7 +14,6 @@ MessageDialog {
           color: Material.color(Material.Grey, Material.Shade800)
          }
 
-
     // 버튼 클릭 시 메시지 다이얼로그 닫기
     onAccepted: {
     }

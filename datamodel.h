@@ -5,14 +5,21 @@
 class dataModel : public QObject
 {
   Q_OBJECT
-
+  Q_PROPERTY (QStringList aircraftData READ getAircarftData WRITE setAircarftData);
 
 
 public:
-    dataModel();
+  dataModel();
+
+  //Getter
+  QStringList getAircarftData() const;
+
+  //Setter
+  void setAircarftData(const QStringList &aircarftData);
+
 
 private:
-
+  QStringList _aircarftData;
 };
 
 #endif // DATAMODEL_H

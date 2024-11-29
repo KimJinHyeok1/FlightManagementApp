@@ -12,5 +12,6 @@
         <file>flightLogView.qml</file>
         <file>CustomComponent/CustomMessageDialog.qml</file>
         <file>CustomComponent/ListViewDialog.qml</file>
+        <file>CustomComponent/TimePicker.qml</file>
     </qresource>
 </RCC>

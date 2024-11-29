@@ -21,8 +21,18 @@ Item {
             ColumnLayout {
               Layout.preferredWidth: parent.width - 40
               anchors.fill: parent
+              Label
+              {
+                Layout.topMargin: 24
+                Layout.bottomMargin: 15
+                text : "비행 기본정보"
+                font.pointSize: 15
+                font.bold : true
+                color: "orange"
+              }
               Pane
               {
+                id : pane1
                 contentWidth: layout1.width
                 contentHeight: layout1.height
                 ColumnLayout
@@ -32,11 +42,11 @@ Item {
                   Label
                   {
                     id : aircraftName
-                    text : "기체명"
+                    text : "1. 기체명"
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
-                    color: "orange"
+                    color: "white"
                   }
                   ComboBox
                   {
@@ -46,11 +56,11 @@ Item {
                   Label
                   {
                     id : batteryType
-                    text : "배터리 형식"
+                    text : "2. 배터리 형식"
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
-                    color: "orange"
+                    color: "white"
                   }
                   ComboBox
                   {
@@ -58,9 +68,270 @@ Item {
                     model: [""]
                   }
                   OldControls.TableView{
-
+                    Layout.preferredWidth: parent.width * 0.9
+                  }
+                  Label
+                  {
+                    id : flightDate
+                    text : "3. 비행 일자"
+                    Layout.topMargin: 20
+                    font.pointSize: 15
+                    font.bold : true
+                    color: "white"
+                  }
+                  OldControls.Calendar{
+                    Layout.preferredWidth: parent.width * 0.9
                   }
                 }
+              }
+              Label
+              {
+                Layout.topMargin: 24
+                Layout.bottomMargin: 15
+                text : "기상"
+                font.pointSize: 15
+                font.bold : true
+                color: "orange"
+              }
+              Pane{
+                contentWidth: layout1.width
+                ColumnLayout
+                {
+                  width : flgihtDataRegisterItem.width
+                  RowLayout{
+                    Layout.preferredWidth : parent.width * 0.9
+                    Label
+                    {
+                      Layout.preferredWidth: parent.width * 0.2
+                      text : "1. 풍향"
+                      font.pointSize: 15
+                      font.bold : true
+                      color: "white"
+                    }
+                    TextField
+                    {
+                      Layout.preferredWidth : parent.width * 0.6
+                      placeholderText: qsTr("풍향을 입력하세요...")
+                    }
+                    Label
+                    {
+                      text : "º"
+                      font.pointSize: 15
+                      font.bold : true
+                      color: "white"
+                    }
+                  }
+                  RowLayout{
+                    Layout.preferredWidth : parent.width * 0.9
+                    Label
+                    {
+                      Layout.preferredWidth: parent.width * 0.2
+                      text : "2. 풍속"
+                      font.pointSize: 15
+                      font.bold : true
+                      color: "white"
+                    }
+                    TextField
+                    {
+                      Layout.preferredWidth : parent.width * 0.6
+                      placeholderText: qsTr("풍속을 입력하세요...")
+                    }
+                    Label
+                    {
+                      text : "㎧"
+                      font.pointSize: 15
+                      font.bold : true
+                      color: "white"
+                    }
+                  }
+                  RowLayout{
+                    Layout.preferredWidth : parent.width * 0.9
+                    Label
+                    {
+                      Layout.preferredWidth: parent.width * 0.2
+                      text : "3. 습도"
+                      font.pointSize: 15
+                      font.bold : true
+                      color: "white"
+                    }
+                    TextField
+                    {
+                      Layout.preferredWidth : parent.width * 0.6
+                      placeholderText: qsTr("습도를 입력하세요...")
+                    }
+                    Label
+                    {
+                      text : "%"
+                      font.pointSize: 15
+                      font.bold : true
+                      color: "white"
+                    }
+                  }
+                  RowLayout{
+                    Layout.preferredWidth : parent.width * 0.9
+                    Label
+                    {
+                      Layout.preferredWidth: parent.width * 0.2
+                      text : "4. 온도"
+                      font.pointSize: 15
+                      font.bold : true
+                      color: "white"
+                    }
+                    TextField
+                    {
+                      Layout.preferredWidth : parent.width * 0.6
+                      placeholderText: qsTr("온도를 입력하세요...")
+                    }
+                    Label
+                    {
+                      text : "℃"
+                      font.pointSize: 15
+                      font.bold : true
+                      color: "white"
+                    }
+                  }
+                }
+              }
+              Label
+              {
+                Layout.topMargin: 24
+                Layout.bottomMargin: 15
+                text : "운용자"
+                font.pointSize: 15
+                font.bold : true
+                color: "orange"
+              }
+              Pane{
+                contentWidth: layout1.width
+                ColumnLayout
+                {
+                  width : flgihtDataRegisterItem.width
+                  RowLayout{
+                    Layout.preferredWidth : parent.width * 0.9
+                    Label
+                    {
+                      Layout.preferredWidth: parent.width * 0.4
+                      text : "1. EP(외부조종자)"
+                      font.pointSize: 15
+                      font.bold : true
+                      color: "white"
+                    }
+                    TextField
+                    {
+                      Layout.preferredWidth : parent.width * 0.5
+                      placeholderText: qsTr("EP를 입력하세요...")
+                    }
+                  }
+                  RowLayout{
+                    Layout.preferredWidth : parent.width * 0.9
+                    Label
+                    {
+                      Layout.preferredWidth: parent.width * 0.4
+                      text : "2. IP(내부조종자)"
+                      font.pointSize: 15
+                      font.bold : true
+                      color: "white"
+                    }
+                    TextField
+                    {
+                      Layout.preferredWidth : parent.width * 0.5
+                      placeholderText: qsTr("IP를 입력하세요...")
+                    }
+                  }
+                }
+              }
+              Label
+              {
+                Layout.topMargin: 24
+                Layout.bottomMargin: 15
+                text : "기타"
+                font.pointSize: 15
+                font.bold : true
+                color: "orange"
+              }
+              Pane{
+                contentWidth: layout1.width
+                ColumnLayout
+                {
+                  width : flgihtDataRegisterItem.width
+                  RowLayout{
+                    Layout.preferredWidth : parent.width * 0.9
+                    Label
+                    {
+                      Layout.preferredWidth: parent.width * 0.3
+                      text : "1. 비행시간"
+                      font.pointSize: 15
+                      font.bold : true
+                      color: "white"
+                    }
+                    RowLayout{
+//                      Layout.preferredWidth: parent.width * 0.6
+                      TimePicker{
+                        id : startTime
+                        Component.onCompleted: set(new Date(0, 0, 0,  0, 0)) // 12:00 AM
+                        onClicked:             print('onClicked', Qt.formatTime(date, 'h:mm A'))
+                      }
+                      Label{
+                        text: "~"
+                        font.pointSize: 15
+                        font.bold : true
+                      }
+
+                      TimePicker{
+                        id : endTime
+                        Component.onCompleted: set(new Date(0, 0, 0,  0, 0)) // 12:00 AM
+                        onClicked:             print('onClicked', Qt.formatTime(date, 'h:mm A'))
+                      }
+                    }
+
+                  }
+                  RowLayout{
+                    Layout.preferredWidth : parent.width * 0.9
+                    Label
+                    {
+                      Layout.preferredWidth: parent.width * 0.4
+                      text : "2. 페이로드 종류"
+                      font.pointSize: 15
+                      font.bold : true
+                      color: "white"
+                    }
+                    ComboBox
+                    {
+                      Layout.preferredWidth: parent.width * 0.5
+                      model: ["카메라", "배송장치", "기타"]
+                    }
+                  }
+                  RowLayout{
+                    Layout.preferredWidth : parent.width * 0.9
+                    Label
+                    {
+                      Layout.preferredWidth: parent.width * 0.4
+                      text : "3. 페이로드 중량"
+                      font.pointSize: 15
+                      font.bold : true
+                      color: "white"
+                    }
+                    TextField
+                    {
+                      Layout.preferredWidth : parent.width * 0.4
+                      placeholderText: qsTr("중량을 입력하세요...")
+                    }
+                    Label
+                    {
+                      text : "Kg"
+                      font.pointSize: 15
+                      font.bold : true
+                      color: "white"
+                    }
+                  }
+                }
+              }
+              Button{
+                Layout.topMargin: 20
+                Layout.bottomMargin: 40
+                Layout.preferredWidth: parent.width * 0.6
+                anchors.horizontalCenter: pane1.horizontalCenter
+                text: "등록하기"
               }
             }
         }
