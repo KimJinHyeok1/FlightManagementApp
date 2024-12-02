@@ -6,69 +6,29 @@
 ' avoid problems with angled crows feet
 skinparam linetype ortho
 
-entity "User" as e01 {
-  *user_id : number <<generated>>
+entity "Aircraft" as e01{
+  *aircraftRegisterNumber : <<PK>> string
   --
-  *name : text
-  description : text
+  *aircraftName : string
+  *aircraftType : string
+  *mtow : int
 }
 
-entity "Card" as e02 {
-  *card_id : number <<generated>>
-  sync_enabled: boolean
-  version: number
-  last_sync_version: number
+entity "Battery" as e02 {
+  *batteryId : <<PK>> number
   --
-  *user_id : number <<FK>>
-  other_details : text
+  *capacity : int
+  *cellNum : int
+  *batteryType : string
+  *serialNumber : string
 }
 
-entity "CardHistory" as e05 {
-  *card_history_id : number <<generated>>
-  version : number
+entity "Payload" as e03 {
+  *id : <<PK>> number (generated)
   --
-  *card_id : number <<FK>>
-  other_details : text
+  *paylodType : string 
+  *payloadWeight : int
 }
-
-entity "CardsAccounts" as e04 {
-  *id : number <<generated>>
-  --
-  card_id : number <<FK>>
-  account_id : number <<FK>>
-  other_details : text
-}
-
-
-entity "Account" as e03 {
-  *account_id : number <<generated>>
-  --
-  user_id : number <<FK>>
-  other_details : text
-}
-
-entity "Stream" as e06 {
-  *id : number <<generated>>
-  version: number
-  searchingText: string
-  --
-  owner_id : number <<FK>>
-  follower_id : number <<FK>>
-  card_id: number <<FK>>
-  other_details : text
-}
-
-
-e01 }|..|| e02
-e01 }|..|| e03
-
-e02 }|..|| e05
-
-e02 }|..|| e04
-e03 }|..|| e04
-
-e02 }|..|| e06
-e03 }|..|| e06
 
 
 @enduml
