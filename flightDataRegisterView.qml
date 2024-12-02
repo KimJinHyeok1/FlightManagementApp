@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import QtQuick.Dialogs 1.1
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Material 2.12
 import QtQuick.Controls 1.4 as OldControls
 import "./CustomComponent"
@@ -13,14 +14,13 @@ Item {
         color: Material.color(Material.Grey, Material.Shade800)
         ScrollView {
             anchors.fill : parent
-            anchors.topMargin: 0
             anchors.leftMargin: 10
-            anchors.rightMargin: 5
-            anchors.bottomMargin: 10
-            ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+            //ScrollBar.vertical.policy: ScrollBar.AlwaysOn
             ColumnLayout {
-              Layout.preferredWidth: parent.width - 40
-              anchors.fill: parent
+              id : fistColumnLayout
+
+              width : flgihtDataRegisterItem.width
+              height : flgihtDataRegisterItem.height
               Label
               {
                 Layout.topMargin: 24
@@ -33,12 +33,13 @@ Item {
               Pane
               {
                 id : pane1
-                contentWidth: layout1.width
-                contentHeight: layout1.height
+                Layout.preferredWidth: parent.width
+
                 ColumnLayout
                 {
                   id :layout1
-                  width : flgihtDataRegisterItem.width
+                  width : fistColumnLayout.width
+                  //width : pane1.width
                   Label
                   {
                     id : aircraftName
@@ -258,7 +259,7 @@ Item {
                     Layout.preferredWidth : parent.width * 0.9
                     Label
                     {
-                      Layout.preferredWidth: parent.width * 0.3
+                      Layout.preferredWidth: parent.width * 0.25
                       text : "1. 비행시간"
                       font.pointSize: 15
                       font.bold : true
@@ -289,31 +290,20 @@ Item {
                     Layout.preferredWidth : parent.width * 0.9
                     Label
                     {
-                      Layout.preferredWidth: parent.width * 0.4
-                      text : "2. 페이로드 종류"
-                      font.pointSize: 15
+                      Layout.preferredWidth: parent.width * 0.2
+                      text : "2. 페이로드"
+                      font.pointSize: 14
                       font.bold : true
                       color: "white"
                     }
                     ComboBox
                     {
-                      Layout.preferredWidth: parent.width * 0.5
+                      Layout.preferredWidth: parent.width * 0.3
                       model: ["카메라", "배송장치", "기타"]
-                    }
-                  }
-                  RowLayout{
-                    Layout.preferredWidth : parent.width * 0.9
-                    Label
-                    {
-                      Layout.preferredWidth: parent.width * 0.4
-                      text : "3. 페이로드 중량"
-                      font.pointSize: 15
-                      font.bold : true
-                      color: "white"
                     }
                     TextField
                     {
-                      Layout.preferredWidth : parent.width * 0.4
+                      Layout.preferredWidth : parent.width * 0.3
                       placeholderText: qsTr("중량을 입력하세요...")
                     }
                     Label
@@ -326,14 +316,26 @@ Item {
                   }
                 }
               }
-              Button{
-                Layout.topMargin: 20
-                Layout.bottomMargin: 40
-                Layout.preferredWidth: parent.width * 0.6
-                anchors.horizontalCenter: pane1.horizontalCenter
-                text: "등록하기"
+              RowLayout{
+                Layout.preferredWidth: parent.width
+                Button{
+
+                  Layout.alignment: Qt.AlignHCenter
+                  Layout.preferredWidth: parent.width * 0.7
+                  Layout.topMargin: 20
+                  Layout.bottomMargin: 40
+                  text: "등록하기"
+                }
               }
+
+
             }
         }
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/

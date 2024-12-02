@@ -7,6 +7,7 @@ class dataModel : public QObject
   Q_OBJECT
   Q_PROPERTY (QStringList aircraftData READ getAircarftData WRITE setAircarftData);
 
+  signals:
 
 public:
   dataModel();
@@ -16,6 +17,7 @@ public:
 
   //Setter
   void setAircarftData(const QStringList &aircarftData);
+
 
 
 private:

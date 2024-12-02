@@ -47,34 +47,40 @@ ApplicationWindow {
         }
 
     Drawer {
-          id: drawer
-          width: 0.33 * mainWindow.width
-          height: mainWindow.height
+      id: drawer
+      width: 0.33 * mainWindow.width
+      height: mainWindow.height
 
-          ColumnLayout{
-              Layout.fillWidth: true
+      ColumnLayout{
+      Layout.fillWidth: true
+        Image{
+          Layout.topMargin: 50
+          Layout.bottomMargin: 50
+          source: "./icon/vessel.png"
+          sourceSize.width: drawer.width
+          sourceSize.height: 50
+          Layout.preferredWidth: drawer.width
+          MouseArea{
+            anchors.fill : parent
+            onClicked: {
+              drawer.close()
+              stackView.push("qrc:/homeView.qml")
+            }
+          }
+        }
 
-              Image{
-                Layout.topMargin: 50
-                Layout.bottomMargin: 50
-                source: "./icon/vessel.png"
-                sourceSize.width: drawer.width
-                sourceSize.height: 50
-                Layout.preferredWidth: drawer.width
-              }
-
-              ToolButton {
-                Layout.preferredWidth: drawer.width
-                font.pointSize: fontSize_data
-                font.bold : true
-                icon.source: "./icon/homeIcon.png"
-                onClicked: {
-                    messageDialog.open()
-                    drawer.close();
-                    toolbarText.text = "비행시험팀 비행이력 관리 프로그램"
-                    stackView.push("qrc:/homeView.qml");
-                }
-              }
+//              ToolButton {
+//                Layout.preferredWidth: drawer.width
+//                font.pointSize: fontSize_data
+//                font.bold : true
+//                icon.source: "./icon/homeIcon.png"
+//                onClicked: {
+//                    messageDialog.open()
+//                    drawer.close();
+//                    toolbarText.text = "비행시험팀 비행이력 관리 프로그램"
+//                    stackView.push("qrc:/homeView.qml");
+//                }
+//              }
 
               ToolButton {
                 Layout.preferredWidth: drawer.width
