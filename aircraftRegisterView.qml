@@ -48,7 +48,7 @@ Item {
                     color: "orange"
                   }
                   ListViewDialog{
-                    id : listView
+                    id : listViewDialog
                   }
 
                   RowLayout
@@ -58,11 +58,13 @@ Item {
                     {
                       Layout.preferredWidth : parent.width * 0.8
                       placeholderText: qsTr("기체명을 입력하세요...")
+                      text :
+                        listViewDialog.aircarftName
                     }
                     Button
                     {
                       icon.source : "./icon/findIcon.png"
-                      onClicked : listView.open()
+                      onClicked : listViewDialog.open()
                     }
                   }
 
@@ -77,8 +79,10 @@ Item {
                   }
                   TextField
                   {
+                    id : aircraftRegNum
                     Layout.preferredWidth: parent.width * 0.9
                     placeholderText: qsTr("기체 제작번호를 입력하세요...")
+                    onEditingFinished: DataModel.aircraftRegisNum = aircraftRegNum.text
                   }
 
 

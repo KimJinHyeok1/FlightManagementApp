@@ -8,8 +8,11 @@ Dialog {
     title: "기체 등록 리스트"
     width: parent.width * 0.9
     height: parent.height * 0.6
-    onAccepted: console.log("Ok clicked")
+    onAccepted: close()
     onRejected: console.log("Cancel clicked")
+
+    property var aircarftName: value
+    property var listItem: value
 
     ColumnLayout{
       anchors.fill: parent
@@ -19,6 +22,9 @@ Dialog {
           Button {
               text: qsTr("등록")
               DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+              onClicked: {
+                  tableDialog.accepted()
+              }
           }
           Button {
               text: qsTr("삭제")
@@ -33,33 +39,34 @@ Dialog {
         spacing : 25
         model: ListModel {
                ListElement {
-                 name: "Bill Smith"
-                 number: "555 3264"
+                 name: "HL3432"
+                 regisNum: "5553264"
                }
                ListElement {
-                 name: "John Brown"
-                 number: "555 8426"
+                 name: "HL3433"
+                 regisNum: "5558426"
                }
                ListElement {
-                 name: "Sam Wise"
-                 number: "555 0473"
+                 name: "HL3434"
+                 regisNum: "5550473"
                }
                ListElement {
-                 name: "Bill Smith"
-                 number: "555 3264"
+                 name: "HL3435"
+                 regisNum: "5553264"
                }
                ListElement {
-                 name: "John Brown"
-                 number: "555 8426"
+                 name: "HL3436"
+                 regisNum: "5558426"
                }
              }
               delegate:
                   Item {
+                  id : listItem
                   width: listView_1.width
                   height: 50
                   Rectangle
                   {
-                    id : listItem
+                    id : listItemRec
                     color : Material.color(Material.Grey, Material.Shade800)
                     border.color: "white"
                     width: tableDialog.width * 0.9
@@ -73,9 +80,11 @@ Dialog {
 
                          onCheckedChanged: {
                            if (checked) {
-                             listItem.color = "white"
+                             listItemRec.color = "white"
+                             tableDialog.aircarftName = name
+
                            } else {
-                             listItem.color = Material.color(Material.Grey, Material.Shade800)
+                             listItemRec.color = Material.color(Material.Grey, Material.Shade800)
                            }
                          }
                        }
@@ -99,10 +108,6 @@ Dialog {
               }//ListView
       }//ColumnLayout
     }
-
-
-
-
 }
 
 /*##^##

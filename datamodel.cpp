@@ -1,16 +1,10 @@
 #include "datamodel.h"
+#include <QObject>
+#include <QDebug>
+
 
 dataModel::dataModel()
-{
+{}
 
-}
-
-QStringList dataModel::getAircarftData() const
-{
-    return _aircarftData;
-}
-
-void dataModel::setAircarftData(const QStringList &aircarftData)
-{
-    _aircarftData = aircarftData;
-}
+dataModel::~dataModel()
+{}
