@@ -6,29 +6,56 @@
 ' avoid problems with angled crows feet
 skinparam linetype ortho
 
-entity "Aircraft" as e01{
-  *aircraftRegisterNumber : <<PK>> string
+entity "aircraft" as e01 {
+  *aircraft_name : string <<generated>>
   --
-  *aircraftName : string
-  *aircraftType : string
-  *mtow : int
+  *register_id : string
+  *aircraft_type : string
+  *aircraft_MTOW : int
 }
 
-entity "Battery" as e02 {
-  *batteryId : <<PK>> number
+entity "battery" as e02 {
+  *serial_id : string <<generated>>
   --
-  *capacity : int
-  *cellNum : int
-  *batteryType : string
-  *serialNumber : string
+  *battery_type : string
+  *battery_size : int
+  *battery_id : int
+  *battery_cell : int
 }
 
-entity "Payload" as e03 {
-  *id : <<PK>> number (generated)
+entity "operator" as e03 {
+  *operator_name : string <<generated>>
   --
-  *paylodType : string 
-  *payloadWeight : int
+  *phone_number : int
+  *team_name : string
+  *position : string
+  *certification : string
 }
+
+entity "flight_log" as e04 {
+  *id : int <<generated>>
+  --
+  *aircraft_name : string <<FK>>
+  *serial_id : string <<FK>>
+  *battery_usage : int
+  *flight_date : int
+  *wind_speed : int
+  *wind_direction : int
+  *humidity : int
+  *temperature : int
+  *operator_EP : string <<FK>>
+  *operator_IP : string <<FK>>
+  *flight_time : int
+  *payload_item : string
+  *payload_weight : int
+}
+
+
+
+e01 }|-|| e04
+e02 }|--|{ e04
+e03 }|---|{ e04
+
 
 
 @enduml
