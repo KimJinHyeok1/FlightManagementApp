@@ -7,27 +7,29 @@
 skinparam linetype ortho
 
 entity "aircraft" as e01 {
-  *aircraft_name : string <<generated>>
+  *aircraftName : string <<PK>>
   --
-  *register_id : string
-  *aircraft_type : string
-  *aircraft_MTOW : int
+  *registerId : string
+  *aircraftType : string
+  *aircraftMTOW : int
 }
 
 entity "battery" as e02 {
-  *serial_id : string <<generated>>
+  *serialId : string <<generated>>
   --
-  *battery_type : string
-  *battery_size : int
-  *battery_id : int
-  *battery_cell : int
+  *batteryType : string
+  *batterySize : int
+  *batteryId : int
+  *batteryCell : int
 }
 
 entity "operator" as e03 {
-  *operator_name : string <<generated>>
+  *id : int <<PK>> <<generated>>
   --
-  *phone_number : int
-  *team_name : string
+  *operatorName : string <<generated>>
+  *operatorType : string(EP / IP)
+  *phoneNumber : int
+  *teamName : string
   *position : string
   *certification : string
 }
@@ -35,25 +37,25 @@ entity "operator" as e03 {
 entity "flight_log" as e04 {
   *id : int <<generated>>
   --
-  *aircraft_name : string <<FK>>
-  *serial_id : string <<FK>>
-  *battery_usage : int
-  *flight_date : int
-  *wind_speed : int
-  *wind_direction : int
+  *aircraftName : aircraft <<FK>>
+  *serialId : List<battery> <<FK>>
+  *batteryUsage : int
+  *flightDate : zondDateTime
+  *windSpeed : int
+  *windDirection : int
   *humidity : int
   *temperature : int
-  *operator_EP : string <<FK>>
-  *operator_IP : string <<FK>>
-  *flight_time : int
-  *payload_item : string
-  *payload_weight : int
+  *operatorEp : operator <<FK>>
+  *operatorIP : operator <<FK>>
+  *flightTime : int
+  *payloadItem : string
+  *payloadWeight : int
 }
 
 
 
-e01 }|-|| e04
-e02 }|--|{ e04
+e01 ||-|| e04
+e02 }|--|| e04
 e03 }|---|{ e04
 
 
