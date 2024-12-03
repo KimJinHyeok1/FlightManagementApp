@@ -13,8 +13,10 @@ class dataModel : public QObject
 
   Q_PROPERTY(QString      aircraftName           READ GetAircraftName           WRITE SetAircraftName           NOTIFY aircraftNameChanged)
   Q_PROPERTY(QString      aircraftRegisNum       READ GetAircraftRegisNum       WRITE SetAircraftRegisNum       NOTIFY aircraftRegisNumChanged)
+  Q_PROPERTY(QString      aircraftSerialNum      READ GetAircraftSerialNum      WRITE SetAircraftSerialNum      NOTIFY aircraftSerialNumChanged)
   Q_PROPERTY(QString      aircraftType           READ GetAircraftType           WRITE SetAircraftType           NOTIFY aircraftTypeChanged)
   Q_PROPERTY(QString      aircraftMtow           READ GetAircraftMtow           WRITE SetAircraftMtow           NOTIFY aircraftMtowChanged)
+  Q_PROPERTY(QString      aircraftDescription    READ GetAircraftDescription   WRITE SetAircraftDescription    NOTIFY aircraftDescriptionChanged)
 
 
   signals:
@@ -23,16 +25,21 @@ class dataModel : public QObject
 
     void aircraftNameChanged();
     void aircraftRegisNumChanged();
+    void aircraftSerialNumChanged();
     void aircraftTypeChanged();
     void aircraftMtowChanged();
+    void aircraftDescriptionChanged();
+
 
 public:
     dataModel();
     ~dataModel();
 
-    //Setter
+    Q_INVOKABLE void aircraftRegisterBtnClicked();
+
+
+    //AircraftData Setter
     void SetAircraftDatas(QStringList aircraftDatas){_aircraftDatas = aircraftDatas;}
-    void SetBatteryDatas(QStringList battryDatas){_batteryDatas= battryDatas;}
 
     void SetAircraftName(QString aircraftName){
         _aircraftName = aircraftName;
@@ -44,6 +51,11 @@ public:
         qDebug() << _aircraftRegisNum;
         emit aircraftRegisNumChanged();
     }
+    void SetAircraftSerialNum(QString aircraftSerialNum){
+        _aircraftSerialNum = aircraftSerialNum;
+        qDebug() << _aircraftSerialNum;
+        emit aircraftSerialNumChanged();
+    }
     void SetAircraftType(QString aircraftType){
         _aircraftType = aircraftType;
         qDebug() << _aircraftType;
@@ -54,6 +66,16 @@ public:
         qDebug() << _aircraftMtow;
         emit aircraftMtowChanged();
     }
+    void SetAircraftDescription(QString aircraftDescription){
+        _aircraftDescription = aircraftDescription;
+        qDebug() << _aircraftDescription;
+        emit aircraftDescriptionChanged();
+    }
+
+
+
+   //BatteryData Setter
+   void SetBatteryDatas(QStringList battryDatas){_batteryDatas= battryDatas;}
 
 
     //Getter
@@ -62,8 +84,10 @@ public:
 
     QString     GetAircraftName() {return _aircraftName;}
     QString     GetAircraftRegisNum(){return _aircraftRegisNum;}
+    QString     GetAircraftSerialNum(){return _aircraftSerialNum;}
     QString     GetAircraftType() {return _aircraftType;}
     QString     GetAircraftMtow() {return _aircraftMtow;}
+    QString     GetAircraftDescription() {return _aircraftDescription;}
 
 private:
 
@@ -72,7 +96,9 @@ private:
 
     QString _aircraftName;
     QString _aircraftRegisNum;
+    QString _aircraftSerialNum;
     QString _aircraftType;
     QString _aircraftMtow;
+    QString _aircraftDescription;
 
 };

@@ -2,7 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
 #include <QQmlContext>
-#include "datamodel.h"
+#include "dataModel.h"
 
 int main(int argc, char *argv[])
 {

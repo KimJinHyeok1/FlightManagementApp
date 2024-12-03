@@ -18,9 +18,14 @@ Item {
             //ScrollBar.vertical.policy: ScrollBar.AlwaysOn
             ColumnLayout {
               id : fistColumnLayout
-
               width : flgihtDataRegisterItem.width
               height : flgihtDataRegisterItem.height
+              Image {
+                id: vesselLogo
+                source: "./icon/vessel.png"
+                sourceSize.height: fistColumnLayout.height * 0.25
+                sourceSize.width: fistColumnLayout.width * 0.9
+              }
               Label
               {
                 Layout.topMargin: 24

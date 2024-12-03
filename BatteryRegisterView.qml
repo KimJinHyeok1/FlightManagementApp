@@ -13,30 +13,28 @@ Item {
         color: Material.color(Material.Grey, Material.Shade800)
 
         ScrollView {
+            id : scrollView
             anchors.fill : parent
-            anchors.topMargin: 0
             anchors.leftMargin: 10
-            anchors.rightMargin: 5
             anchors.bottomMargin: 10
             ScrollBar.vertical.policy: ScrollBar.AlwaysOn
           ColumnLayout {
             Layout.preferredWidth: parent.width - 40
             anchors.fill: parent
+            Image {
+                id: vesselLogo
+                source: "./icon/vessel.png"
+                sourceSize.height: layout1.height * 0.2
+                sourceSize.width: layout1.width * 0.9
+              }
             Pane
             {
-              contentWidth: layout1.width
-              contentHeight: layout1.height
+              contentWidth: scrollView.width
+              contentHeight: scrollView.height
               ColumnLayout
               {
                 id :layout1
                 width : batteryRegisterItem.width
-                Image {
-
-                    id: vesselLogo
-                    source: "./icon/vessel.png"
-                    sourceSize.height: 120
-                    sourceSize.width: 400
-                  }
                   Label
                   {
                     topPadding: 30
@@ -45,7 +43,7 @@ Item {
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
-                    color: "orange"
+                    color: "white"
                   }
                   ComboBox
                   {
@@ -62,7 +60,7 @@ Item {
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
-                    color: "orange"
+                    color: "white"
                   }
                   TextField
                   {
@@ -76,7 +74,7 @@ Item {
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
-                    color: "orange"
+                    color: "white"
                   }
 
                   RowLayout

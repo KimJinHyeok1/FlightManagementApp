@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.12
 import QtQuick.Layouts 1.12
+import "./"
 
 Dialog {
     id: tableDialog
@@ -12,7 +13,7 @@ Dialog {
     onRejected: console.log("Cancel clicked")
 
     property var aircarftName: value
-    property var listItem: value
+    property var listItemChecked: false
 
     ColumnLayout{
       anchors.fill: parent
@@ -20,7 +21,7 @@ Dialog {
           Layout.preferredWidth : parent.width
           Layout.preferredHeight: parent.height * 0.15
           Button {
-              text: qsTr("등록")
+              text: qsTr("사용")
               DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
               onClicked: {
                   tableDialog.accepted()
@@ -31,6 +32,10 @@ Dialog {
               DialogButtonBox.buttonRole: DialogButtonBox.DestructiveRole
           }
       }
+      CustomMessageDialog{
+        id : alertMessage
+      }
+
       ListView {
 
         id: listView_1
@@ -79,12 +84,28 @@ Dialog {
                          checked: false
 
                          onCheckedChanged: {
-                           if (checked) {
-                             listItemRec.color = "white"
-                             tableDialog.aircarftName = name
-
-                           } else {
-                             listItemRec.color = Material.color(Material.Grey, Material.Shade800)
+                           if(tableDialog.listItemChecked){
+                               if (!checked) {
+                                 listItemRec.color = Material.color(Material.Grey, Material.Shade800)
+                                 tableDialog.listItemChecked = false
+                                 console.log(tableDialog.listItemChecked)
+                                 return
+                               }
+                               listViewCheckbox.checkState = Qt.Unchecked
+                               alertMessage.message = "1개의 항목만 선택 가능합니다."
+                               alertMessage.open()
+                           }
+                           else{
+                               if (checked) {
+                                 listItemRec.color = "white"
+                                 tableDialog.aircarftName = name
+                                 tableDialog.listItemChecked = true
+                                 console.log(tableDialog.listItemChecked)
+                               } else {
+                                 listItemRec.color = Material.color(Material.Grey, Material.Shade800)
+                                 tableDialog.listItemChecked = false
+                                 console.log(tableDialog.listItemChecked)
+                               }
                            }
                          }
                        }
@@ -93,18 +114,12 @@ Dialog {
                       {
                         font.bold: true
                         font.pointSize: 12
-                        text: model.name
+                        color: "orange"
+                        text: "A/C Name : " + model.name + "\nRegisNum : " + model.regisNum
                         width: parent.width / 2
                       }
-                      Text
-                      {
-                        font.bold: true
-                        font.pointSize: 12
-                        text: model.number
-                        width: parent.width / 2
-                      }
-                    }
-                  }
+                    }//RowLayout
+                  }//Rectangle
               }//ListView
       }//ColumnLayout
     }

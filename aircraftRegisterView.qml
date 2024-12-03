@@ -20,7 +20,7 @@ Item {
             anchors.bottomMargin: 10
             ScrollBar.vertical.policy: ScrollBar.AlwaysOn
           ColumnLayout {
-            Layout.preferredWidth: parent.width - 40
+            Layout.preferredWidth: parent.width
             anchors.fill: parent
             Pane
             {
@@ -31,11 +31,10 @@ Item {
                 id :layout1
                 width : aircraftRegisterItem.width
                 Image {
-
                     id: vesselLogo
                     source: "./icon/vessel.png"
-                    sourceSize.height: 120
-                    sourceSize.width: 400
+                    sourceSize.height: layout1.height * 0.2
+                    sourceSize.width: layout1.width * 0.9
                   }
                   Label
                   {
@@ -45,7 +44,7 @@ Item {
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
-                    color: "orange"
+                    color: "white"
                   }
                   ListViewDialog{
                     id : listViewDialog
@@ -56,6 +55,7 @@ Item {
                     Layout.preferredWidth : parent.width * 0.9
                     TextField
                     {
+                      id : aircraftNameTextField
                       Layout.preferredWidth : parent.width * 0.8
                       placeholderText: qsTr("기체명을 입력하세요...")
                       text :
@@ -75,15 +75,14 @@ Item {
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
-                    color: "orange"
+                    color: "white"
                   }
                   TextField
                   {
-                    id : aircraftRegNum
+                    id : aircraftRegNumTextField
                     Layout.preferredWidth: parent.width * 0.9
                     placeholderText: qsTr("기체 제작번호를 입력하세요...")
-                    onEditingFinished: DataModel.aircraftRegisNum = aircraftRegNum.text
-                  }
+                 }
 
 
                   Label
@@ -93,10 +92,11 @@ Item {
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
-                    color: "orange"
+                    color: "white"
                   }
                   TextField
                   {
+                    id : aircraftSerialNumberTextField
                     Layout.preferredWidth: parent.width * 0.9
                     placeholderText: qsTr("기체 등록번호를 입력하세요...")
                   }
@@ -107,13 +107,13 @@ Item {
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
-                    color: "orange"
+                    color: "white"
                   }
                   ComboBox
                   {
+                    id : aircraftTypeComboBox
                     Layout.preferredWidth: parent.width * 0.9
                     model: ["무인멀티콥터", "무인비행기", "복합형(VTOL)"]
-
                   }
                   Label
                   {
@@ -122,26 +122,13 @@ Item {
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
-                    color: "orange"
+                    color: "white"
                   }
                   TextField
                   {
+                    id : mtowTextField
                     Layout.preferredWidth: parent.width * 0.9
                     placeholderText: qsTr("MTOW를 입력하세요...")
-                  }
-                  Label
-                  {
-                    id : additionalInfo
-                    text : "5. 비행시간"
-                    Layout.topMargin: 20
-                    font.pointSize: 15
-                    font.bold : true
-                    color: "orange"
-                  }
-                  TextField
-                  {
-                    Layout.preferredWidth: parent.width * 0.9
-                    placeholderText: qsTr("기체 비행시간...")
                   }
                   Label
                   {
@@ -150,13 +137,16 @@ Item {
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
-                    color: "orange"
+                    color: "white"
                   }
                   TextArea
                   {
+                    id : etcTextField
                     Layout.preferredWidth: parent.width * 0.9
                     Layout.preferredHeight: 150
                     placeholderText: qsTr("기타 특이사항을 입력하세요...")
+                    color : "orange"
+
                   }
 
                   CustomMessageDialog{
@@ -175,9 +165,18 @@ Item {
                     Button{
                       text : "등록"
                       Layout.preferredWidth : parent.width / 2.1
-                      onClicked: messageDialog.open()
+                      onClicked: {
+                          messageDialog.open()
+                          DataModel.aircraftName = aircraftNameTextField.text
+                          DataModel.aircraftRegisNum = aircraftRegNumTextField.text
+                          DataModel.aircraftSerialNum = aircraftSerialNumberTextField.text
+                          DataModel.aircraftType = aircraftTypeComboBox.currentValue
+                          DataModel.aircraftMtow = mtowTextField.text
+                          DataModel.aircraftDescription = etcTextField.text
+                          DataModel.aircraftRegisterBtnClicked()
                     }
                   }
+                }
               }
 
             }

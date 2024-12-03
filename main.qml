@@ -56,10 +56,10 @@ ApplicationWindow {
         Image{
           Layout.topMargin: 50
           Layout.bottomMargin: 50
+          Layout.alignment: Qt.AlignCenter
           source: "./icon/vessel.png"
-          sourceSize.width: drawer.width
-          sourceSize.height: 50
-          Layout.preferredWidth: drawer.width
+          sourceSize.width: drawer.width * 0.9
+          sourceSize.height: drawer.height * 0.3
           MouseArea{
             anchors.fill : parent
             onClicked: {
