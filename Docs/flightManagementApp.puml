@@ -6,7 +6,7 @@
 ' avoid problems with angled crows feet
 skinparam linetype ortho
 
-entity "aircraft" as e01 {
+entity "aircraft" as aircraft {
   *aircraftName : string <<PK>>
   --
   *registerId : string
@@ -14,7 +14,7 @@ entity "aircraft" as e01 {
   *aircraftMTOW : int
 }
 
-entity "battery" as e02 {
+entity "battery" as battery {
   *serialId : string <<generated>>
   --
   *batteryType : string
@@ -23,18 +23,25 @@ entity "battery" as e02 {
   *batteryCell : int
 }
 
-entity "operator" as e03 {
+entity "person" as operator {
   *id : int <<PK>> <<generated>>
   --
-  *operatorName : string <<generated>>
-  *operatorType : string(EP / IP)
+  *name : string 
   *phoneNumber : int
   *teamName : string
   *position : string
   *certification : string
 }
 
-entity "flight_log" as e04 {
+entity "flightOperator" as flightOperator {
+  *flightDataId : int <<FK>>
+  *operatorId : int <<FK>>
+  --
+  *flightOperatorId : person <<PK>> 
+  *role : EP / IP / obserser
+}
+
+entity "flightData" as flightPlan {
   *id : int <<generated>>
   --
   *aircraftName : aircraft <<FK>>
@@ -45,8 +52,6 @@ entity "flight_log" as e04 {
   *windDirection : int
   *humidity : int
   *temperature : int
-  *operatorEp : operator <<FK>>
-  *operatorIP : operator <<FK>>
   *flightTime : int
   *payloadItem : string
   *payloadWeight : int
@@ -54,10 +59,11 @@ entity "flight_log" as e04 {
 
 
 
-e01 ||-|| e04
-e02 }|--|| e04
-e03 }|---|{ e04
+flightPlan ||--o{ flightOperator
+operator ||--o{ flightOperator
 
+battery }o--|| flightPlan
+aircraft }o--|| flightPlan
 
 
 @enduml
