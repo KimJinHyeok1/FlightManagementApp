@@ -1,13 +1,14 @@
 #ifndef DATAMODEL_H
 #define DATAMODEL_H
-#include <QObject>
-#include <QDebug>
 
+#include <QDebug>
+#include "apiManager.h"
 #endif // DATAMODEL_H
 
 class dataModel : public QObject
 {
   Q_OBJECT
+
   Q_PROPERTY(QStringList  aircraftDatas          READ GetAircraftDatas          WRITE SetAircraftDatas          NOTIFY aircraftDatasChanged)
   Q_PROPERTY(QStringList  battryDatas            READ GetBatteryDatas           WRITE SetBatteryDatas           NOTIFY battryDatasChanged)
 
@@ -32,10 +33,13 @@ class dataModel : public QObject
 
 
 public:
+
     dataModel();
     ~dataModel();
 
     Q_INVOKABLE void aircraftRegisterBtnClicked();
+    Q_INVOKABLE void getAircraftData();
+
 
 
     //AircraftData Setter
@@ -90,7 +94,7 @@ public:
     QString     GetAircraftDescription() {return _aircraftDescription;}
 
 private:
-
+    static dataModel* gInstance;
     QStringList _aircraftDatas;
     QStringList _batteryDatas;
 
@@ -101,4 +105,5 @@ private:
     QString _aircraftMtow;
     QString _aircraftDescription;
 
+    apiManager *_apiManager;
 };

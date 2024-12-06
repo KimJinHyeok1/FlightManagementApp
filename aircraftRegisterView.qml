@@ -64,7 +64,10 @@ Item {
                     Button
                     {
                       icon.source : "./icon/findIcon.png"
-                      onClicked : listViewDialog.open()
+                      onClicked : {
+                        listViewDialog.open()
+                        DataModel.getAircraftData()
+                      }
                     }
                   }
 

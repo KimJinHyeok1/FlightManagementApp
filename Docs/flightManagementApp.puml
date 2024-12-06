@@ -9,9 +9,14 @@ skinparam linetype ortho
 entity "aircraft" as aircraft {
   *aircraftName : string <<PK>>
   --
-  *registerId : string
+  *aircraftRegisNum : string
+  *aircraftSerialNum : string
   *aircraftType : string
   *aircraftMTOW : int
+  *aircraftType : string
+  *aircraftDescription : string
+  *createdAt : zondDateTime
+  *updatedAt : zondDateTime
 }
 
 entity "battery" as battery {
@@ -21,6 +26,8 @@ entity "battery" as battery {
   *batterySize : int
   *batteryId : int
   *batteryCell : int
+  *createdAt : zondDateTime
+  *updatedAt : zondDateTime
 }
 
 entity "person" as operator {
@@ -31,6 +38,8 @@ entity "person" as operator {
   *teamName : string
   *position : string
   *certification : string
+  *createdAt : zondDateTime
+  *updatedAt : zondDateTime
 }
 
 entity "flightOperator" as flightOperator {
@@ -39,6 +48,8 @@ entity "flightOperator" as flightOperator {
   --
   *flightOperatorId : person <<PK>> 
   *role : EP / IP / obserser
+  *createdAt : zondDateTime
+  *updatedAt : zondDateTime
 }
 
 entity "flightData" as flightPlan {
@@ -55,6 +66,8 @@ entity "flightData" as flightPlan {
   *flightTime : int
   *payloadItem : string
   *payloadWeight : int
+  *createdAt : zondDateTime
+  *updatedAt : zondDateTime
 }
 
 
