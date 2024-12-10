@@ -3,6 +3,7 @@
 #include <QQuickStyle>
 #include <QQmlContext>
 #include "dataModel.h"
+#include "apiManager.h"
 
 int main(int argc, char *argv[])
 {
@@ -10,6 +11,8 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
     dataModel dataModel;
+    apiManager *apiManager = apiManager::getInstance();
+
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
@@ -21,6 +24,7 @@ int main(int argc, char *argv[])
 
     //!NOTE: dataModel에서 선언한 QPROPERTY를 QML과 연결
     engine.rootContext()->setContextProperty("DataModel", &dataModel);
+    engine.rootContext()->setContextProperty("apiManager", apiManager);
     engine.load(url);
     return app.exec();
 }

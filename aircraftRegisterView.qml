@@ -58,15 +58,15 @@ Item {
                       id : aircraftNameTextField
                       Layout.preferredWidth : parent.width * 0.8
                       placeholderText: qsTr("기체명을 입력하세요...")
+                      color: "orange"
                       text :
-                        listViewDialog.aircarftName
+                        listViewDialog.aircraftName
                     }
                     Button
                     {
                       icon.source : "./icon/findIcon.png"
                       onClicked : {
                         listViewDialog.open()
-                        DataModel.getAircraftData()
                       }
                     }
                   }
@@ -85,13 +85,13 @@ Item {
                     id : aircraftRegNumTextField
                     Layout.preferredWidth: parent.width * 0.9
                     placeholderText: qsTr("기체 제작번호를 입력하세요...")
-                 }
-
-
+                    text : listViewDialog.aircraftRegisterNum
+                    color: "orange"
+                  }
                   Label
                   {
                     id : aircraftSerialNumber
-                    text : "3. 기체 등록번호"
+                    text : "3. 기체 시리얼번호"
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
@@ -102,6 +102,8 @@ Item {
                     id : aircraftSerialNumberTextField
                     Layout.preferredWidth: parent.width * 0.9
                     placeholderText: qsTr("기체 등록번호를 입력하세요...")
+                    text : listViewDialog.aircraftSerialNum
+                    color: "orange"
                   }
                   Label
                   {
@@ -117,6 +119,15 @@ Item {
                     id : aircraftTypeComboBox
                     Layout.preferredWidth: parent.width * 0.9
                     model: ["무인멀티콥터", "무인비행기", "복합형(VTOL)"]
+                    currentIndex:{
+                      if (listViewDialog.aircraftType == "무인멀티콥터")
+                         return 0
+                      else if(listViewDialog.aircraftType == "무인비행기")
+                          return 1
+                      else if(listViewDialog.aircraftType == "복합형(VTOL)")
+                          return 2
+                      else return 2
+                    }
                   }
                   Label
                   {
@@ -132,6 +143,8 @@ Item {
                     id : mtowTextField
                     Layout.preferredWidth: parent.width * 0.9
                     placeholderText: qsTr("MTOW를 입력하세요...")
+                    text : listViewDialog.aircraftMTOW
+                    color: "orange"
                   }
                   Label
                   {
@@ -149,7 +162,7 @@ Item {
                     Layout.preferredHeight: 150
                     placeholderText: qsTr("기타 특이사항을 입력하세요...")
                     color : "orange"
-
+                    text : listViewDialog.aircraftDescription
                   }
 
                   CustomMessageDialog{

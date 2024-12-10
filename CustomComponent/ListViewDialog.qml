@@ -10,12 +10,29 @@ Dialog {
     width: parent.width * 0.9
     height: parent.height * 0.6
     onAccepted: close()
-    onRejected: console.log("Cancel clicked")
+    onRejected: close()
 
-    property var aircarftName: value
+    property var aircraftName: value
+    property var aircraftRegisterNum: value
+    property var aircraftSerialNum: value
+    property var aircraftMTOW: value
+    property var aircraftType: value
+    property var aircraftDescription: value
+
     property var listItemChecked: false
+    property var listModel: ListModel
 
     ColumnLayout{
+
+       Component.onCompleted: {
+         DataModel.getAircraftData();
+       }
+       Connections{
+           target: apiManager
+           onRequestFinished:
+               listView_1.model = DataModel.aircraftModel
+         }
+
       anchors.fill: parent
       DialogButtonBox {
           Layout.preferredWidth : parent.width
@@ -24,46 +41,34 @@ Dialog {
               text: qsTr("사용")
               DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
               onClicked: {
-                  tableDialog.accepted()
+                tableDialog.accepted()
               }
           }
           Button {
               text: qsTr("삭제")
               DialogButtonBox.buttonRole: DialogButtonBox.DestructiveRole
+              onClicked: {
+                DataModel.deleteData()
+                listView_1.model = DataModel.aircraftModel
+              }
           }
+
+
       }
       CustomMessageDialog{
         id : alertMessage
       }
 
-      ListView {
+      ListModel{
 
+      }
+
+      ListView {
         id: listView_1
         Layout.preferredWidth: parent.width
-        Layout.preferredHeight: parent.height
+        Layout.preferredHeight: parent.height * 0.7
         spacing : 25
-        model: ListModel {
-               ListElement {
-                 name: "HL3432"
-                 regisNum: "5553264"
-               }
-               ListElement {
-                 name: "HL3433"
-                 regisNum: "5558426"
-               }
-               ListElement {
-                 name: "HL3434"
-                 regisNum: "5550473"
-               }
-               ListElement {
-                 name: "HL3435"
-                 regisNum: "5553264"
-               }
-               ListElement {
-                 name: "HL3436"
-                 regisNum: "5558426"
-               }
-             }
+        model : DataModel.aircraftModel
               delegate:
                   Item {
                   id : listItem
@@ -88,7 +93,6 @@ Dialog {
                                if (!checked) {
                                  listItemRec.color = Material.color(Material.Grey, Material.Shade800)
                                  tableDialog.listItemChecked = false
-                                 console.log(tableDialog.listItemChecked)
                                  return
                                }
                                listViewCheckbox.checkState = Qt.Unchecked
@@ -98,13 +102,17 @@ Dialog {
                            else{
                                if (checked) {
                                  listItemRec.color = "white"
-                                 tableDialog.aircarftName = name
+                                 tableDialog.aircraftName = model.aircraftName
+                                 DataModel.aircraftName = model.aircraftName
+                                 tableDialog.aircraftRegisterNum = model.aircraftRegisterNum
+                                 tableDialog.aircraftSerialNum = model.aircraftSerialNum
+                                 tableDialog.aircraftType = model.aircraftType
+                                 tableDialog.aircraftMTOW = model.aircraftMTOW
+                                 tableDialog.aircraftDescription = model.aircraftDescription
                                  tableDialog.listItemChecked = true
-                                 console.log(tableDialog.listItemChecked)
                                } else {
                                  listItemRec.color = Material.color(Material.Grey, Material.Shade800)
                                  tableDialog.listItemChecked = false
-                                 console.log(tableDialog.listItemChecked)
                                }
                            }
                          }
@@ -115,7 +123,7 @@ Dialog {
                         font.bold: true
                         font.pointSize: 12
                         color: "orange"
-                        text: "A/C Name : " + model.name + "\nRegisNum : " + model.regisNum
+                        text: "A/C Name : " + model.aircraftName + "\nRegisNum : " + model.aircraftSerialNum
                         width: parent.width / 2
                       }
                     }//RowLayout

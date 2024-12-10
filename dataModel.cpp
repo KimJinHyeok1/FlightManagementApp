@@ -5,22 +5,29 @@
 
 dataModel* dataModel::gInstance = nullptr;
 dataModel::dataModel()
-  :_apiManager(new apiManager())
+  :_aircraftModel(new aircraftModel()),
+  _batteryDatas(new QStringListModel(this))
 {
-  qDebug()<<"Data Model Created";
+  _apiManager = apiManager::getInstance();
+  qDebug()<<"Aircarft Data Model Created";
 }
 dataModel::~dataModel(){}
-
-
-void
-dataModel::aircraftRegisterBtnClicked()
-{
-  qDebug() << _aircraftName << " " << _aircraftRegisNum << " " <<
-              _aircraftType << " " << _aircraftMtow;
-}
 
 void
 dataModel::getAircraftData()
 {
-  _apiManager->RequestAllData("test");
+  _apiManager->RequestAllAircraftData("/aircraft", _aircraftModel);
+}
+
+void
+dataModel::updateAircraftData()
+{
+  qDebug()<<_aircraftModel->rowCount();
+}
+
+
+void dataModel::deleteData(){
+  _aircraftModel->deleteData();
+  emit aircraftDatasChanged();
+  //_apiManager->DeleteAircraftData("/aircraft", _aircraftName);
 }
