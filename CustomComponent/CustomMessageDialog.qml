@@ -7,6 +7,7 @@ MessageDialog {
 
     id : messageDialog
     property var message: "등록하시겠습니까?"
+    property bool isRegister : ture
 
     title: "알림"
     contentItem:
@@ -34,7 +35,8 @@ MessageDialog {
                   Layout.alignment: Qt.AlignCenter
                   text : "확인"
                   onClicked:{
-                    DataModel.aircraftRegisterBtnClicked()
+                    messageDialog.isRegister ? DataModel.aircraftRegisterBtnClicked()
+                                             : DataModel.modifyAircraftData();
                     messageDialog.close()
                   }
                 }

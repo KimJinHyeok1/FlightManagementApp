@@ -40,46 +40,39 @@ public:
     ~dataModel();
 
     Q_INVOKABLE void getAircraftData();
-    Q_INVOKABLE void deleteData();
-    Q_INVOKABLE void updateAircraftData();
+    Q_INVOKABLE void deleteAircraftData(int row);
+    Q_INVOKABLE void modifyAircraftData();
 
 
     //AircraftData Setter
 
     void SetAircraftData(aircraftModel* aircraftData){
       _aircraftModel = aircraftData;
-      qDebug() << "Set AircraftData";
       emit aircraftDatasChanged();
     }
 
     void SetAircraftName(QString aircraftName){
       _aircraftName = aircraftName;
-      qDebug() << _aircraftName;
       emit aircraftNameChanged();
     }
     void SetAircraftRegisNum(QString aircraftRegisNum){
       _aircraftRegisNum = aircraftRegisNum;
-      qDebug() << _aircraftRegisNum;
       emit aircraftRegisNumChanged();
     }
     void SetAircraftSerialNum(QString aircraftSerialNum){
       _aircraftSerialNum = aircraftSerialNum;
-      qDebug() << _aircraftSerialNum;
       emit aircraftSerialNumChanged();
     }
     void SetAircraftType(QString aircraftType){
       _aircraftType = aircraftType;
-      qDebug() << _aircraftType;
       emit aircraftTypeChanged();
     }
     void SetAircraftMtow(QString aircraftMtow){
       _aircraftMtow = aircraftMtow;
-      qDebug() << _aircraftMtow;
       emit aircraftMtowChanged();
     }
     void SetAircraftDescription(QString aircraftDescription){
       _aircraftDescription = aircraftDescription;
-      qDebug() << _aircraftDescription;
       emit aircraftDescriptionChanged();
     }
 
@@ -90,10 +83,7 @@ public:
 
 
     //Getter
-    aircraftModel* GetAircraftDatas() {
-        qDebug() << "Get AircraftData";
-        return _aircraftModel;
-    }
+    aircraftModel* GetAircraftDatas() { return _aircraftModel;}
     QStringListModel* GetBatteryDatas() {return _batteryDatas;}
 
     QString     GetAircraftName() {return _aircraftName;}

@@ -20,11 +20,10 @@ entity "aircraft" as aircraft {
 }
 
 entity "battery" as battery {
-  *serialId : string <<generated>>
+  *batteryId : int <<generated>>
   --
   *batteryType : string
   *batterySize : int
-  *batteryId : int
   *batteryCell : int
   *createdAt : zondDateTime
   *updatedAt : zondDateTime

@@ -13,21 +13,33 @@ dataModel::dataModel()
 }
 dataModel::~dataModel(){}
 
+
 void
 dataModel::getAircraftData()
 {
-  _apiManager->RequestAllAircraftData("/aircraft", _aircraftModel);
-}
-
-void
-dataModel::updateAircraftData()
-{
-  qDebug()<<_aircraftModel->rowCount();
+  _apiManager->RequestAllAircraftData("aircraft", _aircraftModel);
 }
 
 
-void dataModel::deleteData(){
-  _aircraftModel->deleteData();
+void dataModel::modifyAircraftData(){
+
+  QJsonObject modifyData;
+  modifyData["aircraftRegisterNum"] = _aircraftRegisNum;
+  modifyData["aircraftSerialNum"] = _aircraftSerialNum;
+  modifyData["aircraftType"] =_aircraftType;
+  modifyData["aircraftMtow"] = _aircraftMtow;
+  modifyData["aircraftDescription"] = _aircraftDescription;
+
+  qDebug()<<modifyData["aircraftDescription"];
+  qDebug()<<modifyData["aircraftType"];
+
+  _apiManager->ModifyAircraftData(_aircraftName, modifyData);
+
+}
+
+
+void dataModel::deleteAircraftData(int row){
+  _apiManager->DeleteAircraftData("/aircraft", _aircraftName);
+  _aircraftModel->remove(row);
   emit aircraftDatasChanged();
-  //_apiManager->DeleteAircraftData("/aircraft", _aircraftName);
 }

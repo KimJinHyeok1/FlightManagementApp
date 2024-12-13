@@ -15,6 +15,10 @@ Q_OBJECT
 
 public:
 
+    Q_INVOKABLE bool remove(int row){
+      return removeRow(row, QModelIndex());
+    }
+
     void setAircraftListData(QJsonArray data);
     explicit aircraftModel(QObject* parent = nullptr)
         :_aircraftDataModel(new QList<QJsonObject>())
@@ -31,6 +35,18 @@ public:
     ~aircraftModel(){}
 
     void deleteData();
+
+    bool removeRow(int row, const QModelIndex &parent) {
+        if (row < 0 || row >= _aircraftDataModel->size())
+            return false;
+
+        beginRemoveRows(parent, row, row);
+        for (int i = 0; i < 1; ++i) {
+            _aircraftDataModel->removeAt(row);  // 데이터 삭제
+        }
+        endRemoveRows();
+        return true;
+    }
 
     virtual int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     virtual int columnCount(const QModelIndex& parent = QModelIndex()) const override;

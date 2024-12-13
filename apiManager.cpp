@@ -4,7 +4,7 @@ apiManager* apiManager::gApiInstance = nullptr;
 
 apiManager::apiManager(QObject *parent)
   :_apiAccessManager(new QNetworkAccessManager()),
-   _baseUrl("http://localhost:8080")
+   _baseUrl("http://localhost:8080/")
 {
   Q_UNUSED(parent);
   qDebug()<<"ApiManager Created";
@@ -24,7 +24,6 @@ QJsonArray* apiManager::RequestAllAircraftData(QString requestUrl, aircraftModel
         QStringList stringList;
         QJsonDocument response = QJsonDocument::fromJson(contents.toUtf8());
         if(response.isArray()){
-           qDebug()<<"data Set";
            aircraftModel->setAircraftListData(response.array());
            emit requestFinished();
            return response.array();
@@ -35,14 +34,28 @@ QJsonArray* apiManager::RequestAllAircraftData(QString requestUrl, aircraftModel
 }
 
 
+void apiManager::ModifyAircraftData(QString aircraftName, QJsonObject &modifyData)
+{
+  QUrl url = QUrl(_baseUrl).resolved("aircraft/" + aircraftName);
+  QNetworkRequest modifyRequest(url);
+  modifyRequest.setHeader(QNetworkRequest::ContentTypeHeader, QString("application/json; charset=utf-8"));
+  QJsonDocument jsonDoc(modifyData);
+  QByteArray jsonData = jsonDoc.toJson(QJsonDocument::Compact);
+  QNetworkReply *reply = _apiAccessManager->sendCustomRequest(modifyRequest, "PATCH", jsonData);
+  QObject::connect(reply, &QNetworkReply::finished, this, [=](){
+      if(reply->error() == QNetworkReply::NoError)
+        qDebug()<< "Data Modified";
+  });
+}
+
+
+
 void apiManager::DeleteAircraftData(QString requestUrl, QString aircraftName)
 {
   QUrlQuery query;
-  qDebug()<< aircraftName;
   query.addQueryItem("aircraftName", aircraftName);
   QUrl url = QUrl(_baseUrl).resolved(requestUrl);
   url.setQuery(query);
-  qDebug()<< url;
   QNetworkRequest deleteRequest(url);
   QNetworkReply *reply = _apiAccessManager->deleteResource(deleteRequest);
   QObject::connect(reply, &QNetworkReply::finished, this, [=](){

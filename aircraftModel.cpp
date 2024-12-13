@@ -24,8 +24,7 @@ int aircraftModel::rowCount(const QModelIndex &parent) const
 }
 
 void aircraftModel::deleteData(){
-  _aircraftDataModel->removeFirst();
-  qDebug()<<rowCount();
+
 }
 
 QVariant aircraftModel::data (const QModelIndex &index, int role) const

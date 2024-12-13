@@ -8,6 +8,9 @@ import "./CustomComponent"
 
 Item {
     id : aircraftRegisterItem
+
+    property var aircraftList : [];
+
     Rectangle{
         anchors.fill : parent
         color: Material.color(Material.Grey, Material.Shade800)
@@ -176,7 +179,17 @@ Item {
                     Button{
                       text : "수정"
                       Layout.preferredWidth : parent.width / 2.1
-                      onClicked: messageDialog.open()
+                      onClicked: {
+                          DataModel.aircraftName = aircraftNameTextField.text
+                          DataModel.aircraftRegisNum = aircraftRegNumTextField.text
+                          DataModel.aircraftSerialNum = aircraftSerialNumberTextField.text
+                          DataModel.aircraftType = aircraftTypeComboBox.currentValue
+                          DataModel.aircraftMtow = mtowTextField.text
+                          DataModel.aircraftDescription = etcTextField.text
+                          messageDialog.message = "수정하시겠습니까?"
+                          messageDialog.isRegister = false;
+                          messageDialog.open()
+                      }
                     }
                     Button{
                       text : "등록"

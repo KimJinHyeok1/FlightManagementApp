@@ -31,12 +31,12 @@ public:
   //!NOTE : Aircraft API Request
   QJsonArray* RequestAllAircraftData(QString requestUrl, aircraftModel* dataModel);
   void DeleteAircraftData(QString requestUrl, QString aircraftName);
-  void ModifyAircraftData();
+  void ModifyAircraftData(QString aircraftName, QJsonObject &modifyData);
 
   //!NOTE : Battery API Request
   void RequestAllBatteryData();
   void DeleteBatteryData();
-  void MOdifyaircraftData();
+  void ModifyBatteryData();
 
 
   //!NOTE : Api Manager SingleTone Class

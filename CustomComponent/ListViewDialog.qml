@@ -48,7 +48,9 @@ Dialog {
               text: qsTr("삭제")
               DialogButtonBox.buttonRole: DialogButtonBox.DestructiveRole
               onClicked: {
-                DataModel.deleteData()
+                tableDialog.listItemChecked = false;
+                console.log(listView_1.currentIndex)
+                DataModel.deleteAircraftData(listView_1.currentIndex);
                 listView_1.model = DataModel.aircraftModel
               }
           }
@@ -68,12 +70,15 @@ Dialog {
         Layout.preferredWidth: parent.width
         Layout.preferredHeight: parent.height * 0.7
         spacing : 25
-        model : DataModel.aircraftModel
+        focus : true
+        interactive: true
+        model : tableDialog.listModel
               delegate:
                   Item {
                   id : listItem
                   width: listView_1.width
                   height: 50
+
                   Rectangle
                   {
                     id : listItemRec
@@ -102,8 +107,9 @@ Dialog {
                            else{
                                if (checked) {
                                  listItemRec.color = "white"
-                                 tableDialog.aircraftName = model.aircraftName
+                                 listView_1.currentIndex = index
                                  DataModel.aircraftName = model.aircraftName
+                                 tableDialog.aircraftName = model.aircraftName
                                  tableDialog.aircraftRegisterNum = model.aircraftRegisterNum
                                  tableDialog.aircraftSerialNum = model.aircraftSerialNum
                                  tableDialog.aircraftType = model.aircraftType
