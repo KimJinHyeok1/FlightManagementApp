@@ -11,20 +11,25 @@ class dataModel : public QObject
   Q_OBJECT
 
   Q_PROPERTY(aircraftModel*     aircraftModel    READ GetAircraftDatas          WRITE SetAircraftData           NOTIFY aircraftDatasChanged)
-  Q_PROPERTY(QStringListModel*  battryDatas      READ GetBatteryDatas                                           NOTIFY battryDatasChanged)
+  Q_PROPERTY(batteryModel*      battryModel      READ GetBatteryDatas           WRITE SetBatteryData            NOTIFY batteryDatasChanged)
 
+  //Aircraft
   Q_PROPERTY(QString      aircraftName           READ GetAircraftName           WRITE SetAircraftName           NOTIFY aircraftNameChanged)
   Q_PROPERTY(QString      aircraftRegisNum       READ GetAircraftRegisNum       WRITE SetAircraftRegisNum       NOTIFY aircraftRegisNumChanged)
   Q_PROPERTY(QString      aircraftSerialNum      READ GetAircraftSerialNum      WRITE SetAircraftSerialNum      NOTIFY aircraftSerialNumChanged)
   Q_PROPERTY(QString      aircraftType           READ GetAircraftType           WRITE SetAircraftType           NOTIFY aircraftTypeChanged)
   Q_PROPERTY(QString      aircraftMtow           READ GetAircraftMtow           WRITE SetAircraftMtow           NOTIFY aircraftMtowChanged)
-  Q_PROPERTY(QString      aircraftDescription    READ GetAircraftDescription   WRITE SetAircraftDescription     NOTIFY aircraftDescriptionChanged)
+  Q_PROPERTY(QString      aircraftDescription    READ GetAircraftDescription    WRITE SetAircraftDescription    NOTIFY aircraftDescriptionChanged)
 
+  //Battery
+  Q_PROPERTY(QString      batterySerialNum       READ GetBatterySerialNum       WRITE SetBatterySerialNum       NOTIFY batterySerialNumChanged)
+  Q_PROPERTY(QString      batteryType            READ GetBatteryType            WRITE SetBatteryType            NOTIFY batteryTypeChanged)
+  Q_PROPERTY(QString      batteryCapacity        READ GetBatteryCapacity        WRITE SetBatteryCapacity        NOTIFY batteryCapacityChanged)
+  Q_PROPERTY(QString      batteryCells           READ GetBatteryCells           WRITE SetBatteryCells           NOTIFY batteryCellsChanged)
 
   signals:
-
     void aircraftDatasChanged();
-    void battryDatasChanged();
+    void batteryDatasChanged();
 
     void aircraftNameChanged();
     void aircraftRegisNumChanged();
@@ -33,6 +38,10 @@ class dataModel : public QObject
     void aircraftMtowChanged();
     void aircraftDescriptionChanged();
 
+    void batterySerialNumChanged();
+    void batteryTypeChanged();
+    void batteryCapacityChanged();
+    void batteryCellsChanged();
 
 public:
 
@@ -40,12 +49,12 @@ public:
     ~dataModel();
 
     Q_INVOKABLE void getAircraftData();
-    Q_INVOKABLE void deleteAircraftData(int row);
+    Q_INVOKABLE void getBatteryData();
+    Q_INVOKABLE void deleteData(int row, QString dataType);
     Q_INVOKABLE void modifyAircraftData();
 
 
     //AircraftData Setter
-
     void SetAircraftData(aircraftModel* aircraftData){
       _aircraftModel = aircraftData;
       emit aircraftDatasChanged();
@@ -77,35 +86,66 @@ public:
     }
 
 
+    void SetBatterySerialNum(QString batterySerialNum){
+      _batterySerialNum = batterySerialNum;
+      emit batterySerialNumChanged();
+    }
+    void SetBatteryType(QString batteryType){
+      _batteryType = batteryType;
+      emit batteryTypeChanged();
+    }
+    void SetBatteryCapacity(QString batteryCapacity){
+      _batteryCapacity = batteryCapacity;
+      emit batteryCapacityChanged();
+    }
+    void SetBatteryCells(QString batteryCells){
+      _batteryCells = batteryCells;
+      emit batteryCellsChanged();
+    }
+
 
    //BatteryData Setter
-   void SetBatteryDatas(){}
+   void SetBatteryData(batteryModel* batteryModel)
+   {
+     _batteryModel = batteryModel;
+     emit batteryDatasChanged();
+   }
 
 
     //Getter
-    aircraftModel* GetAircraftDatas() { return _aircraftModel;}
-    QStringListModel* GetBatteryDatas() {return _batteryDatas;}
+    aircraftModel* GetAircraftDatas()    {return _aircraftModel;}
+    batteryModel* GetBatteryDatas()      {return _batteryModel;}
 
-    QString     GetAircraftName() {return _aircraftName;}
-    QString     GetAircraftRegisNum(){return _aircraftRegisNum;}
-    QString     GetAircraftSerialNum(){return _aircraftSerialNum;}
-    QString     GetAircraftType() {return _aircraftType;}
-    QString     GetAircraftMtow() {return _aircraftMtow;}
+    QString     GetAircraftName()        {return _aircraftName;}
+    QString     GetAircraftRegisNum()    {return _aircraftRegisNum;}
+    QString     GetAircraftSerialNum()   {return _aircraftSerialNum;}
+    QString     GetAircraftType()        {return _aircraftType;}
+    QString     GetAircraftMtow()        {return _aircraftMtow;}
     QString     GetAircraftDescription() {return _aircraftDescription;}
+
+    QString     GetBatterySerialNum()    {return _batterySerialNum;}
+    QString     GetBatteryType()         {return _batteryType;}
+    QString     GetBatteryCapacity()     {return _batteryCapacity;}
+    QString     GetBatteryCells()        {return _batteryCells;}
 
 private:
     static dataModel* gInstance;
 
-    aircraftModel* _aircraftModel;
-    QJsonArray _aircraftDataModels;
-    QStringListModel* _batteryDatas;
-
+    //Aircraft Data
     QString _aircraftName;
     QString _aircraftRegisNum;
     QString _aircraftSerialNum;
     QString _aircraftType;
     QString _aircraftMtow;
     QString _aircraftDescription;
+    aircraftModel* _aircraftModel;
+
+    //Battery Data
+    QString _batterySerialNum;
+    QString _batteryType;
+    QString _batteryCapacity;
+    QString _batteryCells;
+    batteryModel* _batteryModel;
 
     apiManager *_apiManager;
 };

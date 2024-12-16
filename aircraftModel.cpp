@@ -1,7 +1,8 @@
 #include "aircraftmodel.h"
 
 
-void aircraftModel::setAircraftListData(QJsonArray aircraftArrayData){
+void aircraftModel::setAircraftListData(QJsonArray aircraftArrayData)
+{
   _aircraftDataModel->clear();
   for(auto value : aircraftArrayData){
       if(value.isObject()){
@@ -23,10 +24,6 @@ int aircraftModel::rowCount(const QModelIndex &parent) const
   return _aircraftDataModel->size();
 }
 
-void aircraftModel::deleteData(){
-
-}
-
 QVariant aircraftModel::data (const QModelIndex &index, int role) const
 {
   int nRow = index.row();
@@ -44,7 +41,7 @@ QVariant aircraftModel::data (const QModelIndex &index, int role) const
     case aircraftColumnName::aircraftType :
       return aircraftData["aircraftType"].toString();
     case aircraftColumnName::aircraftMTOW :
-      return QString::number(aircraftData["aircraftMTOW"].toDouble()) + "Kg";
+      return QString::number(aircraftData["aircraftMTOW"].toDouble());
     case aircraftColumnName::aircraftDescription :
       return aircraftData["aircraftDescription"].toString();
      default:

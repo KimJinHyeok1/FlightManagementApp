@@ -12,26 +12,35 @@ Dialog {
     onAccepted: close()
     onRejected: close()
 
-    property var aircraftName: value
-    property var aircraftRegisterNum: value
-    property var aircraftSerialNum: value
-    property var aircraftMTOW: value
-    property var aircraftType: value
-    property var aircraftDescription: value
+    property var requestDataType: value
+
+    property var aircraftName: ""
+    property var aircraftRegisterNum: ""
+    property var aircraftSerialNum: ""
+    property var aircraftMTOW: ""
+    property var aircraftType: ""
+    property var aircraftDescription: ""
+
+    property var batterySerialNum: ""
+    property var batteryType: ""
+    property var batteryCapacity: ""
+    property var batteryCells: ""
 
     property var listItemChecked: false
-    property var listModel: ListModel
+    property var listModel : ListModel
 
     ColumnLayout{
 
-       Component.onCompleted: {
-         DataModel.getAircraftData();
-       }
-       Connections{
-           target: apiManager
-           onRequestFinished:
-               listView_1.model = DataModel.aircraftModel
-         }
+        Connections{
+          target: apiManager
+          onRequestFinished:
+            if (requestDataType == "aircraft"){
+              listView_1.model = DataModel.aircraftModel
+            }
+            else if (requestDataType == "battery"){
+              listView_1.model = DataModel.battryModel
+            }
+        }
 
       anchors.fill: parent
       DialogButtonBox {
@@ -48,10 +57,16 @@ Dialog {
               text: qsTr("삭제")
               DialogButtonBox.buttonRole: DialogButtonBox.DestructiveRole
               onClicked: {
-                tableDialog.listItemChecked = false;
-                console.log(listView_1.currentIndex)
-                DataModel.deleteAircraftData(listView_1.currentIndex);
-                listView_1.model = DataModel.aircraftModel
+                  tableDialog.listItemChecked = false;
+                  if (requestDataType == "aircraft")
+                  {
+                    listView_1.model = DataModel.aircraftModel
+                    DataModel.deleteData(listView_1.currentIndex, requestDataType);
+                  }
+                  else if (requestDataType == "battery"){
+                    listView_1.model = DataModel.battryModel
+                    DataModel.deleteData(listView_1.currentIndex, requestDataType);
+                  }
               }
           }
 
@@ -61,9 +76,6 @@ Dialog {
         id : alertMessage
       }
 
-      ListModel{
-
-      }
 
       ListView {
         id: listView_1
@@ -108,15 +120,27 @@ Dialog {
                                if (checked) {
                                  listItemRec.color = "white"
                                  listView_1.currentIndex = index
-                                 DataModel.aircraftName = model.aircraftName
-                                 tableDialog.aircraftName = model.aircraftName
-                                 tableDialog.aircraftRegisterNum = model.aircraftRegisterNum
-                                 tableDialog.aircraftSerialNum = model.aircraftSerialNum
-                                 tableDialog.aircraftType = model.aircraftType
-                                 tableDialog.aircraftMTOW = model.aircraftMTOW
-                                 tableDialog.aircraftDescription = model.aircraftDescription
+                                 if(tableDialog.requestDataType == "aircraft")
+                                 {
+                                   DataModel.aircraftName = model.aircraftName
+                                   tableDialog.aircraftName = model.aircraftName
+                                   tableDialog.aircraftRegisterNum = model.aircraftRegisterNum
+                                   tableDialog.aircraftSerialNum = model.aircraftSerialNum
+                                   tableDialog.aircraftType = model.aircraftType
+                                   tableDialog.aircraftMTOW = model.aircraftMTOW
+                                   tableDialog.aircraftDescription = model.aircraftDescription
+                                 }
+                                 else if(tableDialog.requestDataType == "battery")
+                                 {
+                                   DataModel.batterySerialNum = model.batterySerialNum
+                                   tableDialog.batterySerialNum = model.batterySerialNum
+                                   tableDialog.batteryType = model.batteryType
+                                   tableDialog.batteryCapacity = model.batteryCapacity
+                                   tableDialog.batteryCells = model.batteryCells
+                                 }
                                  tableDialog.listItemChecked = true
-                               } else {
+                               }
+                               else {
                                  listItemRec.color = Material.color(Material.Grey, Material.Shade800)
                                  tableDialog.listItemChecked = false
                                }
@@ -129,7 +153,14 @@ Dialog {
                         font.bold: true
                         font.pointSize: 12
                         color: "orange"
-                        text: "A/C Name : " + model.aircraftName + "\nRegisNum : " + model.aircraftSerialNum
+                        text: {
+                            if(tableDialog.requestDataType == "aircraft"){
+                              "A/C Name : " + model.aircraftName + "\nRegisNum : " + model.aircraftSerialNum
+                            }
+                            else if(tableDialog.requestDataType == "battery"){
+                              "Battery S/N : " + model.batterySerialNum + "\nType : " + model.batteryType
+                            }
+                        }
                         width: parent.width / 2
                       }
                     }//RowLayout

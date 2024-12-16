@@ -15,7 +15,7 @@ Q_OBJECT
 
 public:
 
-    Q_INVOKABLE bool remove(int row){
+    bool remove(int row){
       return removeRow(row, QModelIndex());
     }
 
@@ -33,8 +33,6 @@ public:
     };
 
     ~aircraftModel(){}
-
-    void deleteData();
 
     bool removeRow(int row, const QModelIndex &parent) {
         if (row < 0 || row >= _aircraftDataModel->size())

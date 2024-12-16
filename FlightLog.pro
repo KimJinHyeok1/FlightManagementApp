@@ -9,12 +9,14 @@ CONFIG += c++11
 
 HEADERS += \
     aircraftModel.h \
+    batteryModel.h \
     dataModel.h \
     apiManager.h
 
 SOURCES += \
         aircraftModel.cpp \
         apiManager.cpp \
+        batteryModel.cpp \
         dataModel.cpp \
         main.cpp
 

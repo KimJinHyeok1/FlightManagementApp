@@ -12,35 +12,67 @@ Item {
         anchors.fill : parent
         color: Material.color(Material.Grey, Material.Shade800)
 
+        ListViewDialog{
+          id : batteryListViewDialog
+        }
         ScrollView {
             id : scrollView
             anchors.fill : parent
+            anchors.topMargin: 0
             anchors.leftMargin: 10
+            anchors.rightMargin: 5
             anchors.bottomMargin: 10
             ScrollBar.vertical.policy: ScrollBar.AlwaysOn
           ColumnLayout {
-            Layout.preferredWidth: parent.width - 40
+            Layout.preferredWidth: parent.width
             anchors.fill: parent
-            Image {
-                id: vesselLogo
-                source: "./icon/vessel.png"
-                sourceSize.height: layout1.height * 0.2
-                sourceSize.width: layout1.width * 0.9
-              }
             Pane
             {
-              contentWidth: scrollView.width
-              contentHeight: scrollView.height
+              contentWidth: layout1.width
+              contentHeight: layout1.height
               ColumnLayout
               {
                 id :layout1
                 width : batteryRegisterItem.width
+                Image {
+                    id: vesselLogo
+                    source: "./icon/vessel.png"
+                    sourceSize.height: layout1.height * 0.2
+                    sourceSize.width: layout1.width * 0.9
+                  }
+                  Label
+                  {
+                    id : batterySerialNumber
+                    text : "1. 배터리 S/N"
+                    Layout.topMargin: 20
+                    font.pointSize: 15
+                    font.bold : true
+                    color: "white"
+                  }
+                  RowLayout
+                  {
+                    Layout.preferredWidth : parent.width * 0.9
+                    TextField
+                    {
+                      text : batteryListViewDialog.batterySerialNum
+                      Layout.preferredWidth: parent.width * 0.7
+                      placeholderText: qsTr("기체 비행시간...")
+                    }
+                    Button
+                    {
+                      icon.source : "./icon/findIcon.png"
+                      onClicked: {
+                        batteryListViewDialog.open()
+                        batteryListViewDialog.requestDataType = "battery"
+                        DataModel.getBatteryData()
+                      }
+                    }
+                  }
                   Label
                   {
                     topPadding: 30
                     id : batteryType
-                    text : "1. 배터리 타입(종류)"
-                    Layout.topMargin: 20
+                    text : "2. 배터리 타입(종류)"
                     font.pointSize: 15
                     font.bold : true
                     color: "white"
@@ -49,45 +81,102 @@ Item {
                   {
                     Layout.preferredWidth: parent.width * 0.9
                     model: ["Lipo", "Li-ion", "LiCa", "기타"]
-
+                    currentIndex:{
+                      if (batteryListViewDialog.batteryCells == "Lipo")
+                         return 0
+                      else if(batteryListViewDialog.batteryCells == "Li-ion")
+                          return 1
+                      else if(batteryListViewDialog.batteryCells == "LiCa")
+                          return 2
+                      else if(batteryListViewDialog.batteryCells == "기타")
+                          return 3
+                      else return 0
+                    }
                   }
 
 
                   Label
                   {
                     id : mtow
-                    text : "2. 배터리 용량"
+                    text : "3. 배터리 용량"
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
                     color: "white"
                   }
-                  TextField
-                  {
+                  RowLayout{
                     Layout.preferredWidth: parent.width * 0.9
-                    placeholderText: qsTr("MTOW를 입력하세요...")
+                      TextField
+                      {
+                        id : capacityTextField
+                        Layout.preferredWidth: parent.width * 0.7
+                        placeholderText: qsTr("배터리 용량을 입력하세요")
+                        text : batteryListViewDialog.batteryCapacity
+                      }
+                      Label{
+                        leftPadding: 15
+                        anchors.left : capacityTextField.right
+                        text: "mAh"
+                        font.pointSize: 15
+                        font.bold: true
+                        color:"orange"
+                      }
                   }
+
+
                   Label
                   {
                     id : additionalInfo
-                    text : "5. 배터리 번호(S/N)"
+                    text : "4. 배터리 Cell"
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
                     color: "white"
                   }
 
-                  RowLayout
-                  {
-                    Layout.preferredWidth : parent.width * 0.9
-                    TextField
+                  RowLayout{
+                    Layout.preferredWidth: parent.width * 0.9
+                    ComboBox
                     {
-                      Layout.preferredWidth: parent.width * 0.7
-                      placeholderText: qsTr("기체 비행시간...")
+                      id : cellCombobox
+                      Layout.preferredWidth: parent.width * 0.5
+                      model: ["1", "2", "3", "4", "5", "6",
+                      "8", "10", "12", "16", "24"]
+                      currentIndex: {
+                            if (batteryListViewDialog.batteryCells == "1")
+                               return 0
+                            else if(batteryListViewDialog.batteryCells == "2")
+                                return 1
+                            else if(batteryListViewDialog.batteryCells == "3")
+                                return 2
+                            else if(batteryListViewDialog.batteryCells == "4")
+                                return 3
+                            else if(batteryListViewDialog.batteryCells == "4")
+                                return 4
+                            else if(batteryListViewDialog.batteryCells == "5")
+                                return 5
+                            else if(batteryListViewDialog.batteryCells == "6")
+                                return 6
+                            else if(batteryListViewDialog.batteryCells == "8")
+                                return 7
+                            else if(batteryListViewDialog.batteryCells == "10")
+                                return 8
+                            else if(batteryListViewDialog.batteryCells == "12")
+                                return 9
+                            else if(batteryListViewDialog.batteryCells == "16")
+                                return 10
+                            else if(batteryListViewDialog.batteryCells == "24")
+                                return 11
+                            else return 0
+                        }
                     }
-                    Button
-                    {
-                      icon.source : "./icon/findIcon.png"
+                    Label{
+                      leftPadding: 15
+                      Layout.alignment: Qt.AlignLeft
+                      text: "Cells"
+                      font.pointSize: 15
+                      font.bold: true
+                      color:"orange"
                     }
                   }
 
@@ -114,9 +203,15 @@ Item {
                   }
               }
 
-            }
+            }//pane
           }
         }
 
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/

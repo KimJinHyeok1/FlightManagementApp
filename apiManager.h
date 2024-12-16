@@ -10,6 +10,7 @@
 #include <QStringListModel>
 
 #include "aircraftmodel.h"
+#include "batteryModel.h"
 
 #ifndef APIMANAGER_H
 #define APIMANAGER_H
@@ -30,12 +31,13 @@ public:
 
   //!NOTE : Aircraft API Request
   QJsonArray* RequestAllAircraftData(QString requestUrl, aircraftModel* dataModel);
+  QJsonArray* RequestAllBatteryData(QString requestUrl, batteryModel* dataModel);
   void DeleteAircraftData(QString requestUrl, QString aircraftName);
   void ModifyAircraftData(QString aircraftName, QJsonObject &modifyData);
 
   //!NOTE : Battery API Request
   void RequestAllBatteryData();
-  void DeleteBatteryData();
+  void DeleteBatteryData(QString requestUrl, QString batterySerialNum);
   void ModifyBatteryData();
 
 

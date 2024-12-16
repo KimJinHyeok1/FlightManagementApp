@@ -8,12 +8,15 @@ import "./CustomComponent"
 
 Item {
     id : aircraftRegisterItem
-
     property var aircraftList : [];
 
     Rectangle{
         anchors.fill : parent
         color: Material.color(Material.Grey, Material.Shade800)
+
+        ListViewDialog{
+          id : listViewDialog
+        }
 
         ScrollView {
             anchors.fill : parent
@@ -49,9 +52,6 @@ Item {
                     font.bold : true
                     color: "white"
                   }
-                  ListViewDialog{
-                    id : listViewDialog
-                  }
 
                   RowLayout
                   {
@@ -69,6 +69,8 @@ Item {
                     {
                       icon.source : "./icon/findIcon.png"
                       onClicked : {
+                        DataModel.getAircraftData();
+                        listViewDialog.requestDataType = "aircraft"
                         listViewDialog.open()
                       }
                     }
@@ -207,7 +209,6 @@ Item {
                   }
                 }
               }
-
             }
           }
         }
