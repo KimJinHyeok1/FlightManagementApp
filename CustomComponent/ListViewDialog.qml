@@ -6,7 +6,7 @@ import "./"
 
 Dialog {
     id: tableDialog
-    title: "기체 등록 리스트"
+    title: (requestDataType == "aircraft") ? "기체 등록 리스트" : "배터리 등록 리스트";
     width: parent.width * 0.9
     height: parent.height * 0.6
     onAccepted: close()
@@ -33,13 +33,10 @@ Dialog {
 
         Connections{
           target: apiManager
-          onRequestFinished:
-            if (requestDataType == "aircraft"){
-              listView_1.model = DataModel.aircraftModel
-            }
-            else if (requestDataType == "battery"){
-              listView_1.model = DataModel.battryModel
-            }
+          onAircraftRequestFinished:
+            listView_1.model = DataModel.aircraftModel
+          onBatteryRequestFinished:
+            listView_1.model = DataModel.battryModel
         }
 
       anchors.fill: parent
@@ -136,7 +133,7 @@ Dialog {
                                    tableDialog.batterySerialNum = model.batterySerialNum
                                    tableDialog.batteryType = model.batteryType
                                    tableDialog.batteryCapacity = model.batteryCapacity
-                                   tableDialog.batteryCells = model.batteryCells
+                                   tableDialog.batteryCells = model.batteryCell
                                  }
                                  tableDialog.listItemChecked = true
                                }

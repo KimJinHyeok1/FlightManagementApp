@@ -49,9 +49,9 @@ QVariant batteryModel::data (const QModelIndex &index, int role) const
       case batteryColumnName::batteryType :
         return batteryData["batteryType"].toString();
       case batteryColumnName::batteryCapacity :
-        return batteryData["batteryCapacity"].toString();
+        return batteryData["batteryCapacity"].toInt();
       case batteryColumnName::batteryCell :
-        return batteryData["batteryCell"].toString();
+        return batteryData["batteryCell"].toInt();
        default:
          qDebug() << "Unhandled role:" << role;
          return QVariant();

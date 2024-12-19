@@ -15,6 +15,7 @@ entity "aircraft" as aircraft {
   *aircraftMTOW : int
   *aircraftType : string
   *aircraftDescription : string
+  *totalFlightTime : int
   *createdAt : zondDateTime
   *updatedAt : zondDateTime
 }
@@ -23,10 +24,12 @@ entity "battery" as battery {
   *batteryId : int <<generated>>
   --
   *batteryType : string
+  *batteryCapacity : int
   *batterySize : int
   *batteryCell : int
-  *createdAt : zondDateTime
-  *updatedAt : zondDateTime
+  *usingTime : int
+  *createdAt : zonedDateTime
+  *updatedAt : zonedDateTime
 }
 
 entity "person" as operator {
@@ -48,7 +51,7 @@ entity "flightOperator" as flightOperator {
   *flightOperatorId : person <<PK>> 
   *role : EP / IP / obserser
   *createdAt : zondDateTime
-  *updatedAt : zondDateTime
+  *updatedAt : zondDateTime 
 }
 
 entity "flightData" as flightPlan {

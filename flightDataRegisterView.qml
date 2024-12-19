@@ -1,6 +1,6 @@
-import QtQuick 2.0
+import QtQuick 2.5
 import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.1
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Material 2.12
@@ -16,6 +16,21 @@ Item {
             anchors.fill : parent
             anchors.leftMargin: 10
             //ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+            Component.onCompleted: {
+                DataModel.getAircraftData()
+                DataModel.getBatteryData()
+            }
+            Connections{
+              target: apiManager
+              onAircraftRequestFinished:{
+                aircraftComboBox.model = DataModel.aircraftList
+              }
+              onBatteryRequestFinished:{
+                batteryComboBox.model = DataModel.batteryList
+                batteryTableView.model = DataModel.battryModel
+              }
+            }
+
             ColumnLayout {
               id : fistColumnLayout
               width : flgihtDataRegisterItem.width
@@ -56,8 +71,8 @@ Item {
                   }
                   ComboBox
                   {
-                    Layout.preferredWidth: parent.width * 0.9
-                    model: [""]
+                    id : aircraftComboBox
+                    Layout.preferredWidth:   parent.width * 0.9
                   }
                   Label
                   {
@@ -70,11 +85,36 @@ Item {
                   }
                   ComboBox
                   {
+                    id : batteryComboBox
                     Layout.preferredWidth: parent.width * 0.9
                     model: [""]
                   }
+
                   OldControls.TableView{
+                    id : batteryTableView
                     Layout.preferredWidth: parent.width * 0.9
+
+                    OldControls.TableViewColumn {
+                      role: "batterySerialNum"
+                      title: "Battery S/N"
+                      width: 150
+                    }
+                    OldControls.TableViewColumn {
+                      role: "batteryType"
+                      title: "Type"
+                      width: 100
+                            }
+                    OldControls.TableViewColumn {
+                      role: "batteryCapacity"
+                      title: "Capacity(mAh)"
+                      width: 150
+                    }
+                    OldControls.TableViewColumn {
+                      role: "batteryCell"
+                      title: "Cells"
+                      width: 150
+                    }
+
                   }
                   Label
                   {

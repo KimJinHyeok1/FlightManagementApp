@@ -54,9 +54,11 @@ Item {
                     Layout.preferredWidth : parent.width * 0.9
                     TextField
                     {
+                      id : batterySerialNumberTextField
                       text : batteryListViewDialog.batterySerialNum
                       Layout.preferredWidth: parent.width * 0.7
                       placeholderText: qsTr("기체 비행시간...")
+                      color:"orange"
                     }
                     Button
                     {
@@ -79,16 +81,17 @@ Item {
                   }
                   ComboBox
                   {
+                    id : batteryTypeComboBox
                     Layout.preferredWidth: parent.width * 0.9
                     model: ["Lipo", "Li-ion", "LiCa", "기타"]
                     currentIndex:{
-                      if (batteryListViewDialog.batteryCells == "Lipo")
+                      if (batteryListViewDialog.batteryCells === "Lipo")
                          return 0
-                      else if(batteryListViewDialog.batteryCells == "Li-ion")
+                      else if(batteryListViewDialog.batteryCells === "Li-ion")
                           return 1
-                      else if(batteryListViewDialog.batteryCells == "LiCa")
+                      else if(batteryListViewDialog.batteryCells === "LiCa")
                           return 2
-                      else if(batteryListViewDialog.batteryCells == "기타")
+                      else if(batteryListViewDialog.batteryCells === "기타")
                           return 3
                       else return 0
                     }
@@ -97,7 +100,7 @@ Item {
 
                   Label
                   {
-                    id : mtow
+                    id : batteryCapacity
                     text : "3. 배터리 용량"
                     Layout.topMargin: 20
                     font.pointSize: 15
@@ -112,11 +115,12 @@ Item {
                         Layout.preferredWidth: parent.width * 0.7
                         placeholderText: qsTr("배터리 용량을 입력하세요")
                         text : batteryListViewDialog.batteryCapacity
+                        color:"orange"
                       }
                       Label{
                         leftPadding: 15
-                        anchors.left : capacityTextField.right
-                        text: "mAh"
+                        //anchors.left : capacityTextField.right
+                        text: "(mAh)"
                         font.pointSize: 15
                         font.bold: true
                         color:"orange"
@@ -143,29 +147,29 @@ Item {
                       model: ["1", "2", "3", "4", "5", "6",
                       "8", "10", "12", "16", "24"]
                       currentIndex: {
-                            if (batteryListViewDialog.batteryCells == "1")
+                            if (batteryListViewDialog.batteryCells === "1")
                                return 0
-                            else if(batteryListViewDialog.batteryCells == "2")
+                            else if(batteryListViewDialog.batteryCells === "2")
                                 return 1
-                            else if(batteryListViewDialog.batteryCells == "3")
+                            else if(batteryListViewDialog.batteryCells === "3")
                                 return 2
-                            else if(batteryListViewDialog.batteryCells == "4")
+                            else if(batteryListViewDialog.batteryCells === "4")
                                 return 3
-                            else if(batteryListViewDialog.batteryCells == "4")
+                            else if(batteryListViewDialog.batteryCells === "4")
                                 return 4
-                            else if(batteryListViewDialog.batteryCells == "5")
+                            else if(batteryListViewDialog.batteryCells === "5")
                                 return 5
-                            else if(batteryListViewDialog.batteryCells == "6")
+                            else if(batteryListViewDialog.batteryCells === "6")
                                 return 6
-                            else if(batteryListViewDialog.batteryCells == "8")
+                            else if(batteryListViewDialog.batteryCells === "8")
                                 return 7
-                            else if(batteryListViewDialog.batteryCells == "10")
+                            else if(batteryListViewDialog.batteryCells === "10")
                                 return 8
-                            else if(batteryListViewDialog.batteryCells == "12")
+                            else if(batteryListViewDialog.batteryCells === "12")
                                 return 9
-                            else if(batteryListViewDialog.batteryCells == "16")
+                            else if(batteryListViewDialog.batteryCells === "16")
                                 return 10
-                            else if(batteryListViewDialog.batteryCells == "24")
+                            else if(batteryListViewDialog.batteryCells === "24")
                                 return 11
                             else return 0
                         }
@@ -173,7 +177,7 @@ Item {
                     Label{
                       leftPadding: 15
                       Layout.alignment: Qt.AlignLeft
-                      text: "Cells"
+                      text: "(Cells)"
                       font.pointSize: 15
                       font.bold: true
                       color:"orange"
@@ -182,6 +186,7 @@ Item {
 
                   CustomMessageDialog{
                       id : messageDialog
+                      dataType: "battery"
                   }
 
 
@@ -193,16 +198,31 @@ Item {
                     Button{
                       text : "수정"
                       Layout.preferredWidth : parent.width / 2.1
-                      onClicked : messageDialog.open()
+                      onClicked : {
+                        DataModel.batterySerialNum = batterySerialNumberTextField.text
+                        DataModel.batteryType = batteryTypeComboBox.currentText
+                        DataModel.batteryCapacity = capacityTextField.text
+                        DataModel.batteryCells = cellCombobox.currentText
+                        messageDialog.message = "수정하시겠습니까?"
+                        messageDialog.isRegister = false;
+                        messageDialog.open()
+                      }
                     }
                     Button{
                       text : "등록"
                       Layout.preferredWidth : parent.width / 2.1
-                      onClicked : messageDialog.open()
+                      onClicked : {
+                        DataModel.batterySerialNum = batterySerialNumberTextField.text
+                        DataModel.batteryType = batteryTypeComboBox.currentText
+                        DataModel.batteryCapacity = capacityTextField.text
+                        DataModel.batteryCells = cellCombobox.currentText
+                        messageDialog.message = "등록하시겠습니까?"
+                        messageDialog.isRegister = true;
+                        messageDialog.open()
+                      }
                     }
                   }
               }
-
             }//pane
           }
         }

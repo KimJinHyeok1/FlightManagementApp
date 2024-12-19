@@ -22,7 +22,8 @@ Q_OBJECT
 Q_DISABLE_COPY(apiManager)
 
 signals:
-  void requestFinished();
+  void aircraftRequestFinished();
+  void batteryRequestFinished();
 
 
 public:
@@ -30,15 +31,16 @@ public:
   explicit apiManager(QObject *parent = nullptr);
 
   //!NOTE : Aircraft API Request
-  QJsonArray* RequestAllAircraftData(QString requestUrl, aircraftModel* dataModel);
-  QJsonArray* RequestAllBatteryData(QString requestUrl, batteryModel* dataModel);
+  void RequestAllAircraftData(QString requestUrl, aircraftModel* dataModel, QStringList &aircraftList);
+  bool CreateAircraftData(QJsonObject aircraftData);
   void DeleteAircraftData(QString requestUrl, QString aircraftName);
   void ModifyAircraftData(QString aircraftName, QJsonObject &modifyData);
 
   //!NOTE : Battery API Request
-  void RequestAllBatteryData();
+  void RequestAllBatteryData(QString requestUrl, batteryModel* dataModel, QStringList &batteryList);
+  bool CreateBatteryData(QJsonObject batteryData);
   void DeleteBatteryData(QString requestUrl, QString batterySerialNum);
-  void ModifyBatteryData();
+  void ModifyBatteryData(QString batterySerialNum, QJsonObject &modifyData);
 
 
   //!NOTE : Api Manager SingleTone Class

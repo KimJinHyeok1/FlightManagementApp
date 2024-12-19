@@ -17,24 +17,59 @@ dataModel::~dataModel(){}
 void
 dataModel::getAircraftData()
 {
-  _apiManager->RequestAllAircraftData("aircraft", _aircraftModel);
+  _apiManager->RequestAllAircraftData("aircraft", _aircraftModel, _aircraftList);
+  qDebug()<<_aircraftList;
 }
 
 void
 dataModel::getBatteryData()
 {
-  _apiManager->RequestAllBatteryData("battery", _batteryModel);
+  _apiManager->RequestAllBatteryData("battery", _batteryModel, _batteryList);
 }
 
 
-void dataModel::modifyAircraftData(){
-  QJsonObject modifyData;
-  modifyData["aircraftRegisterNum"] = _aircraftRegisNum;
-  modifyData["aircraftSerialNum"] = _aircraftSerialNum;
-  modifyData["aircraftType"] =_aircraftType;
-  modifyData["aircraftMtow"] = _aircraftMtow;
-  modifyData["aircraftDescription"] = _aircraftDescription;
-  _apiManager->ModifyAircraftData(_aircraftName, modifyData);
+void dataModel::createData(QString dataType){
+  QJsonObject DataObject;
+
+  if(dataType == "aircraft"){
+    DataObject["aircraftName"] = _aircraftName;
+    DataObject["aircraftRegisterNum"] = _aircraftRegisNum;
+    DataObject["aircraftSerialNum"] = _aircraftSerialNum;
+    DataObject["aircraftType"] =_aircraftType;
+    DataObject["aircraftMtow"] = _aircraftMtow;
+    DataObject["aircraftDescription"] = _aircraftDescription;
+    _apiManager->CreateAircraftData(DataObject);
+  }
+
+  else if(dataType == "battery"){
+    DataObject["batterySerialNum"] = _batterySerialNum;
+    DataObject["batteryType"] = _batteryType;
+    DataObject["batteryCapacity"] = _batteryCapacity;
+    DataObject["batteryCell"] = _batteryCells;
+    _apiManager->CreateBatteryData(DataObject);
+  }
+}
+
+
+void dataModel::modifyData(QString dataType){
+  QJsonObject DataObject;
+
+  if(dataType == "aircraft"){
+    DataObject["aircraftRegisterNum"] = _aircraftRegisNum;
+    DataObject["aircraftSerialNum"] = _aircraftSerialNum;
+    DataObject["aircraftType"] =_aircraftType;
+    DataObject["aircraftMtow"] = _aircraftMtow;
+    DataObject["aircraftDescription"] = _aircraftDescription;
+    _apiManager->ModifyAircraftData(_aircraftName, DataObject);
+  }
+
+  else if(dataType == "battery"){
+    DataObject["batteryType"] = _batteryType;
+    DataObject["batteryCapacity"] = _batteryCapacity;
+    DataObject["batteryCell"] = _batteryCells;
+    _apiManager->ModifyBatteryData(_batterySerialNum, DataObject);
+  }
+
 }
 
 

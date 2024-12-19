@@ -125,11 +125,11 @@ Item {
                     Layout.preferredWidth: parent.width * 0.9
                     model: ["무인멀티콥터", "무인비행기", "복합형(VTOL)"]
                     currentIndex:{
-                      if (listViewDialog.aircraftType == "무인멀티콥터")
+                      if (listViewDialog.aircraftType === "무인멀티콥터")
                          return 0
-                      else if(listViewDialog.aircraftType == "무인비행기")
+                      else if(listViewDialog.aircraftType === "무인비행기")
                           return 1
-                      else if(listViewDialog.aircraftType == "복합형(VTOL)")
+                      else if(listViewDialog.aircraftType === "복합형(VTOL)")
                           return 2
                       else return 2
                     }
@@ -172,6 +172,7 @@ Item {
 
                   CustomMessageDialog{
                       id : messageDialog
+                      dataType: "aircraft"
                   }
 
                   RowLayout
@@ -204,9 +205,11 @@ Item {
                           DataModel.aircraftType = aircraftTypeComboBox.currentValue
                           DataModel.aircraftMtow = mtowTextField.text
                           DataModel.aircraftDescription = etcTextField.text
-                          DataModel.aircraftRegisterBtnClicked()
+                          messageDialog.message = "등록하시겠습니까?"
+                          messageDialog.isRegister = true;
+                          messageDialog.open()
+                      }
                     }
-                  }
                 }
               }
             }

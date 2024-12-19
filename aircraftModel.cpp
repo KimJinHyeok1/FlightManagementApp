@@ -9,7 +9,6 @@ void aircraftModel::setAircraftListData(QJsonArray aircraftArrayData)
         _aircraftDataModel->append(value.toObject());
       }
   }
-  qDebug()<<rowCount();
 }
 
 int aircraftModel::columnCount(const QModelIndex &parent) const{
