@@ -69,19 +69,6 @@ ApplicationWindow {
           }
         }
 
-//              ToolButton {
-//                Layout.preferredWidth: drawer.width
-//                font.pointSize: fontSize_data
-//                font.bold : true
-//                icon.source: "./icon/homeIcon.png"
-//                onClicked: {
-//                    messageDialog.open()
-//                    drawer.close();
-//                    toolbarText.text = "비행시험팀 비행이력 관리 프로그램"
-//                    stackView.push("qrc:/homeView.qml");
-//                }
-//              }
-
               ToolButton {
                 Layout.preferredWidth: drawer.width
                 font.pointSize: fontSize_data
@@ -102,6 +89,17 @@ ApplicationWindow {
                     drawer.close();
                     toolbarText.text = "배터리 관리"
                     stackView.push("qrc:/batteryRegisterView.qml");
+                }
+              }
+              ToolButton {
+                Layout.preferredWidth: drawer.width
+                font.pointSize: fontSize_data
+                font.bold : true
+                text: "운용자 등록"
+                onClicked: {
+                    drawer.close();
+                    toolbarText.text = "운용자 관리"
+                    stackView.push("qrc:/operatorRegisterView.qml");
                 }
               }
               ToolButton {

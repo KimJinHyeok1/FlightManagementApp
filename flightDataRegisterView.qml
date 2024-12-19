@@ -94,6 +94,7 @@ Item {
                     id : batteryTableView
                     Layout.preferredWidth: parent.width * 0.9
 
+
                     OldControls.TableViewColumn {
                       role: "batterySerialNum"
                       title: "Battery S/N"
@@ -102,17 +103,17 @@ Item {
                     OldControls.TableViewColumn {
                       role: "batteryType"
                       title: "Type"
-                      width: 100
-                            }
+                      width: 80
+                    }
                     OldControls.TableViewColumn {
                       role: "batteryCapacity"
                       title: "Capacity(mAh)"
-                      width: 150
+                      width: 100
                     }
                     OldControls.TableViewColumn {
                       role: "batteryCell"
                       title: "Cells"
-                      width: 150
+                      width: 50
                     }
 
                   }
