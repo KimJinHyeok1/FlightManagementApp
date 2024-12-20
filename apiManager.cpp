@@ -10,6 +10,8 @@ apiManager::apiManager(QObject *parent)
   qDebug()<<"ApiManager Created";
 }
 
+
+
 void apiManager::RequestAllAircraftData(QString requestUrl,
                                                aircraftModel* aircraftModel,
                                                QStringList &aircraftList)
@@ -31,32 +33,11 @@ void apiManager::RequestAllAircraftData(QString requestUrl,
         };
       }
   });
-
 }
 
-bool apiManager::CreateAircraftData(QJsonObject aircraftData)
-{
-    QNetworkRequest postRequest(QUrl(_baseUrl).resolved(QString("/aircraft")));
-    postRequest.setHeader(QNetworkRequest::ContentTypeHeader, QString("application/json; charset=utf-8"));
-    QJsonDocument jsonDoc(aircraftData);
-    QByteArray jsonData = jsonDoc.toJson(QJsonDocument::Compact);
-    QNetworkReply *reply = _apiAccessManager->post(postRequest, jsonData);
-    QObject::connect(reply, &QNetworkReply::finished, this, [=]()
-    {
-      if(reply->error() == QNetworkReply::NoError){
-          QByteArray ba=reply->readAll();
-          QString contents = QString::fromUtf8(ba);
-          QJsonObject obj;
-          QStringList stringList;
-          QJsonDocument response = QJsonDocument::fromJson(contents.toUtf8());
-          if(response.isArray()){
-             return true;
-          };
-      }
-
-    });return false;
-}
-void apiManager::RequestAllBatteryData(QString requestUrl, batteryModel* batteryModel, QStringList &batteryList)
+void apiManager::RequestAllBatteryData(QString requestUrl,
+                                       batteryModel* batteryModel,
+                                       QStringList &batteryList)
 {
   QNetworkRequest getRequest(QUrl(_baseUrl).resolved(requestUrl));
   QNetworkReply *reply = _apiAccessManager->get(getRequest);
@@ -76,6 +57,33 @@ void apiManager::RequestAllBatteryData(QString requestUrl, batteryModel* battery
     }
   });
 }
+
+void apiManager::RequestAllOperatorData(QString requestUrl,
+                                       operatorModel* operatorModel,
+                                       QStringList &operatorList)
+{
+  QNetworkRequest getRequest(QUrl(_baseUrl).resolved(requestUrl));
+  QNetworkReply *reply = _apiAccessManager->get(getRequest);
+  QObject::connect(reply, &QNetworkReply::finished, this, [=, &operatorList]()
+  {
+    if(reply->error() == QNetworkReply::NoError){
+        QByteArray ba=reply->readAll();
+        QString contents = QString::fromUtf8(ba);
+        QJsonDocument response = QJsonDocument::fromJson(contents.toUtf8());
+        if(response.isArray()){
+           for(const auto value : response.array()){
+             operatorList.append(value.toObject()["name"].toString());
+           }
+           operatorModel->setOperatorData(response.array());
+           emit operatorRequestFinished();
+        };
+    }
+  });
+}
+
+
+
+
 
 bool apiManager::CreateBatteryData(QJsonObject batteryData)
 {
@@ -99,6 +107,47 @@ bool apiManager::CreateBatteryData(QJsonObject batteryData)
     });return false;
 }
 
+bool apiManager::CreateAircraftData(QJsonObject aircraftData)
+{
+    QNetworkRequest postRequest(QUrl(_baseUrl).resolved(QString("/aircraft")));
+    postRequest.setHeader(QNetworkRequest::ContentTypeHeader, QString("application/json; charset=utf-8"));
+    QJsonDocument jsonDoc(aircraftData);
+    QByteArray jsonData = jsonDoc.toJson(QJsonDocument::Compact);
+    QNetworkReply *reply = _apiAccessManager->post(postRequest, jsonData);
+    QObject::connect(reply, &QNetworkReply::finished, this, [=]()
+    {
+      if(reply->error() == QNetworkReply::NoError){
+          QByteArray ba=reply->readAll();
+          QString contents = QString::fromUtf8(ba);
+          QJsonDocument response = QJsonDocument::fromJson(contents.toUtf8());
+          if(response.isArray()){
+             return true;
+          };
+      }
+    });return false;
+}
+
+bool apiManager::CreateOperatorData(QJsonObject operatorData)
+{
+    QNetworkRequest postRequest(QUrl(_baseUrl).resolved(QString("/operator")));
+    postRequest.setHeader(QNetworkRequest::ContentTypeHeader, QString("application/json; charset=utf-8"));
+    QJsonDocument jsonDoc(operatorData);
+    QByteArray jsonData = jsonDoc.toJson(QJsonDocument::Compact);
+    QNetworkReply *reply = _apiAccessManager->post(postRequest, jsonData);
+    QObject::connect(reply, &QNetworkReply::finished, this, [=]()
+    {
+      if(reply->error() == QNetworkReply::NoError){
+          QByteArray ba=reply->readAll();
+          QString contents = QString::fromUtf8(ba);
+          QJsonDocument response = QJsonDocument::fromJson(contents.toUtf8());
+          if(response.isArray()){
+             return true;
+          };
+      }
+    });return false;
+}
+
+
 
 
 void apiManager::ModifyAircraftData(QString aircraftName, QJsonObject &modifyData)
@@ -114,7 +163,6 @@ void apiManager::ModifyAircraftData(QString aircraftName, QJsonObject &modifyDat
         qDebug()<< "Data Modified";
   });
 }
-
 
 void apiManager::ModifyBatteryData(QString batterySerialNum, QJsonObject &modifyData)
 {
@@ -132,6 +180,10 @@ void apiManager::ModifyBatteryData(QString batterySerialNum, QJsonObject &modify
 
 
 
+
+
+
+
 void apiManager::DeleteAircraftData(QString requestUrl, QString aircraftName)
 {
   QUrlQuery query;
@@ -146,11 +198,26 @@ void apiManager::DeleteAircraftData(QString requestUrl, QString aircraftName)
   });
 }
 
+
 void apiManager::DeleteBatteryData(QString requestUrl, QString batterySerialNum)
 {
   QUrlQuery query;
   qDebug()<< batterySerialNum;
   query.addQueryItem("batterySerialNum", batterySerialNum);
+  QUrl url = QUrl(_baseUrl).resolved(requestUrl);
+  url.setQuery(query);
+  QNetworkRequest deleteRequest(url);
+  QNetworkReply *reply = _apiAccessManager->deleteResource(deleteRequest);
+  QObject::connect(reply, &QNetworkReply::finished, this, [=](){
+    if(reply->error() == QNetworkReply::NoError)
+        qDebug()<< "deleted";
+  });
+}
+
+void apiManager::DeleteOperatorData(QString requestUrl, int operatorId)
+{
+  QUrlQuery query;
+  query.addQueryItem("operatorId", QString(operatorId));
   QUrl url = QUrl(_baseUrl).resolved(requestUrl);
   url.setQuery(query);
   QNetworkRequest deleteRequest(url);

@@ -6,7 +6,8 @@
 dataModel* dataModel::gInstance = nullptr;
 dataModel::dataModel()
   :_aircraftModel(new aircraftModel()),
-  _batteryModel(new batteryModel())
+  _batteryModel(new batteryModel()),
+  _operatorModel(new operatorModel())
 {
   _apiManager = apiManager::getInstance();
   qDebug()<<"Aircarft Data Model Created";
@@ -18,13 +19,18 @@ void
 dataModel::getAircraftData()
 {
   _apiManager->RequestAllAircraftData("aircraft", _aircraftModel, _aircraftList);
-  qDebug()<<_aircraftList;
 }
 
 void
 dataModel::getBatteryData()
 {
   _apiManager->RequestAllBatteryData("battery", _batteryModel, _batteryList);
+}
+
+void
+dataModel::getOperatorData()
+{
+  _apiManager->RequestAllOperatorData("operator", _operatorModel, _operatorList);
 }
 
 
@@ -48,6 +54,15 @@ void dataModel::createData(QString dataType){
     DataObject["batteryCell"] = _batteryCells;
     _apiManager->CreateBatteryData(DataObject);
   }
+
+  else if(dataType == "operator"){
+    DataObject["name"] = _operatorName;
+    DataObject["phoneNumber"] = _phoneNumber;
+    DataObject["teamName"] = _teamName;
+    DataObject["position"] = _position;
+    DataObject["certification"] = _certification;
+    _apiManager->CreateOperatorData(DataObject);
+  }
 }
 
 
@@ -70,6 +85,14 @@ void dataModel::modifyData(QString dataType){
     _apiManager->ModifyBatteryData(_batterySerialNum, DataObject);
   }
 
+//  else if(dataType == "operator"){
+//    DataObject["name"] = _operatorName;
+//    DataObject["phoneNumber"] = _phoneNumber;
+//    DataObject["teamName"] = _teamName;
+//    DataObject["position"] = _position;
+//    DataObject["certification"] = _certification;
+//    _apiManager->CreateOperatorData(DataObject);
+//  }
 }
 
 
@@ -79,10 +102,16 @@ void dataModel::deleteData(int row, QString dataType){
     _aircraftModel->remove(row);
     emit aircraftDatasChanged();
   }
+
   else if(dataType == "battery"){
     _apiManager->DeleteBatteryData("/battery", _batterySerialNum);
     _batteryModel->remove(row);
     emit batteryDatasChanged();
   }
 
+  else if(dataType == "operator"){
+    _apiManager->DeleteOperatorData("/operator", _operatorId);
+    _operatorModel->remove(row);
+    emit batteryDatasChanged();
+  }
 }

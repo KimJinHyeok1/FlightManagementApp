@@ -198,7 +198,6 @@ Item {
                       text : "등록"
                       Layout.preferredWidth : parent.width / 2.1
                       onClicked: {
-                          messageDialog.open()
                           DataModel.aircraftName = aircraftNameTextField.text
                           DataModel.aircraftRegisNum = aircraftRegNumTextField.text
                           DataModel.aircraftSerialNum = aircraftSerialNumberTextField.text

@@ -12,6 +12,7 @@ class dataModel : public QObject
 
   Q_PROPERTY(aircraftModel*     aircraftModel    READ GetAircraftDatas          WRITE SetAircraftData           NOTIFY aircraftDatasChanged)
   Q_PROPERTY(batteryModel*      battryModel      READ GetBatteryDatas           WRITE SetBatteryData            NOTIFY batteryDatasChanged)
+  Q_PROPERTY(operatorModel*     operatorModel    READ GetOperatorDatas          WRITE SetOperatorData           NOTIFY operatorDataChanged)
 
   //Aircraft
   Q_PROPERTY(QString      aircraftName           READ GetAircraftName           WRITE SetAircraftName           NOTIFY aircraftNameChanged)
@@ -27,6 +28,15 @@ class dataModel : public QObject
   Q_PROPERTY(QString      batteryCapacity        READ GetBatteryCapacity        WRITE SetBatteryCapacity        NOTIFY batteryCapacityChanged)
   Q_PROPERTY(QString      batteryCells           READ GetBatteryCells           WRITE SetBatteryCells           NOTIFY batteryCellsChanged)
 
+  //Operator
+  Q_PROPERTY(int          operatorId             READ GetOperatorId             WRITE SetOperatorId             NOTIFY operatorIdChanged)
+  Q_PROPERTY(QString      operatorName           READ GetOperatorName           WRITE SetOperatorName           NOTIFY operatorNameChanged)
+  Q_PROPERTY(QString      phoneNumber            READ GetPhoneNumber            WRITE SetPhoneNumber            NOTIFY phoneNumberChanged)
+  Q_PROPERTY(QString      position               READ GetPosition               WRITE SetPosition               NOTIFY positionChanged)
+  Q_PROPERTY(QString      teamName               READ GetTeamName               WRITE SetTeamName               NOTIFY teamNameChanged)
+  Q_PROPERTY(QString      certification          READ GetCertification          WRITE SetCertification          NOTIFY certificationChanged)
+
+
   Q_PROPERTY(QStringList  aircraftList           READ GetAircraftList           WRITE SetAircraftList           NOTIFY aircraftListChanged)
   Q_PROPERTY(QStringList  batteryList            READ GetBatteryList            WRITE SetBatteryList            NOTIFY batteryListChanged)
 
@@ -34,6 +44,7 @@ class dataModel : public QObject
   signals:
     void aircraftDatasChanged();
     void batteryDatasChanged();
+    void operatorDataChanged();
 
     void aircraftNameChanged();
     void aircraftRegisNumChanged();
@@ -49,6 +60,14 @@ class dataModel : public QObject
     void batteryCellsChanged();
     void batteryListChanged();
 
+    void operatorNameChanged();
+    void phoneNumberChanged();
+    void positionChanged();
+    void teamNameChanged();
+    void certificationChanged();
+    void operatorIdChanged();
+
+
 public:
 
     dataModel();
@@ -56,7 +75,7 @@ public:
 
     Q_INVOKABLE void getAircraftData();
     Q_INVOKABLE void getBatteryData();
-
+    Q_INVOKABLE void getOperatorData();
 
     Q_INVOKABLE void modifyData(QString dataType);
     Q_INVOKABLE void createData(QString dataType);
@@ -64,10 +83,6 @@ public:
 
 
     //AircraftData Setter
-    void SetAircraftData(aircraftModel* aircraftData){
-      _aircraftModel = aircraftData;
-      emit aircraftDatasChanged();
-    }
 
     void SetAircraftName(QString aircraftName){
       _aircraftName = aircraftName;
@@ -99,8 +114,6 @@ public:
     }
 
 
-
-
     void SetBatterySerialNum(QString batterySerialNum){
       _batterySerialNum = batterySerialNum;
       emit batterySerialNumChanged();
@@ -122,6 +135,41 @@ public:
       emit batteryListChanged();
     }
 
+    void SetOperatorId(int operatorId){
+      _operatorId = operatorId;
+      emit operatorIdChanged();
+    }
+    void SetOperatorName(QString operatorName){
+      _operatorName = operatorName;
+      emit operatorNameChanged();
+    }
+    void SetPhoneNumber(QString phoneNumber){
+      _phoneNumber = phoneNumber;
+      emit phoneNumberChanged();
+    }
+    void SetPosition(QString position){
+      _position = position;
+      emit positionChanged();
+    }
+    void SetTeamName(QString teamName){
+      _teamName = teamName;
+      emit teamNameChanged();
+    }
+    void SetCertification(QString certification){
+      _certification = certification;
+      emit certificationChanged();
+    }
+
+
+    void SetAircraftData(aircraftModel* aircraftData){
+      _aircraftModel = aircraftData;
+      emit aircraftDatasChanged();
+    }
+    //!NOTE Operator Datats
+    void SetOperatorData(operatorModel* operatorModel)
+    {
+      _operatorModel = operatorModel;
+    }
 
    //BatteryData Setter
    void SetBatteryData(batteryModel* batteryModel)
@@ -133,7 +181,9 @@ public:
 
     //Getter
     aircraftModel* GetAircraftDatas()    {return _aircraftModel;}
-    batteryModel* GetBatteryDatas()      {return _batteryModel;}
+    batteryModel*  GetBatteryDatas()     {return _batteryModel;}
+    operatorModel* GetOperatorDatas()    {return _operatorModel;}
+
     //Aircraft
     QString     GetAircraftName()        {return _aircraftName;}
     QString     GetAircraftRegisNum()    {return _aircraftRegisNum;}
@@ -142,12 +192,21 @@ public:
     QString     GetAircraftMtow()        {return _aircraftMtow;}
     QString     GetAircraftDescription() {return _aircraftDescription;}
     QStringList GetAircraftList()        {return _aircraftList;}
+
     //Battery
     QString     GetBatterySerialNum()    {return _batterySerialNum;}
     QString     GetBatteryType()         {return _batteryType;}
     QString     GetBatteryCapacity()     {return _batteryCapacity;}
     QString     GetBatteryCells()        {return _batteryCells;}
     QStringList GetBatteryList()         {return _batteryList;}
+
+    //Operator
+    QString     GetOperatorName()        {return _operatorName;}
+    QString     GetTeamName()            {return _phoneNumber;}
+    QString     GetPosition()            {return _position;}
+    QString     GetPhoneNumber()         {return _teamName;}
+    QString     GetCertification()       {return _certification;}
+    int         GetOperatorId()          {return _operatorId;}
 
 private:
     static dataModel* gInstance;
@@ -171,6 +230,16 @@ private:
     //FlightData
     QStringList _aircraftList;
     QStringList _batteryList;
+    QStringList _operatorList;
+
+    //Operator Data
+    int     _operatorId;
+    QString _operatorName;
+    QString _phoneNumber;
+    QString _position;
+    QString _teamName;
+    QString _certification;
+    operatorModel* _operatorModel;
 
     apiManager *_apiManager;
 };

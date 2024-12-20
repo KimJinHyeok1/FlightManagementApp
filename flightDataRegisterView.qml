@@ -93,8 +93,6 @@ Item {
                   OldControls.TableView{
                     id : batteryTableView
                     Layout.preferredWidth: parent.width * 0.9
-
-
                     OldControls.TableViewColumn {
                       role: "batterySerialNum"
                       title: "Battery S/N"
@@ -115,7 +113,6 @@ Item {
                       title: "Cells"
                       width: 50
                     }
-
                   }
                   Label
                   {
@@ -373,8 +370,6 @@ Item {
                   text: "등록하기"
                 }
               }
-
-
             }
         }
     }

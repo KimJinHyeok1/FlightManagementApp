@@ -11,6 +11,13 @@ Item {
   Rectangle{
     anchors.fill : parent
     color : Material.color(Material.Grey, Material.Shade800)
+    ListViewDialog {
+      id : operatorListView
+    }
+    CustomMessageDialog{
+      id : messageDialog
+      dataType: "operator"
+    }
 
     ScrollView{
       id : scrollView
@@ -55,7 +62,7 @@ Item {
               TextField
               {
                 id : operatorNameTextField
-                text : batteryListViewDialog.batterySerialNum
+                text : operatorListView.operatorName
                 Layout.preferredWidth: parent.width * 0.7
                 color:"orange"
               }
@@ -63,6 +70,9 @@ Item {
               {
                 icon.source : "./icon/findIcon.png"
                 onClicked: {
+                  operatorListView.requestDataType = "operator"
+                  DataModel.getOperatorData()
+                  operatorListView.open()
                 }
               }
             }//RowLayout
@@ -80,8 +90,10 @@ Item {
               Layout.preferredWidth : parent.width * 0.9
               TextField
               {
+                id : phoneNumberTextField
                 Layout.preferredWidth : parent.width * 0.9
                 placeholderText : "  '-'있이 입력하세요"
+                text : operatorListView.phoneNumber
                 color:"orange"
               }
             }//RowLayout
@@ -104,7 +116,6 @@ Item {
             {
               id :layout2
               width : operatorRegisterItem.width
-
             Label
             {
               id : position
@@ -118,7 +129,10 @@ Item {
             {
               id : positionComboBox
               Layout.preferredWidth: parent.width * 0.9
-              model: ["사원", "주임", "대리", "과장", "차장", "부장"]
+              model: ["사원", "주임", "대리", "과장", "차장", "부장", "팀장"]
+              currentIndex:{
+                model.indexOf(operatorListView.position)
+              }
             }
             Label
             {
@@ -133,7 +147,10 @@ Item {
             {
               id : teamComboBox
               Layout.preferredWidth: parent.width * 0.9
-              model: ["운영팀", "비행시험팀", "인사총무팀", "체계팀", "기타"]
+              model: ["운영팀", "비행시험팀", "지원팀", "개발팀", "인사총무팀", "체계팀", "기타"]
+              currentIndex:{
+                model.indexOf(operatorListView.teamName)
+              }
             }
            }
         }
@@ -178,6 +195,9 @@ Item {
                     "초경량비행장치 무인비행기 3종",
                     "초경량비행장치 무인비행기 4종",
                     ]
+                currentIndex:{
+                  model.indexOf(operatorListView.certification)
+                }
               }
            }
         }
@@ -192,6 +212,11 @@ Item {
             text : "수정"
             Layout.preferredWidth : parent.width / 2.1
             onClicked : {
+              DataModel.operatorName = operatorNameTextField.text
+              DataModel.phoneNumber = phoneNumberTextField.text
+              DataModel.position = positionComboBox.currentText
+              DataModel.certification = certificatedCombobox.currentText
+              DataModel.teamName = teamComboBox.currentText
               messageDialog.message = "수정하시겠습니까?"
               messageDialog.isRegister = false;
               messageDialog.open()
@@ -201,6 +226,11 @@ Item {
             text : "등록"
             Layout.preferredWidth : parent.width / 2.1
             onClicked : {
+              DataModel.operatorName = operatorNameTextField.text
+              DataModel.phoneNumber = phoneNumberTextField.text
+              DataModel.position = positionComboBox.currentText
+              DataModel.certification = certificatedCombobox.currentText
+              DataModel.teamName = teamComboBox.currentText
               messageDialog.message = "등록하시겠습니까?"
               messageDialog.isRegister = true;
               messageDialog.open()

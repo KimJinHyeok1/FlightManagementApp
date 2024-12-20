@@ -6,7 +6,11 @@ import "./"
 
 Dialog {
     id: tableDialog
-    title: (requestDataType == "aircraft") ? "기체 등록 리스트" : "배터리 등록 리스트";
+    title: {
+        if (requestDataType == "aircraft") tableDialog.title = "기체 등록 리스트"
+        else if(requestDataType == "battery") tableDialog.title = "배터리 등록 리스트"
+        else tableDialog.title = "운용자 등록 리스트"
+    }
     width: parent.width * 0.9
     height: parent.height * 0.6
     onAccepted: close()
@@ -26,6 +30,12 @@ Dialog {
     property var batteryCapacity: ""
     property var batteryCells: ""
 
+    property var operatorName: ""
+    property var phoneNumber: ""
+    property var position: ""
+    property var teamName: ""
+    property var certification: ""
+
     property var listItemChecked: false
     property var listModel : ListModel
 
@@ -37,6 +47,8 @@ Dialog {
             listView_1.model = DataModel.aircraftModel
           onBatteryRequestFinished:
             listView_1.model = DataModel.battryModel
+          onOperatorRequestFinished:
+            listView_1.model = DataModel.operatorModel;
         }
 
       anchors.fill: parent
@@ -64,6 +76,10 @@ Dialog {
                     listView_1.model = DataModel.battryModel
                     DataModel.deleteData(listView_1.currentIndex, requestDataType);
                   }
+                  else{
+                    listView_1.model = DataModel.operatorModel
+                    DataModel.deleteData(listView_1.currentIndex, requestDataType);
+                  }
               }
           }
 
@@ -81,7 +97,6 @@ Dialog {
         spacing : 25
         focus : true
         interactive: true
-        model : tableDialog.listModel
               delegate:
                   Item {
                   id : listItem
@@ -135,6 +150,15 @@ Dialog {
                                    tableDialog.batteryCapacity = model.batteryCapacity
                                    tableDialog.batteryCells = model.batteryCell
                                  }
+                                 else if(tableDialog.requestDataType == "operator")
+                                 {
+                                   DataModel.operatorId = model.id
+                                   tableDialog.operatorName = model.name
+                                   tableDialog.phoneNumber = model.phoneNumber;
+                                   tableDialog.position = model.position;
+                                   tableDialog.teamName = model.teamName;
+                                   tableDialog.certification = model.certification;
+                                 }
                                  tableDialog.listItemChecked = true
                                }
                                else {
@@ -157,6 +181,7 @@ Dialog {
                             else if(tableDialog.requestDataType == "battery"){
                               "Battery S/N : " + model.batterySerialNum + "\nType : " + model.batteryType
                             }
+                            else "운용자 이름 : " + model.name
                         }
                         width: parent.width / 2
                       }

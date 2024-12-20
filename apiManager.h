@@ -11,6 +11,7 @@
 
 #include "aircraftmodel.h"
 #include "batteryModel.h"
+#include "operatorModel.h"
 
 #ifndef APIMANAGER_H
 #define APIMANAGER_H
@@ -24,6 +25,7 @@ Q_DISABLE_COPY(apiManager)
 signals:
   void aircraftRequestFinished();
   void batteryRequestFinished();
+  void operatorRequestFinished();
 
 
 public:
@@ -41,6 +43,12 @@ public:
   bool CreateBatteryData(QJsonObject batteryData);
   void DeleteBatteryData(QString requestUrl, QString batterySerialNum);
   void ModifyBatteryData(QString batterySerialNum, QJsonObject &modifyData);
+
+  //!NOTE : Operator API Request
+  void RequestAllOperatorData(QString requestUrl, operatorModel* dataModel, QStringList &operatorList);
+  bool CreateOperatorData(QJsonObject operatorData);
+  void DeleteOperatorData(QString requestUrl, int operatorId);
+  void ModifyOperatorData(int operatorId, QJsonObject &modifyData);
 
 
   //!NOTE : Api Manager SingleTone Class

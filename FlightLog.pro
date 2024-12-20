@@ -11,14 +11,16 @@ HEADERS += \
     aircraftModel.h \
     batteryModel.h \
     dataModel.h \
-    apiManager.h
+    apiManager.h \
+    operatorModel.h
 
 SOURCES += \
         aircraftModel.cpp \
         apiManager.cpp \
         batteryModel.cpp \
         dataModel.cpp \
-        main.cpp
+        main.cpp \
+        operatorModel.cpp
 
 RESOURCES += qml.qrc
 
