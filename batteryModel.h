@@ -33,12 +33,21 @@ public:
     virtual QVariant data(const QModelIndex &index, int role) const override;
     bool removeRow(int row, const QModelIndex &parent);
 
+    QJsonObject getBatterySpecificData(QString batterySerialNum){
+        for(auto value : *_batteryDataModel){
+           if(value["batterySerialNum"] == batterySerialNum){
+               return value;
+           }
+        }
+    }
+
     enum class batteryColumnName {
       batterySerialNum = Qt::UserRole,
       batteryType,
       batteryCapacity,
       batteryCell
     };
+
 
 protected:
     virtual QHash<int, QByteArray> roleNames() const override;

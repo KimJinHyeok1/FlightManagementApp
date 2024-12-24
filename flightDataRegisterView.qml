@@ -1,4 +1,4 @@
-import QtQuick 2.5
+import QtQuick 2.10
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.1
@@ -9,16 +9,29 @@ import "./CustomComponent"
 
 Item {
     id : flgihtDataRegisterItem
+
+    property var epName : ""
+    property var epId : ""
+    property var ipName : ""
+    property var ipId : ""
+
+    property var batteryListModel : []
+
     Rectangle{
         anchors.fill : parent
         color: Material.color(Material.Grey, Material.Shade800)
+
+        ListViewDialog{
+          id : listViewDialog
+        }
+
         ScrollView {
             anchors.fill : parent
             anchors.leftMargin: 10
-            //ScrollBar.vertical.policy: ScrollBar.AlwaysOn
             Component.onCompleted: {
                 DataModel.getAircraftData()
                 DataModel.getBatteryData()
+                DataModel.getOperatorData()
             }
             Connections{
               target: apiManager
@@ -27,10 +40,9 @@ Item {
               }
               onBatteryRequestFinished:{
                 batteryComboBox.model = DataModel.batteryList
-                batteryTableView.model = DataModel.battryModel
+                //batteryTableView.model = DataModel.battryModel
               }
             }
-
             ColumnLayout {
               id : fistColumnLayout
               width : flgihtDataRegisterItem.width
@@ -54,7 +66,6 @@ Item {
               {
                 id : pane1
                 Layout.preferredWidth: parent.width
-
                 ColumnLayout
                 {
                   id :layout1
@@ -72,7 +83,7 @@ Item {
                   ComboBox
                   {
                     id : aircraftComboBox
-                    Layout.preferredWidth:   parent.width * 0.9
+                    Layout.preferredWidth: parent.width * 0.9
                   }
                   Label
                   {
@@ -83,20 +94,55 @@ Item {
                     font.bold : true
                     color: "white"
                   }
-                  ComboBox
+
+                  RowLayout
                   {
-                    id : batteryComboBox
                     Layout.preferredWidth: parent.width * 0.9
-                    model: [""]
+                    ComboBox
+                    {
+                      Layout.preferredWidth: parent.width * 0.65
+                      id : batteryComboBox
+                    }
+                    Button {
+                      id : appendButton
+                      text : "+"
+                      onClicked: {
+                        DataModel.getSpecificBatteryData(batteryComboBox.currentText)
+                      }
+                    }
+
+                    Connections{
+                      target: DataModel
+                      onOperationFinished : {
+                        tableModel.append({
+                          batterySerialNum : DataModel.batterySerialNum,
+                          batteryCapacity : DataModel.batteryCapacity,
+                          batteryCell : DataModel.batteryCells,
+                          batteryType : DataModel.batteryType
+                       })
+                      }
+                    }
+                    Button {
+                      id : deleteButton
+                      text : "-"
+                      onClicked: {
+                        tableModel.remove(batteryTableView.currentRow)
+                      }
+                    }
                   }
 
                   OldControls.TableView{
                     id : batteryTableView
                     Layout.preferredWidth: parent.width * 0.9
+
+                    model : ListModel{
+                      id : tableModel
+                    }
+
                     OldControls.TableViewColumn {
                       role: "batterySerialNum"
                       title: "Battery S/N"
-                      width: 150
+                      width: 100
                     }
                     OldControls.TableViewColumn {
                       role: "batteryType"
@@ -106,7 +152,7 @@ Item {
                     OldControls.TableViewColumn {
                       role: "batteryCapacity"
                       title: "Capacity(mAh)"
-                      width: 100
+                      width: 150
                     }
                     OldControls.TableViewColumn {
                       role: "batteryCell"
@@ -114,6 +160,7 @@ Item {
                       width: 50
                     }
                   }
+
                   Label
                   {
                     id : flightDate
@@ -125,6 +172,10 @@ Item {
                   }
                   OldControls.Calendar{
                     Layout.preferredWidth: parent.width * 0.9
+                    onClicked: {
+                      console.log(selectedDate)
+                      DataModel.date = selectedDate
+                    }
                   }
                 }
               }
@@ -154,8 +205,10 @@ Item {
                     }
                     TextField
                     {
+                      id : windDirectionTextField
                       Layout.preferredWidth : parent.width * 0.6
                       placeholderText: qsTr("풍향을 입력하세요...")
+                      text : DataModel.windDirection
                     }
                     Label
                     {
@@ -177,8 +230,10 @@ Item {
                     }
                     TextField
                     {
+                      id : windSpeedTextField
                       Layout.preferredWidth : parent.width * 0.6
                       placeholderText: qsTr("풍속을 입력하세요...")
+                      text : DataModel.windSpeed
                     }
                     Label
                     {
@@ -200,8 +255,10 @@ Item {
                     }
                     TextField
                     {
+                      id : humidityTextField
                       Layout.preferredWidth : parent.width * 0.6
                       placeholderText: qsTr("습도를 입력하세요...")
+                      text : DataModel.humidity
                     }
                     Label
                     {
@@ -223,8 +280,10 @@ Item {
                     }
                     TextField
                     {
+                      id : temperatureTextField
                       Layout.preferredWidth : parent.width * 0.6
                       placeholderText: qsTr("온도를 입력하세요...")
+                      text : DataModel.tempzerature
                     }
                     Label
                     {
@@ -262,11 +321,21 @@ Item {
                     }
                     TextField
                     {
-                      Layout.preferredWidth : parent.width * 0.5
+                      id : epTextField
+                      Layout.preferredWidth : parent.width * 0.4
                       placeholderText: qsTr("EP를 입력하세요...")
+                      text : listViewDialog.externalName
+                    }
+                    Button
+                    {
+                      icon.source : "./icon/findIcon.png"
+                      onClicked : {
+                        listViewDialog.requestDataType = "external"
+                        listViewDialog.open()
+                      }
                     }
                   }
-                  RowLayout{
+                  RowLayout {
                     Layout.preferredWidth : parent.width * 0.9
                     Label
                     {
@@ -278,8 +347,18 @@ Item {
                     }
                     TextField
                     {
-                      Layout.preferredWidth : parent.width * 0.5
+                      id : ipTextField
+                      Layout.preferredWidth : parent.width * 0.4
                       placeholderText: qsTr("IP를 입력하세요...")
+                      text : listViewDialog.internalName
+                    }
+                    Button
+                    {
+                      icon.source : "./icon/findIcon.png"
+                      onClicked : {
+                        listViewDialog.requestDataType = "internal"
+                        listViewDialog.open()
+                      }
                     }
                   }
                 }
@@ -309,25 +388,22 @@ Item {
                       color: "white"
                     }
                     RowLayout{
-//                      Layout.preferredWidth: parent.width * 0.6
                       TimePicker{
                         id : startTime
-                        Component.onCompleted: set(new Date(0, 0, 0,  0, 0)) // 12:00 AM
-                        onClicked:             print('onClicked', Qt.formatTime(date, 'h:mm A'))
+                        Component.onCompleted: set(new Date(0, 0, 0, 0, 0)) // 12:00 AM
+                        onClicked: DataModel.startTime = Qt.formatTime(date, 'hh:mm')
                       }
                       Label{
                         text: "~"
                         font.pointSize: 15
                         font.bold : true
                       }
-
                       TimePicker{
                         id : endTime
-                        Component.onCompleted: set(new Date(0, 0, 0,  0, 0)) // 12:00 AM
-                        onClicked:             print('onClicked', Qt.formatTime(date, 'h:mm A'))
+                        Component.onCompleted: set(new Date(0, 0, 0, 0, 0)) // 12:00 AM
+                        onClicked: DataModel.endTime = Qt.formatTime(date, 'hh:mm')
                       }
                     }
-
                   }
                   RowLayout{
                     Layout.preferredWidth : parent.width * 0.9
@@ -362,7 +438,6 @@ Item {
               RowLayout{
                 Layout.preferredWidth: parent.width
                 Button{
-
                   Layout.alignment: Qt.AlignHCenter
                   Layout.preferredWidth: parent.width * 0.7
                   Layout.topMargin: 20

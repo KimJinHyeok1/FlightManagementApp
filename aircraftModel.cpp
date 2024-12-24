@@ -1,4 +1,4 @@
-#include "aircraftmodel.h"
+    #include "aircraftmodel.h"
 
 
 void aircraftModel::setAircraftListData(QJsonArray aircraftArrayData)

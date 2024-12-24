@@ -119,7 +119,6 @@ Item {
                       }
                       Label{
                         leftPadding: 15
-                        //anchors.left : capacityTextField.right
                         text: "(mAh)"
                         font.pointSize: 15
                         font.bold: true

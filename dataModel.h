@@ -2,6 +2,8 @@
 #define DATAMODEL_H
 
 #include <QDebug>
+#include <QDate>
+#include <QTime>
 #include <QStringListModel>
 #include "apiManager.h"
 #endif // DATAMODEL_H
@@ -36,9 +38,18 @@ class dataModel : public QObject
   Q_PROPERTY(QString      teamName               READ GetTeamName               WRITE SetTeamName               NOTIFY teamNameChanged)
   Q_PROPERTY(QString      certification          READ GetCertification          WRITE SetCertification          NOTIFY certificationChanged)
 
-
   Q_PROPERTY(QStringList  aircraftList           READ GetAircraftList           WRITE SetAircraftList           NOTIFY aircraftListChanged)
   Q_PROPERTY(QStringList  batteryList            READ GetBatteryList            WRITE SetBatteryList            NOTIFY batteryListChanged)
+
+  //FlightData
+  Q_PROPERTY(QString      windDirection          READ GetWindDirection          WRITE SetWindDirection          NOTIFY windDirectionChanged)
+  Q_PROPERTY(QString      windSpeed              READ GetWindSpeed              WRITE SetWindSpeed              NOTIFY windSpeedChanged)
+  Q_PROPERTY(QString      humidity               READ GetHumidity               WRITE SetHumidity               NOTIFY humidityChanged)
+  Q_PROPERTY(QString      temperature            READ GetTemperature            WRITE SetTemperature            NOTIFY temperatureChanged)
+  Q_PROPERTY(QTime        startTime              READ GetStartTime              WRITE SetStartTime              NOTIFY startTimeChanged)
+  Q_PROPERTY(QTime        endTime                READ GetEndTime                WRITE SetEndTime                NOTIFY endTimeChanged)
+  Q_PROPERTY(QString      payloadType            READ GetPayloadType            WRITE SetPayloadType            NOTIFY payloadTypeChanged)
+  Q_PROPERTY(QString      payloadWeight          READ GetPayloadWeight          WRITE SetPayloadWeight          NOTIFY payloadWeightChanged)
 
 
   signals:
@@ -67,6 +78,18 @@ class dataModel : public QObject
     void certificationChanged();
     void operatorIdChanged();
 
+    void operationFinished();
+    void flightDateChanged();
+    void windSpeedChanged();
+    void windDirectionChanged();
+    void humidityChanged();
+    void temperatureChanged();
+    void startTimeChanged();
+    void endTimeChanged();
+    void payloadTypeChanged();
+    void payloadWeightChanged();
+
+
 
 public:
 
@@ -81,6 +104,16 @@ public:
     Q_INVOKABLE void createData(QString dataType);
     Q_INVOKABLE void deleteData(int row, QString dataType);
 
+    Q_INVOKABLE
+    void getSpecificBatteryData(QString batterySerialNum)
+    {
+      QJsonObject obj = _batteryModel->getBatterySpecificData(batterySerialNum);
+      _batterySerialNum = obj["batterySerialNum"].toString();
+      _batteryCapacity = QString::number(obj["batteryCapacity"].toInt());
+      _batteryCells = QString::number(obj["batteryCell"].toInt());
+      _batteryType = obj["batteryType"].toString();
+      emit operationFinished();
+    }
 
     //AircraftData Setter
 
@@ -166,17 +199,56 @@ public:
       emit aircraftDatasChanged();
     }
     //!NOTE Operator Datats
-    void SetOperatorData(operatorModel* operatorModel)
-    {
+    void SetOperatorData(operatorModel* operatorModel){
       _operatorModel = operatorModel;
     }
 
-   //BatteryData Setter
-   void SetBatteryData(batteryModel* batteryModel)
-   {
-     _batteryModel = batteryModel;
-     emit batteryDatasChanged();
-   }
+    //BatteryData Setter
+    void SetBatteryData(batteryModel* batteryModel){
+      _batteryModel = batteryModel;
+      emit batteryDatasChanged();
+    }
+
+    //FlightData
+    void SetWindSpeed(QString windSpeed){
+      _windSpeed = windSpeed;
+      emit windSpeedChanged();
+    }
+    void SetWindDirection(QString windDirection){
+      _windDirection = windDirection;
+      emit windDirectionChanged();
+    }
+    void SetHumidity(QString humidity){
+      _humidity = humidity;
+      emit humidityChanged();
+    }
+    void SetTemperature(QString temperature){
+      _temperature = temperature;
+      emit temperatureChanged();
+    }
+    void SetDate(QDate date){
+      _date = date;
+      emit flightDateChanged();
+    }
+    void SetStartTime(QTime startTime){
+      _startTime = startTime;
+      qDebug()<<_startTime;
+      emit startTimeChanged();
+    }
+    void SetEndTime(QTime endTime){
+      _endTime = endTime;
+      emit endTimeChanged();
+    }
+    void SetPayloadType(QString payloadType){
+     _payloadType = payloadType;
+     emit payloadTypeChanged();
+    }
+    void SetPayloadWeight(QString payloadWeight){
+     _payloadWeight = payloadWeight;
+     emit payloadWeightChanged();
+    }
+
+
 
 
     //Getter
@@ -208,6 +280,17 @@ public:
     QString     GetCertification()       {return _certification;}
     int         GetOperatorId()          {return _operatorId;}
 
+    //FlightData
+    QDate       GetDate()                {return _date;}
+    QTime       GetStartTime()           {return _startTime;}
+    QTime       GetEndTime()             {return _endTime;}
+    QString     GetWindDirection()       {return _windDirection;}
+    QString     GetWindSpeed()           {return _windSpeed;}
+    QString     GetHumidity()            {return _humidity;}
+    QString     GetTemperature()         {return _temperature;}
+    QString     GetPayloadType()         {return _payloadType;}
+    QString     GetPayloadWeight()       {return _payloadWeight;}
+
 private:
     static dataModel* gInstance;
 
@@ -231,6 +314,15 @@ private:
     QStringList _aircraftList;
     QStringList _batteryList;
     QStringList _operatorList;
+    QDate       _date;
+    QTime       _startTime;
+    QTime       _endTime;
+    QString     _windDirection;
+    QString     _windSpeed;
+    QString     _humidity;
+    QString     _temperature;
+    QString     _payloadType;
+    QString     _payloadWeight;
 
     //Operator Data
     int     _operatorId;

@@ -36,7 +36,7 @@ bool batteryModel::removeRow(int row, const QModelIndex &parent)
     return true;
 }
 
-QVariant batteryModel::data (const QModelIndex &index, int role) const
+QVariant batteryModel::data(const QModelIndex &index, int role) const
 {
     int nRow = index.row();
     if(nRow < 0) return QVariant();
@@ -55,7 +55,7 @@ QVariant batteryModel::data (const QModelIndex &index, int role) const
        default:
          qDebug() << "Unhandled role:" << role;
          return QVariant();
-      }
+     }
 }
 
 QHash<int, QByteArray> batteryModel::roleNames() const

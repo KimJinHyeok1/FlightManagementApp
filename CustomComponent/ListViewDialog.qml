@@ -36,12 +36,17 @@ Dialog {
     property var teamName: ""
     property var certification: ""
 
+    property var externalName : ""
+    property var internalName : ""
+    property var externalId : ""
+    property var internalId : ""
+
     property var listItemChecked: false
     property var listModel : ListModel
 
     ColumnLayout{
 
-        Connections{
+      Connections{
           target: apiManager
           onAircraftRequestFinished:
             listView_1.model = DataModel.aircraftModel
@@ -82,13 +87,10 @@ Dialog {
                   }
               }
           }
-
-
       }
-      CustomMessageDialog{
+      CustomMessageDialog {
         id : alertMessage
       }
-
 
       ListView {
         id: listView_1
@@ -128,7 +130,7 @@ Dialog {
                                alertMessage.message = "1개의 항목만 선택 가능합니다."
                                alertMessage.open()
                            }
-                           else{
+                           else {
                                if (checked) {
                                  listItemRec.color = "white"
                                  listView_1.currentIndex = index
@@ -159,6 +161,14 @@ Dialog {
                                    tableDialog.teamName = model.teamName;
                                    tableDialog.certification = model.certification;
                                  }
+                                 else if(tableDialog.requestDataType == "external"){
+                                   tableDialog.externalId = model.id
+                                   tableDialog.externalName = model.name
+                                 }
+                                 else if(tableDialog.requestDataType == "internal"){
+                                   tableDialog.internalId = model.id
+                                   tableDialog.internalName = model.name
+                                 }
                                  tableDialog.listItemChecked = true
                                }
                                else {
@@ -167,7 +177,7 @@ Dialog {
                                }
                            }
                          }
-                       }
+                      }
                       anchors.fill: parent
                       Text
                       {
