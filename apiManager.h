@@ -50,6 +50,9 @@ public:
   void DeleteOperatorData(QString requestUrl, int operatorId);
   void ModifyOperatorData(int operatorId, QJsonObject &modifyData);
 
+  //!NOTE : FlightData API Request
+  bool CreateFlightData(QJsonObject flightData);
+
 
   //!NOTE : Api Manager SingleTone Class
   static apiManager* getInstance(){

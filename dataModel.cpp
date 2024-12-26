@@ -63,6 +63,32 @@ void dataModel::createData(QString dataType){
     DataObject["certification"] = _certification;
     _apiManager->CreateOperatorData(DataObject);
   }
+
+  else if(dataType == "flightData"){
+    //DataObject["flightNumber"] = "";
+    DataObject["aircraft"] = _aircraftName;
+
+    QJsonArray batteryArray = QJsonArray::fromStringList(_flightBatteryList);
+    DataObject["flightBatteries"] = batteryArray;
+
+    QJsonObject operatorObject = QJsonObject();
+    QJsonArray operatorArray = QJsonArray();
+    operatorObject.insert("externalPilot", _externalPilot);
+    operatorObject.insert("internalPilot", _internalPilot);
+    operatorArray.append(operatorObject);
+
+    DataObject["flightDataOperator"] = operatorArray;
+    DataObject["windSpeed"] = _windSpeed;
+    DataObject["windDirection"] = _windDirection;
+    DataObject["temperature"] = _temperature;
+    DataObject["flightDate"] = _flightDate.toString("yyyy-MM-dd");
+    DataObject["flightTime"] = _flightTime.toString("HH:mm");
+    DataObject["payloadType"] = _payloadType;
+    DataObject["payloadWeight "] = _payloadWeight;
+
+    qDebug() << DataObject;
+    //_apiManager->CreateFlightData(DataObject);
+  }
 }
 
 

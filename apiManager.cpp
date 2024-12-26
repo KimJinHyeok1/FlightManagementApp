@@ -147,6 +147,25 @@ bool apiManager::CreateOperatorData(QJsonObject operatorData)
     });return false;
 }
 
+bool apiManager::CreateFlightData(QJsonObject flightData)
+{
+  QNetworkRequest postRequest(QUrl(_baseUrl).resolved(QString("/flightData")));
+  postRequest.setHeader(QNetworkRequest::ContentTypeHeader, QString("application/json; charset=utf-8"));
+  QJsonDocument jsonDoc(flightData);
+  QByteArray jsonData = jsonDoc.toJson(QJsonDocument::Compact);
+  QNetworkReply *reply = _apiAccessManager->post(postRequest, jsonData);
+  QObject::connect(reply, &QNetworkReply::finished, this, [=]()
+  {
+    if(reply->error() == QNetworkReply::NoError){
+        QByteArray ba=reply->readAll();
+        QString contents = QString::fromUtf8(ba);
+        QJsonDocument response = QJsonDocument::fromJson(contents.toUtf8());
+        if(response.isArray()){
+           return true;
+        };
+    }
+  });return false;
+}
 
 
 
@@ -227,3 +246,7 @@ void apiManager::DeleteOperatorData(QString requestUrl, int operatorId)
         qDebug()<< "deleted";
   });
 }
+
+
+
+

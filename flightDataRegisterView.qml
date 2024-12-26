@@ -16,6 +16,7 @@ Item {
     property var ipId : ""
 
     property var batteryListModel : []
+    property var batteryList : []
 
     Rectangle{
         anchors.fill : parent
@@ -171,9 +172,9 @@ Item {
                     color: "white"
                   }
                   OldControls.Calendar{
+                    id : calendar
                     Layout.preferredWidth: parent.width * 0.9
                     onClicked: {
-                      console.log(selectedDate)
                       DataModel.date = selectedDate
                     }
                   }
@@ -417,11 +418,13 @@ Item {
                     }
                     ComboBox
                     {
+                      id : payloadCombobox
                       Layout.preferredWidth: parent.width * 0.3
                       model: ["카메라", "배송장치", "기타"]
                     }
                     TextField
                     {
+                      id : payloadTextField
                       Layout.preferredWidth : parent.width * 0.3
                       placeholderText: qsTr("중량을 입력하세요...")
                     }
@@ -435,6 +438,12 @@ Item {
                   }
                 }
               }
+
+              CustomMessageDialog{
+                  id : messageDialog
+                  dataType: "flightData"
+              }
+
               RowLayout{
                 Layout.preferredWidth: parent.width
                 Button{
@@ -443,6 +452,26 @@ Item {
                   Layout.topMargin: 20
                   Layout.bottomMargin: 40
                   text: "등록하기"
+                  onClicked: {
+                    for(var i = 0; i < tableModel.count; ++i){
+                      batteryList.push(tableModel.get(i)["batterySerialNum"])
+                    }
+
+                    DataModel.flightBatteryList = batteryList
+                    DataModel.aircraftName = aircraftComboBox.currentText;
+                    DataModel.windDirection = windDirectionTextField.text;
+                    DataModel.externalPilot = epTextField.text
+                    DataModel.internalPilot = ipTextField.text
+                    DataModel.windSpeed = windDirectionTextField.text;
+                    DataModel.humidity = humidityTextField.text;
+                    DataModel.temperature = temperatureTextField.text;
+                    DataModel.flightDate = calendar.selectedDate;
+                    DataModel.payloadType = payloadCombobox.currentText;
+                    DataModel.payloadWeight = payloadTextField.text;
+                    messageDialog.message = "등록하시겠습니까?"
+                    messageDialog.isRegister = true;
+                    messageDialog.open()
+                  }
                 }
               }
             }
