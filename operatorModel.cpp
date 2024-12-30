@@ -43,7 +43,7 @@ QVariant operatorModel::data (const QModelIndex &index, int role) const
     switch(static_cast<operatorColumnName>(role))
     {
       case operatorColumnName::id :
-        return operatorData["id"].toString();
+        return operatorData["id"].toInt();
       case operatorColumnName::name :
         return operatorData["name"].toString();
       case operatorColumnName::phoneNumber :

@@ -29,6 +29,7 @@ Dialog {
     property var batteryType: ""
     property var batteryCapacity: ""
     property var batteryCells: ""
+    property var totalUsingTime : ""
 
     property var operatorName: ""
     property var phoneNumber: ""
@@ -151,10 +152,12 @@ Dialog {
                                    tableDialog.batteryType = model.batteryType
                                    tableDialog.batteryCapacity = model.batteryCapacity
                                    tableDialog.batteryCells = model.batteryCell
+                                   tableDialog.totalUsingTime = model.totalUsingTime
                                  }
                                  else if(tableDialog.requestDataType == "operator")
                                  {
                                    DataModel.operatorId = model.id
+                                   console.log(model.id)
                                    tableDialog.operatorName = model.name
                                    tableDialog.phoneNumber = model.phoneNumber;
                                    tableDialog.position = model.position;
@@ -163,10 +166,13 @@ Dialog {
                                  }
                                  else if(tableDialog.requestDataType == "external"){
                                    tableDialog.externalId = model.id
+                                   console.log(model.id)
+                                   console.log(model.phoneNumber)
                                    tableDialog.externalName = model.name
                                  }
                                  else if(tableDialog.requestDataType == "internal"){
                                    tableDialog.internalId = model.id
+                                   console.log(model.phoneNumber)
                                    tableDialog.internalName = model.name
                                  }
                                  tableDialog.listItemChecked = true

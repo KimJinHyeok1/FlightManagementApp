@@ -12,6 +12,7 @@
 #include "aircraftmodel.h"
 #include "batteryModel.h"
 #include "operatorModel.h"
+#include "flightdataModel.h"
 
 #ifndef APIMANAGER_H
 #define APIMANAGER_H
@@ -23,6 +24,7 @@ Q_OBJECT
 Q_DISABLE_COPY(apiManager)
 
 signals:
+  void flightDataRequestFinished();
   void aircraftRequestFinished();
   void batteryRequestFinished();
   void operatorRequestFinished();
@@ -51,6 +53,7 @@ public:
   void ModifyOperatorData(int operatorId, QJsonObject &modifyData);
 
   //!NOTE : FlightData API Request
+  void RequestAllFlightData(QString requestUrl, flightDataModel* dataModel);
   bool CreateFlightData(QJsonObject flightData);
 
 

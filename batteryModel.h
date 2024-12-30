@@ -25,6 +25,7 @@ public:
       _roleName[(int)batteryColumnName::batteryType] = "batteryType";
       _roleName[(int)batteryColumnName::batteryCapacity] = "batteryCapacity";
       _roleName[(int)batteryColumnName::batteryCell] = "batteryCell";
+      _roleName[(int)batteryColumnName::totalUsingTime] = "totalUsingTime";
     }
     // QAbstractItemModel interface
 
@@ -45,7 +46,8 @@ public:
       batterySerialNum = Qt::UserRole,
       batteryType,
       batteryCapacity,
-      batteryCell
+      batteryCell,
+      totalUsingTime
     };
 
 

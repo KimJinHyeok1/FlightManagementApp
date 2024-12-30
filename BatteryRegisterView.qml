@@ -26,6 +26,15 @@ Item {
           ColumnLayout {
             Layout.preferredWidth: parent.width
             anchors.fill: parent
+            Label
+            {
+              text : "배터리 S/N 입력 및 조회"
+              Layout.topMargin: 24
+              Layout.bottomMargin: 15
+              font.pointSize: 15
+              font.bold : true
+              color: "orange"
+            }
             Pane
             {
               contentWidth: layout1.width
@@ -70,6 +79,25 @@ Item {
                       }
                     }
                   }
+              }//ColumnLayout
+            }//Pane
+          Label
+          {
+            text : "배터리 정보"
+            Layout.topMargin: 24
+            Layout.bottomMargin: 15
+            font.pointSize: 15
+            font.bold : true
+            color: "orange"
+          }
+          Pane{
+            contentWidth: layout2.width
+            contentHeight: layout2.height
+
+            ColumnLayout
+            {
+              id :layout2
+              width : batteryRegisterItem.width
                   Label
                   {
                     topPadding: 30
@@ -181,7 +209,57 @@ Item {
                       font.bold: true
                       color:"orange"
                     }
+                  }//RowLayout
+            }//Layout2
+        }//Pane2
+        Label
+        {
+          text : "배터리 총 사용시간"
+          Layout.topMargin: 24
+          Layout.bottomMargin: 15
+          font.pointSize: 15
+          font.bold : true
+          color: "orange"
+        }
+          Pane{
+            contentWidth: layout3.width
+            contentHeight: layout3.height
+            ColumnLayout
+            {
+              id :layout3
+              width : batteryRegisterItem.width
+                  Label
+                  {
+                    id : usingTime
+                    text : "5. 총 사용시간"
+                    Layout.topMargin: 20
+                    font.pointSize: 15
+                    font.bold : true
+                    color: "white"
                   }
+                  RowLayout{
+                    Layout.preferredWidth: parent.width * 0.9
+                    Label
+                    {
+                      id : usingTimeLabel
+                      Layout.topMargin: 20
+                      font.pointSize: 15
+                      font.bold : true
+                      color: "white"
+                      text : batteryListViewDialog.totalUsingTime
+                    }
+                    Label{
+                      leftPadding: 15
+                      Layout.alignment: Qt.AlignLeft
+                      Layout.topMargin: 20
+                      text: "Min"
+                      font.pointSize: 15
+                      font.bold: true
+                      color:"orange"
+                    }
+                  }
+                } //Layout3
+              }  //Pane3
 
                   CustomMessageDialog{
                       id : messageDialog
@@ -221,8 +299,6 @@ Item {
                       }
                     }
                   }
-              }
-            }//pane
           }
         }
 

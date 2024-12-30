@@ -8,7 +8,6 @@ void batteryModel::setBatteryListData(QJsonArray batteryArrayData)
         _batteryDataModel->append(value.toObject());
       }
   }
-  qDebug()<<rowCount();
 }
 
 int batteryModel::rowCount(const QModelIndex &parent) const
@@ -52,6 +51,8 @@ QVariant batteryModel::data(const QModelIndex &index, int role) const
         return batteryData["batteryCapacity"].toInt();
       case batteryColumnName::batteryCell :
         return batteryData["batteryCell"].toInt();
+      case batteryColumnName::totalUsingTime :
+        return batteryData["totalUsingTime"].toInt();
        default:
          qDebug() << "Unhandled role:" << role;
          return QVariant();

@@ -11,7 +11,7 @@ ApplicationWindow {
     id : mainWindow
     visible: true
     width: 500
-    height: 750
+    height: 1000
     Material.theme: Material.Dark
     Material.accent: Material.Pulple
     title: qsTr("Flight Log App")
@@ -75,6 +75,8 @@ ApplicationWindow {
                 font.bold : true
                 text: "기체 등록"
                 onClicked: {
+                    mainWindow.width = 500
+                    mainWindow.height = 1000
                     drawer.close();
                     toolbarText.text = "기체 등록 관리"
                     stackView.push("qrc:/aircraftRegisterView.qml");
@@ -86,6 +88,8 @@ ApplicationWindow {
                 font.bold : true
                 text: "배터리 등록"
                 onClicked: {
+                    mainWindow.width = 500
+                    mainWindow.height = 1000
                     drawer.close();
                     toolbarText.text = "배터리 관리"
                     stackView.push("qrc:/batteryRegisterView.qml");
@@ -97,6 +101,8 @@ ApplicationWindow {
                 font.bold : true
                 text: "운용자 등록"
                 onClicked: {
+                    mainWindow.width = 500
+                    mainWindow.height = 1000
                     drawer.close();
                     toolbarText.text = "운용자 관리"
                     stackView.push("qrc:/operatorRegisterView.qml");
@@ -108,6 +114,8 @@ ApplicationWindow {
                 font.bold : true
                 text: "비행 데이터 등록"
                 onClicked: {
+                    mainWindow.width = 500
+                    mainWindow.height = 1000
                     drawer.close();
                     toolbarText.text = "비행 데이터 등록 관리"
                     stackView.push("qrc:/flightDataRegisterView.qml");
@@ -120,6 +128,8 @@ ApplicationWindow {
                 text: "비행 이력 검색"
                 onClicked: {
                     drawer.close();
+                    mainWindow.width = 1400
+                    mainWindow.height = 1000
                     toolbarText.text = "비행 이력 검색"
                     stackView.push("qrc:/flightLogView.qml");
                 }

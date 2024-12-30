@@ -7,8 +7,10 @@ dataModel* dataModel::gInstance = nullptr;
 dataModel::dataModel()
   :_aircraftModel(new aircraftModel()),
   _batteryModel(new batteryModel()),
+  _flightDataModel(new flightDataModel()),
   _operatorModel(new operatorModel())
 {
+  _startTime = QTime(0, 0, 0);
   _apiManager = apiManager::getInstance();
   qDebug()<<"Aircarft Data Model Created";
 }
@@ -32,6 +34,12 @@ dataModel::getOperatorData()
 {
   _apiManager->RequestAllOperatorData("operator", _operatorModel, _operatorList);
 }
+void
+dataModel::getFlightData()
+{
+  _apiManager->RequestAllFlightData("flightData/all", _flightDataModel);
+}
+
 
 
 void dataModel::createData(QString dataType){
@@ -65,19 +73,19 @@ void dataModel::createData(QString dataType){
   }
 
   else if(dataType == "flightData"){
-    //DataObject["flightNumber"] = "";
-    DataObject["aircraft"] = _aircraftName;
+    DataObject["flightNumber"] = "FL" + _flightDate.toString("yyMMdd") + _startTime.toString("HHmm");
+    DataObject["aircraftName"] = _aircraftName;
 
     QJsonArray batteryArray = QJsonArray::fromStringList(_flightBatteryList);
     DataObject["flightBatteries"] = batteryArray;
 
-    QJsonObject operatorObject = QJsonObject();
     QJsonArray operatorArray = QJsonArray();
-    operatorObject.insert("externalPilot", _externalPilot);
-    operatorObject.insert("internalPilot", _internalPilot);
-    operatorArray.append(operatorObject);
+    operatorArray.append(_externalPilot);
+    operatorArray.append(_internalPilot);
 
-    DataObject["flightDataOperator"] = operatorArray;
+    DataObject["operators"] = operatorArray;
+    DataObject["humidity"] = _humidity;
+    DataObject["payloadWeight"] = _payloadWeight;
     DataObject["windSpeed"] = _windSpeed;
     DataObject["windDirection"] = _windDirection;
     DataObject["temperature"] = _temperature;
@@ -86,8 +94,7 @@ void dataModel::createData(QString dataType){
     DataObject["payloadType"] = _payloadType;
     DataObject["payloadWeight "] = _payloadWeight;
 
-    qDebug() << DataObject;
-    //_apiManager->CreateFlightData(DataObject);
+    _apiManager->CreateFlightData(DataObject);
   }
 }
 

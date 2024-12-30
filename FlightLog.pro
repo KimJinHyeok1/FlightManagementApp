@@ -12,6 +12,7 @@ HEADERS += \
     batteryModel.h \
     dataModel.h \
     apiManager.h \
+    flightdataModel.h \
     operatorModel.h
 
 SOURCES += \
@@ -19,6 +20,7 @@ SOURCES += \
         apiManager.cpp \
         batteryModel.cpp \
         dataModel.cpp \
+        flightdataModel.cpp \
         main.cpp \
         operatorModel.cpp
 

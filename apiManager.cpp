@@ -81,6 +81,25 @@ void apiManager::RequestAllOperatorData(QString requestUrl,
   });
 }
 
+void apiManager::RequestAllFlightData(QString requestUrl, flightDataModel* dataModel)
+{
+  QNetworkRequest getRequest(QUrl(_baseUrl).resolved(requestUrl));
+  QNetworkReply *reply = _apiAccessManager->get(getRequest);
+  QObject::connect(reply, &QNetworkReply::finished, this, [=]()
+  {
+    if(reply->error() == QNetworkReply::NoError){
+        QByteArray ba=reply->readAll();
+        QString contents = QString::fromUtf8(ba);
+        QJsonDocument response = QJsonDocument::fromJson(contents.toUtf8());
+        if(response.isArray()){
+           dataModel->setFlightData(response.array());
+           emit flightDataRequestFinished();
+        };
+      }
+  });
+}
+
+
 
 
 
@@ -160,7 +179,7 @@ bool apiManager::CreateFlightData(QJsonObject flightData)
         QByteArray ba=reply->readAll();
         QString contents = QString::fromUtf8(ba);
         QJsonDocument response = QJsonDocument::fromJson(contents.toUtf8());
-        if(response.isArray()){
+        if(response .isArray()){
            return true;
         };
     }
@@ -216,7 +235,6 @@ void apiManager::DeleteAircraftData(QString requestUrl, QString aircraftName)
         qDebug()<< "deleted";
   });
 }
-
 
 void apiManager::DeleteBatteryData(QString requestUrl, QString batterySerialNum)
 {

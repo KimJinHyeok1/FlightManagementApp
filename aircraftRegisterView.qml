@@ -28,6 +28,15 @@ Item {
           ColumnLayout {
             Layout.preferredWidth: parent.width
             anchors.fill: parent
+            Label
+            {
+              topPadding: 30
+              text : "기체명 및 정보조회"
+              Layout.topMargin: 20
+              font.pointSize: 15
+              font.bold : true
+              color: "orange"
+            }
             Pane
             {
               contentWidth: layout1.width
@@ -44,7 +53,7 @@ Item {
                   }
                   Label
                   {
-                    topPadding: 30
+                    //topPadding: 30
                     id : aircraftName
                     text : "1. 기체 명"
                     Layout.topMargin: 20
@@ -52,7 +61,6 @@ Item {
                     font.bold : true
                     color: "white"
                   }
-
                   RowLayout
                   {
                     Layout.preferredWidth : parent.width * 0.9
@@ -75,7 +83,25 @@ Item {
                       }
                     }
                   }
-
+                }
+              }//Pane_1
+              Label
+              {
+                topPadding: 30
+                text : "기체 정보"
+                Layout.topMargin: 20
+                font.pointSize: 15
+                font.bold : true
+                color: "orange"
+              }
+              Pane
+              {
+                contentWidth: layout2.width
+                contentHeight: layout2.height
+                ColumnLayout
+                {
+                  id :layout2
+                  width : aircraftRegisterItem.width
                   Label
                   {
                     id : aircraftProductNumber
@@ -151,15 +177,25 @@ Item {
                     text : listViewDialog.aircraftMTOW
                     color: "orange"
                   }
+
+                }
+              }//Pane2
                   Label
                   {
                     id : etc
-                    text : "6. 기타 특이사항"
+                    text : "기타 특이사항"
+                    topPadding: 30
                     Layout.topMargin: 20
                     font.pointSize: 15
                     font.bold : true
-                    color: "white"
+                    color: "orange"
                   }
+
+                  Pane{
+                    contentWidth: layout3.width
+                  ColumnLayout{
+                    id : layout3
+                    width : aircraftRegisterItem.width
                   TextArea
                   {
                     id : etcTextField
@@ -210,13 +246,12 @@ Item {
                       }
                     }
                 }
+               }
               }
-            }
           }
-        }
-
+        }//columnlayout_1
+      }
     }
-}
 
 
 

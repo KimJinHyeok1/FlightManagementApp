@@ -10,10 +10,10 @@ import "./CustomComponent"
 Item {
     id : flgihtDataRegisterItem
 
-    property var epName : ""
-    property var epId : ""
-    property var ipName : ""
-    property var ipId : ""
+    property var epName : listViewDialog.externalName
+    property var epId : listViewDialog.externalId
+    property var ipName : listViewDialog.internalName
+    property var ipId : listViewDialog.internalId
 
     property var batteryListModel : []
     property var batteryList : []
@@ -210,6 +210,10 @@ Item {
                       Layout.preferredWidth : parent.width * 0.6
                       placeholderText: qsTr("풍향을 입력하세요...")
                       text : DataModel.windDirection
+                      validator: IntValidator{
+                        bottom : 0;
+                        top : 360;
+                      }
                     }
                     Label
                     {
@@ -235,6 +239,10 @@ Item {
                       Layout.preferredWidth : parent.width * 0.6
                       placeholderText: qsTr("풍속을 입력하세요...")
                       text : DataModel.windSpeed
+                      validator: IntValidator{
+                        bottom : 0;
+                        top : 100;
+                      }
                     }
                     Label
                     {
@@ -260,6 +268,10 @@ Item {
                       Layout.preferredWidth : parent.width * 0.6
                       placeholderText: qsTr("습도를 입력하세요...")
                       text : DataModel.humidity
+                      validator: IntValidator{
+                        bottom : 0;
+                        top : 100;
+                      }
                     }
                     Label
                     {
@@ -285,6 +297,10 @@ Item {
                       Layout.preferredWidth : parent.width * 0.6
                       placeholderText: qsTr("온도를 입력하세요...")
                       text : DataModel.tempzerature
+                      validator: IntValidator{
+                        bottom : 0;
+                        top : 100;
+                      }
                     }
                     Label
                     {
@@ -325,7 +341,7 @@ Item {
                       id : epTextField
                       Layout.preferredWidth : parent.width * 0.4
                       placeholderText: qsTr("EP를 입력하세요...")
-                      text : listViewDialog.externalName
+                      text : epName
                     }
                     Button
                     {
@@ -351,7 +367,7 @@ Item {
                       id : ipTextField
                       Layout.preferredWidth : parent.width * 0.4
                       placeholderText: qsTr("IP를 입력하세요...")
-                      text : listViewDialog.internalName
+                      text : ipName
                     }
                     Button
                     {
@@ -453,6 +469,7 @@ Item {
                   Layout.bottomMargin: 40
                   text: "등록하기"
                   onClicked: {
+                    batteryList = []
                     for(var i = 0; i < tableModel.count; ++i){
                       batteryList.push(tableModel.get(i)["batterySerialNum"])
                     }
@@ -460,8 +477,8 @@ Item {
                     DataModel.flightBatteryList = batteryList
                     DataModel.aircraftName = aircraftComboBox.currentText;
                     DataModel.windDirection = windDirectionTextField.text;
-                    DataModel.externalPilot = epTextField.text
-                    DataModel.internalPilot = ipTextField.text
+                    DataModel.externalPilot = epId;
+                    DataModel.internalPilot = ipId;
                     DataModel.windSpeed = windDirectionTextField.text;
                     DataModel.humidity = humidityTextField.text;
                     DataModel.temperature = temperatureTextField.text;

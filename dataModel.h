@@ -15,6 +15,7 @@ class dataModel : public QObject
   Q_PROPERTY(aircraftModel*     aircraftModel    READ GetAircraftDatas          WRITE SetAircraftData           NOTIFY aircraftDatasChanged)
   Q_PROPERTY(batteryModel*      battryModel      READ GetBatteryDatas           WRITE SetBatteryData            NOTIFY batteryDatasChanged)
   Q_PROPERTY(operatorModel*     operatorModel    READ GetOperatorDatas          WRITE SetOperatorData           NOTIFY operatorDataChanged)
+  Q_PROPERTY(flightDataModel*   flightDataModel  READ GetFlightData             WRITE SetFlightData             NOTIFY flightDataChanged)
 
   //Aircraft
   Q_PROPERTY(QString      aircraftName           READ GetAircraftName           WRITE SetAircraftName           NOTIFY aircraftNameChanged)
@@ -52,12 +53,13 @@ class dataModel : public QObject
   Q_PROPERTY(QTime        endTime                READ GetEndTime                WRITE SetEndTime                NOTIFY endTimeChanged)
   Q_PROPERTY(QString      payloadType            READ GetPayloadType            WRITE SetPayloadType            NOTIFY payloadTypeChanged)
   Q_PROPERTY(QString      payloadWeight          READ GetPayloadWeight          WRITE SetPayloadWeight          NOTIFY payloadWeightChanged)
-  Q_PROPERTY(QString      externalPilot          READ GetExternalPilot          WRITE SetExternalPilot          NOTIFY externalPilotChanged)
-  Q_PROPERTY(QString      internalPilot          READ GetInternalPilot          WRITE SetInternalPilot          NOTIFY internalPilotChanged)
+  Q_PROPERTY(int          externalPilot          READ GetExternalPilot          WRITE SetExternalPilot          NOTIFY externalPilotChanged)
+  Q_PROPERTY(int          internalPilot          READ GetInternalPilot          WRITE SetInternalPilot          NOTIFY internalPilotChanged)
   Q_PROPERTY(QStringList  flightBatteryList                                     WRITE SetFlightBatteryList      NOTIFY flightBatteryListChanged)
 
 
   signals:
+    void flightDataChanged();
     void aircraftDatasChanged();
     void batteryDatasChanged();
     void operatorDataChanged();
@@ -108,6 +110,7 @@ public:
     Q_INVOKABLE void getAircraftData();
     Q_INVOKABLE void getBatteryData();
     Q_INVOKABLE void getOperatorData();
+    Q_INVOKABLE void getFlightData();
 
     Q_INVOKABLE void modifyData(QString dataType);
     Q_INVOKABLE void createData(QString dataType);
@@ -219,6 +222,11 @@ public:
     }
 
     //FlightData
+
+    void SetFlightData(flightDataModel* flightData){
+      _flightDataModel = flightData;
+      emit flightDataChanged();
+    }
     void SetWindSpeed(QString windSpeed){
       _windSpeed = windSpeed;
       emit windSpeedChanged();
@@ -268,11 +276,11 @@ public:
      emit payloadWeightChanged();
     }
 
-    void SetExternalPilot(QString externalPilot){
+    void SetExternalPilot(int externalPilot){
      _externalPilot = externalPilot;
      emit externalPilotChanged();
     }
-    void SetInternalPilot(QString internalPilot){
+    void SetInternalPilot(int internalPilot){
      _internalPilot = internalPilot;
      emit internalPilotChanged();
     }
@@ -328,8 +336,9 @@ public:
     QString     GetTemperature()         {return _temperature;}
     QString     GetPayloadType()         {return _payloadType;}
     QString     GetPayloadWeight()       {return _payloadWeight;}
-    QString     GetExternalPilot()       {return _externalPilot;}
-    QString     GetInternalPilot()       {return _internalPilot;}
+    int         GetExternalPilot()       {return _externalPilot;}
+    int         GetInternalPilot()       {return _internalPilot;}
+    flightDataModel* GetFlightData()     {return _flightDataModel;}
 
 private:
     static dataModel* gInstance;
@@ -354,8 +363,8 @@ private:
     QStringList _aircraftList;
     QStringList _batteryList;
     QStringList _operatorList;
-    QString     _externalPilot;
-    QString     _internalPilot;
+    int         _externalPilot;
+    int         _internalPilot;
     QDate       _flightDate;
     QTime       _flightTime;
     QTime       _startTime;
@@ -367,6 +376,7 @@ private:
     QString     _payloadType;
     QString     _payloadWeight;
     QStringList _flightBatteryList;
+    flightDataModel* _flightDataModel;
 
     //Operator Data
     int     _operatorId;
