@@ -18,7 +18,7 @@ int flightDataModel::rowCount(const QModelIndex &parent) const
 int flightDataModel::columnCount(const QModelIndex &parent) const
 {
   Q_UNUSED(parent);
-  return 11;
+  return 14;
 }
 
 QVariant flightDataModel::data(const QModelIndex &index, int role) const
@@ -27,15 +27,14 @@ QVariant flightDataModel::data(const QModelIndex &index, int role) const
     if(nRow < 0) return QVariant();
 
     QJsonObject flightData = _flightDataModel->at(index.row());
-    qDebug() << role;
+    //qDebug() << index.row() << "\n";
     switch((flightDataColumnName)role)
     {
        case flightDataColumnName::flightNumber :
         return flightData["flightNumber"].toString();
        case flightDataColumnName::flightDate :
         return flightData["flightDate"].toString();
-       case flightDataColumnName::aircraft :
-        qDebug() <<  flightData["aircraft"].toObject()["aircraftName"].toString();
+       case flightDataColumnName::aircraftName :
         return flightData["aircraft"].toObject()["aircraftName"].toString();
        case flightDataColumnName::battery :
         return flightData["battery"].toString();
@@ -53,6 +52,17 @@ QVariant flightDataModel::data(const QModelIndex &index, int role) const
         return flightData["windSpeed"].toInt();
        case flightDataColumnName::windDirection :
         return flightData["windDirection"].toInt();
+       case flightDataColumnName::externalPilot :
+        qDebug() << flightData["flightDataOperator"]
+                .toObject()["externalPilot"]
+                .toObject()["name"].toString();
+        return flightData["flightDataOperator"]
+          .toObject()["externalPilot"]
+          .toObject()["name"].toString();
+       case flightDataColumnName::internalPilot :
+        return flightData["flightDataOperator"]
+         .toObject()["internalPilot"]
+         .toObject()["name"].toString();
        default:
          qDebug() << "Unhandled role:" << role;
          return QVariant();

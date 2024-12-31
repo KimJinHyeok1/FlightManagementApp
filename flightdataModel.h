@@ -20,7 +20,7 @@ public:
       Q_UNUSED(parent)
       _roleName[static_cast<int>(flightDataColumnName::flightNumber)] = "flightNumber";
       _roleName[static_cast<int>(flightDataColumnName::flightDate)] = "flightDate";
-      _roleName[static_cast<int>(flightDataColumnName::aircraft)] = "aircraft";
+      _roleName[static_cast<int>(flightDataColumnName::aircraftName)] = "aircraftName";
       _roleName[static_cast<int>(flightDataColumnName::battery)] = "battery";
       _roleName[static_cast<int>(flightDataColumnName::flightTime)] = "flightTime";
       _roleName[static_cast<int>(flightDataColumnName::payloadItem)] = "payloadItem";
@@ -29,7 +29,8 @@ public:
       _roleName[static_cast<int>(flightDataColumnName::temperature)] = "temperature";
       _roleName[static_cast<int>(flightDataColumnName::windSpeed)] = "windSpeed";
       _roleName[static_cast<int>(flightDataColumnName::windDirection)] = "windDirection";
-
+      _roleName[static_cast<int>(flightDataColumnName::externalPilot)] = "externalPilot";
+      _roleName[static_cast<int>(flightDataColumnName::internalPilot)] = "internalPilot";
     }
     ~flightDataModel(){};
 
@@ -39,11 +40,10 @@ public:
     bool removeRow(int row, const QModelIndex &parent);
     void setOperatorData(QJsonArray operatorData);
 
-
     enum flightDataColumnName {
       flightNumber = Qt::UserRole,
       flightDate,
-      aircraft,
+      aircraftName,
       battery,
       flightTime,
       payloadItem,
@@ -51,7 +51,9 @@ public:
       humidity,
       temperature,
       windSpeed,
-      windDirection
+      windDirection,
+      externalPilot,
+      internalPilot
     };
 
 

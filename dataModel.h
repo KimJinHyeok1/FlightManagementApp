@@ -38,7 +38,6 @@ class dataModel : public QObject
   Q_PROPERTY(QString      position               READ GetPosition               WRITE SetPosition               NOTIFY positionChanged)
   Q_PROPERTY(QString      teamName               READ GetTeamName               WRITE SetTeamName               NOTIFY teamNameChanged)
   Q_PROPERTY(QString      certification          READ GetCertification          WRITE SetCertification          NOTIFY certificationChanged)
-
   Q_PROPERTY(QStringList  aircraftList           READ GetAircraftList           WRITE SetAircraftList           NOTIFY aircraftListChanged)
   Q_PROPERTY(QStringList  batteryList            READ GetBatteryList            WRITE SetBatteryList            NOTIFY batteryListChanged)
 
