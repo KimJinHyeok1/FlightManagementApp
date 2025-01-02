@@ -111,6 +111,10 @@ public:
     Q_INVOKABLE void getOperatorData();
     Q_INVOKABLE void getFlightData();
 
+    Q_INVOKABLE int getFlightNum() { return _flightDataModel->rowCount(); }
+    Q_INVOKABLE int getTotalFlightTime(){ return _flightDataModel->totalTime(); }
+    Q_INVOKABLE int getTotalFlightDate(){ return _flightDataModel->totalDate(); }
+
     Q_INVOKABLE void modifyData(QString dataType);
     Q_INVOKABLE void createData(QString dataType);
     Q_INVOKABLE void deleteData(int row, QString dataType);

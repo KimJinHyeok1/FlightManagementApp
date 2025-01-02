@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.15
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.1
@@ -50,6 +50,9 @@ Item {
               target: apiManager
               onFlightDataRequestFinished : {
                 flightDataTalbeView.model = DataModel.flightDataModel
+                totalFlightNum.text = DataModel.getFlightNum()
+                totalFlightTime.text = DataModel.getTotalFlightTime()
+                totalFlightDay.text = DataModel.getTotalFlightDate()
               }
             }
           }
@@ -121,7 +124,7 @@ Item {
           {
             id : acLabel
             text : "Aircraft Name : "
-            font.pointSize: 15
+            font.pointSize: 12
             font.bold : true
             color: "white"
           }
@@ -147,8 +150,8 @@ Item {
         RowLayout{
           Label
           {
-            text : "Battery SerialNumber : "
-            font.pointSize: 15
+            text : "Battery Serial Number : "
+            font.pointSize: 12
             font.bold : true
             color: "white"
           }
@@ -173,7 +176,7 @@ Item {
           Label
           {
             text : "FlightDate : "
-            font.pointSize: 15
+            font.pointSize: 12
             font.bold : true
             color: "white"
           }
@@ -195,7 +198,7 @@ Item {
           Label
           {
             text : "Operator Name : "
-            font.pointSize: 15
+            font.pointSize: 12
             font.bold : true
             color: "white"
           }
@@ -229,6 +232,27 @@ Item {
           id : flightDataTalbeView
           width : parent.width * 0.98
           height : flightLogViewItem.height * 0.4
+//          itemDelegate:
+//              Item {
+//                Text {
+//                  anchors.verticalCenter: parent.verticalCenter
+//                  color: styleData.textColor
+//                  elide: styleData.elideMode
+//                  text: styleData.value
+//              }
+//          }
+          OldControls.TableViewColumn {
+            id : checkboxColumn
+            role: " "
+            title: " "
+            width: 25
+            delegate:
+              ItemDelegate{
+              CheckBox {
+                width : checkboxColumn.width
+              }
+            }
+          }
           OldControls.TableViewColumn {
             role: "flightNumber"
             title: "Flight Number"
@@ -240,7 +264,7 @@ Item {
             width: 100
           }
           OldControls.TableViewColumn {
-            role: "aircraft"
+            role: "aircraftName"
             title: "A/C Name"
             width: 100
           }
@@ -295,6 +319,7 @@ Item {
             width: 100
           }
         }
+
       }
       Label
       {
@@ -308,8 +333,59 @@ Item {
 
       Pane{
         Layout.preferredWidth : flightLogViewItem.width
+        ColumnLayout{
+          RowLayout{
+            Layout.bottomMargin: 20
+            Label
+            {
+              text : "총 비행횟수(소티) : "
+              font.pointSize: 12
+              font.bold : true
+              color: "white"
+            }
+            Label
+            {
+              id : totalFlightNum
+              font.pointSize: 12
+              font.bold : true
+              color: "orange"
+            }
+          }
+          RowLayout{
+            Layout.bottomMargin: 20
+            Label
+            {
+              text : "총 비행시간(분) : "
+              font.pointSize: 12
+              font.bold : true
+              color: "white"
+            }
+            Label
+            {
+              id : totalFlightTime
+              font.pointSize: 12
+              font.bold : true
+              color: "orange"
+            }
+          }
+          RowLayout{
+            Label
+            {
+              text : "총 비행일수(일) : "
+              font.pointSize: 12
+              font.bold : true
+              color: "white"
+            }
+            Label
+            {
+              id : totalFlightDay
+              font.pointSize: 12
+              font.bold : true
+              color: "orange"
+            }
+          }
+        }
       }
-
       }//ColumnLayout
     }//ScrollView
   }//Rectangle

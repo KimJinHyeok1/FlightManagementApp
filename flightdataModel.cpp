@@ -2,9 +2,11 @@
 
 void flightDataModel::setFlightData(QJsonArray flightData){
   _flightDataModel->clear();
+  _flightDate->clear();
   for(auto value : flightData){
       if(value.isObject()){
         _flightDataModel->append(value.toObject());
+       _flightDate->append(QDate::fromString(value.toObject()["flightDate"].toString(), "yyyy-MM-dd"));
       }
   }
 }
@@ -27,7 +29,6 @@ QVariant flightDataModel::data(const QModelIndex &index, int role) const
     if(nRow < 0) return QVariant();
 
     QJsonObject flightData = _flightDataModel->at(index.row());
-    //qDebug() << index.row() << "\n";
     switch((flightDataColumnName)role)
     {
        case flightDataColumnName::flightNumber :
@@ -53,9 +54,6 @@ QVariant flightDataModel::data(const QModelIndex &index, int role) const
        case flightDataColumnName::windDirection :
         return flightData["windDirection"].toInt();
        case flightDataColumnName::externalPilot :
-        qDebug() << flightData["flightDataOperator"]
-                .toObject()["externalPilot"]
-                .toObject()["name"].toString();
         return flightData["flightDataOperator"]
           .toObject()["externalPilot"]
           .toObject()["name"].toString();
@@ -71,5 +69,6 @@ QVariant flightDataModel::data(const QModelIndex &index, int role) const
 
 QHash<int, QByteArray> flightDataModel::roleNames() const
 {
+  qDebug() << _roleName;
   return _roleName;
 }
