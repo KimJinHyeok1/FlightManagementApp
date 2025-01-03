@@ -45,12 +45,6 @@ Item {
               {
                 id :layout1
                 width : aircraftRegisterItem.width
-                Image {
-                    id: vesselLogo
-                    source: "./icon/vessel.png"
-                    sourceSize.height: layout1.height * 0.2
-                    sourceSize.width: layout1.width * 0.9
-                  }
                   Label
                   {
                     //topPadding: 30
@@ -213,7 +207,6 @@ Item {
 
                   RowLayout
                   {
-                    anchors.horizontalCenter: parent
                     Layout.preferredWidth : parent.width * 0.9
                     Button{
                       text : "수정"

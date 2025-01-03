@@ -36,6 +36,14 @@ Item {
             }
             Connections{
               target: apiManager
+              function onAircraftRequestFinished(){
+                aircraftComboBox.model = DataModel.aircraftList
+              }
+
+              function onBatteryRequestFinished(){
+
+              }
+
               onAircraftRequestFinished:{
                 aircraftComboBox.model = DataModel.aircraftList
               }
@@ -48,12 +56,6 @@ Item {
               id : fistColumnLayout
               width : flgihtDataRegisterItem.width
               height : flgihtDataRegisterItem.height
-              Image {
-                id: vesselLogo
-                source: "./icon/vessel.png"
-                sourceSize.height: fistColumnLayout.height * 0.25
-                sourceSize.width: fistColumnLayout.width * 0.9
-              }
               Label
               {
                 Layout.topMargin: 24

@@ -53,6 +53,9 @@ public:
   void ModifyOperatorData(int operatorId, QJsonObject &modifyData);
 
   //!NOTE : FlightData API Request
+  void RequestFlightDataByAircraftName(QString requestUrl, QString aircraftName, flightDataModel* dataModel);
+  void RequestFlightDataByDate(QString requestUrl, QDate startDate, QDate endDate, flightDataModel* dataModel);
+  void RequestFlightDataByOperatorName(QString requestUrl, QString operatorName, flightDataModel* dataModel);
   void RequestAllFlightData(QString requestUrl, flightDataModel* dataModel);
   bool CreateFlightData(QJsonObject flightData);
 

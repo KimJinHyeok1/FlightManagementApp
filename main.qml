@@ -32,17 +32,18 @@ ApplicationWindow {
         RowLayout {
             width : mainWindow.width
             ToolButton{
-                icon.source: "./icon/drawer_menu.png"
-                onClicked: drawer.open()
+              id : drawerButtom
+              icon.source: "./icon/drawer_menu.png"
+              onClicked: drawer.open()
             }
             Text {
-                id : toolbarText
-                Layout.fillWidth: true
-                horizontalAlignment: Text.AlignHCenter
-                color: 'Orange'
-                font.bold: true
-                font.pointSize: 15
-                text: qsTr("비행시험팀 비행이력 관리 프로그램")
+              id : toolbarText
+              Layout.preferredWidth: parent.width - drawerButtom.width * 2
+              horizontalAlignment: Text.AlignHCenter
+              color: 'White'
+              font.bold: true
+              font.pointSize: 15
+              text: qsTr("비행시험팀 비행이력 관리 프로그램")
             }
         }
 
@@ -64,6 +65,7 @@ ApplicationWindow {
             anchors.fill : parent
             onClicked: {
               drawer.close()
+              toolbarText.text = "비행시험팀 비행이력 관리 프로그램"
               stackView.push("qrc:/homeView.qml")
             }
           }

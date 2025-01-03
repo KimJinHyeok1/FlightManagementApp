@@ -99,9 +99,74 @@ void apiManager::RequestAllFlightData(QString requestUrl, flightDataModel* dataM
   });
 }
 
+void apiManager::RequestFlightDataByAircraftName(QString requestUrl,
+                                                 QString aircraftName,
+                                                 flightDataModel* dataModel)
+{
+  QUrlQuery query;
+  query.addQueryItem("aircraftName", aircraftName);
+  QUrl url = QUrl(_baseUrl).resolved(requestUrl);
+  url.setQuery(query);
+  QNetworkRequest getRequest(url);
+  QNetworkReply *reply = _apiAccessManager->get(getRequest);
+  QObject::connect(reply, &QNetworkReply::finished, this, [=]()
+  {
+    if(reply->error() == QNetworkReply::NoError){
+        QByteArray ba=reply->readAll();
+        QString contents = QString::fromUtf8(ba);
+        QJsonDocument response = QJsonDocument::fromJson(contents.toUtf8());
+        if(response.isArray()){
+           dataModel->setFlightData(response.array());
+           emit flightDataRequestFinished();
+        };
+      }
+  });
+}
 
+void apiManager::RequestFlightDataByDate(QString requestUrl, QDate startDate, QDate endDate, flightDataModel* dataModel)
+{
+  QUrlQuery query;
+  query.addQueryItem("startDate", startDate.toString("yyyy-MM-dd"));
+  query.addQueryItem("endDate", endDate.toString("yyyy-MM-dd"));
+  QUrl url = QUrl(_baseUrl).resolved(requestUrl);
+  url.setQuery(query);
+  QNetworkRequest getRequest(url);
+  QNetworkReply *reply = _apiAccessManager->get(getRequest);
+  QObject::connect(reply, &QNetworkReply::finished, this, [=]()
+  {
+    if(reply->error() == QNetworkReply::NoError){
+        QByteArray ba=reply->readAll();
+        QString contents = QString::fromUtf8(ba);
+        QJsonDocument response = QJsonDocument::fromJson(contents.toUtf8());
+        if(response.isArray()){
+           dataModel->setFlightData(response.array());
+           emit flightDataRequestFinished();
+        };
+      }
+  });
+}
 
-
+void apiManager::RequestFlightDataByOperatorName(QString requestUrl, QString operatorName, flightDataModel* dataModel)
+{
+  QUrlQuery query;
+  query.addQueryItem("operatorName", operatorName);
+  QUrl url = QUrl(_baseUrl).resolved(requestUrl);
+  url.setQuery(query);
+  QNetworkRequest getRequest(url);
+  QNetworkReply *reply = _apiAccessManager->get(getRequest);
+  QObject::connect(reply, &QNetworkReply::finished, this, [=]()
+  {
+    if(reply->error() == QNetworkReply::NoError){
+        QByteArray ba=reply->readAll();
+        QString contents = QString::fromUtf8(ba);
+        QJsonDocument response = QJsonDocument::fromJson(contents.toUtf8());
+        if(response.isArray()){
+           dataModel->setFlightData(response.array());
+           emit flightDataRequestFinished();
+        };
+      }
+  });
+}
 
 
 bool apiManager::CreateBatteryData(QJsonObject batteryData)
@@ -239,7 +304,6 @@ void apiManager::DeleteAircraftData(QString requestUrl, QString aircraftName)
 void apiManager::DeleteBatteryData(QString requestUrl, QString batterySerialNum)
 {
   QUrlQuery query;
-  qDebug()<< batterySerialNum;
   query.addQueryItem("batterySerialNum", batterySerialNum);
   QUrl url = QUrl(_baseUrl).resolved(requestUrl);
   url.setQuery(query);

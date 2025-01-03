@@ -25,7 +25,6 @@ Item {
             ScrollBar.vertical.policy: ScrollBar.AlwaysOn
           ColumnLayout {
             Layout.preferredWidth: parent.width
-            anchors.fill: parent
             Label
             {
               text : "배터리 S/N 입력 및 조회"
@@ -43,12 +42,6 @@ Item {
               {
                 id :layout1
                 width : batteryRegisterItem.width
-                Image {
-                    id: vesselLogo
-                    source: "./icon/vessel.png"
-                    sourceSize.height: layout1.height * 0.2
-                    sourceSize.width: layout1.width * 0.9
-                  }
                   Label
                   {
                     id : batterySerialNumber
@@ -270,7 +263,7 @@ Item {
                   RowLayout
                   {
                     Layout.topMargin: 50
-                    anchors.horizontalCenter: parent
+
                     Layout.preferredWidth : parent.width * 0.9
                     Button{
                       text : "수정"

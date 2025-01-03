@@ -9,6 +9,22 @@ import "./CustomComponent"
 
 Item {
   id : flightLogViewItem
+
+  Component.onCompleted: {
+    DataModel.getOperatorData();
+    DataModel.getAircraftData();
+  }
+
+  Connections {
+    target : apiManager
+    onAircraftRequestFinished:{
+      aircraftNameCombobox.model = DataModel.aircraftList
+    }
+    onOperatorRequestFinished:{
+      operatorNameCombobox.model = DataModel.operatorList
+    }
+  }
+
   Rectangle{
     anchors.fill : parent
     color: Material.color(Material.Grey, Material.Shade800)
@@ -49,10 +65,11 @@ Item {
             Connections{
               target: apiManager
               onFlightDataRequestFinished : {
-                flightDataTalbeView.model = DataModel.flightDataModel
+                flightDataTalbeView.model = ""
                 totalFlightNum.text = DataModel.getFlightNum()
                 totalFlightTime.text = DataModel.getTotalFlightTime()
                 totalFlightDay.text = DataModel.getTotalFlightDate()
+                flightDataTalbeView.model = DataModel.flightDataModel
               }
             }
           }
@@ -62,18 +79,6 @@ Item {
             onClicked: {
               findLabel.visible = true
               findAircraftNamePane.visible = true
-              findBatteryNamePane.visible = false
-              findDatePane.visible = false
-              findOperatorNamePane.visible = false
-            }
-          }
-          Button{
-            Layout.preferredWidth: buttonLayout.width * 0.18
-            text : "배터리별 검색"
-            onClicked: {
-              findLabel.visible = true
-              findAircraftNamePane.visible = false
-              findBatteryNamePane.visible = true
               findDatePane.visible = false
               findOperatorNamePane.visible = false
             }
@@ -84,7 +89,6 @@ Item {
             onClicked:{
               findLabel.visible = true
               findAircraftNamePane.visible = false
-              findBatteryNamePane.visible = false
               findDatePane.visible = true
               findOperatorNamePane.visible = false
             }
@@ -95,7 +99,6 @@ Item {
             onClicked: {
               findLabel.visible = true
               findAircraftNamePane.visible = false
-              findBatteryNamePane.visible = false
               findDatePane.visible = false
               findOperatorNamePane.visible = true
             }
@@ -129,8 +132,10 @@ Item {
             color: "white"
           }
           ComboBox{
-            id : combobox1
+            Layout.preferredWidth: parent.width * 0.5
+            id : aircraftNameCombobox
             Layout.leftMargin: 15
+            model : DataModel.aircraftList
           }
           Button
           {
@@ -138,31 +143,7 @@ Item {
             Layout.leftMargin: 15
             icon.source : "./icon/findIcon.png"
             onClicked : {
-            }
-          }
-        }
-      }//findAircraftNamePane
-
-      Pane{
-        id : findBatteryNamePane
-        Layout.preferredWidth : flightLogViewItem.width
-        visible: false
-        RowLayout{
-          Label
-          {
-            text : "Battery Serial Number : "
-            font.pointSize: 12
-            font.bold : true
-            color: "white"
-          }
-          ComboBox{
-            Layout.preferredWidth: parent.width * 0.5
-          }
-          Button
-          {
-            icon.source : "./icon/findIcon.png"
-            Layout.leftMargin: 15
-            onClicked : {
+              DataModel.getFlightDataByAircraftName(aircraftNameCombobox.currentText)
             }
           }
         }
@@ -175,16 +156,84 @@ Item {
         RowLayout{
           Label
           {
-            text : "FlightDate : "
+            text : "Start Date : "
             font.pointSize: 12
             font.bold : true
             color: "white"
           }
           Button
           {
+            id : startDatePickerButton
+            text : startDateCalender.selectedDate
+            onClicked : {
+              startDatePickerPopup.open()
+            }
+          }
+          Popup{
+            id : startDatePickerPopup
+            x : startDatePickerButton.x
+            RowLayout{
+              ColumnLayout{
+                Label
+                {
+                  text : "Start Date"
+                  font.pointSize: 15
+                  font.bold : true
+                  color: "white"
+                  Layout.bottomMargin: 15
+                }
+                OldControls.Calendar{
+                  id : startDateCalender
+                }
+              }
+            }
+          }
+          Label{
+            text : " ~ "
+            font.pointSize: 12
+            font.bold : true
+          }
+          Label
+          {
+            text : "End Date : "
+            font.pointSize: 12
+            font.bold : true
+            color: "white"
+          }
+          Button
+          {
+            id : endDatePickerButton
+            text : endDateCalender.selectedDate
+            onClicked : {
+              endDatePickerPopup.open()
+            }
+          }
+          Popup{
+            id : endDatePickerPopup
+            x : endDatePickerButton.x
+            RowLayout{
+              ColumnLayout{
+                Label
+                {
+                  text : "Start Date"
+                  font.pointSize: 15
+                  font.bold : true
+                  color: "white"
+                  Layout.bottomMargin: 15
+                }
+                OldControls.Calendar{
+                  id : endDateCalender
+                }
+              }
+            }
+          }
+          Button
+          {
             icon.source : "./icon/findIcon.png"
             Layout.leftMargin: 15
             onClicked : {
+              DataModel.getFlightDataByDate(startDateCalender.selectedDate,
+                                            endDateCalender.selectedDate)
             }
           }
         }
@@ -203,13 +252,16 @@ Item {
             color: "white"
           }
           ComboBox{
+            id : operatorNameCombobox
             Layout.preferredWidth: parent.width * 0.5
+            model : DataModel.aircraftList
           }
           Button
           {
             icon.source : "./icon/findIcon.png"
             Layout.leftMargin: 15
             onClicked : {
+              DataModel.getFlightDataByOperatorName(operatorNameCombobox.currentText)
             }
           }
         }
@@ -232,15 +284,6 @@ Item {
           id : flightDataTalbeView
           width : parent.width * 0.98
           height : flightLogViewItem.height * 0.4
-//          itemDelegate:
-//              Item {
-//                Text {
-//                  anchors.verticalCenter: parent.verticalCenter
-//                  color: styleData.textColor
-//                  elide: styleData.elideMode
-//                  text: styleData.value
-//              }
-//          }
           OldControls.TableViewColumn {
             id : checkboxColumn
             role: " "
@@ -339,7 +382,7 @@ Item {
             Label
             {
               text : "총 비행횟수(소티) : "
-              font.pointSize: 12
+              font.pointSize: 15
               font.bold : true
               color: "white"
             }
@@ -356,7 +399,7 @@ Item {
             Label
             {
               text : "총 비행시간(분) : "
-              font.pointSize: 12
+              font.pointSize: 15
               font.bold : true
               color: "white"
             }
@@ -372,7 +415,7 @@ Item {
             Label
             {
               text : "총 비행일수(일) : "
-              font.pointSize: 12
+              font.pointSize: 15
               font.bold : true
               color: "white"
             }

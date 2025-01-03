@@ -16,7 +16,7 @@ Dialog {
     onAccepted: close()
     onRejected: close()
 
-    property var requestDataType: value
+    property var requestDataType: ""
 
     property var aircraftName: ""
     property var aircraftRegisterNum: ""
@@ -43,18 +43,22 @@ Dialog {
     property var internalId : ""
 
     property var listItemChecked: false
+    property var checkedItemIndex : 0
     property var listModel : ListModel
 
     ColumnLayout{
 
       Connections{
           target: apiManager
-          onAircraftRequestFinished:
+          function onAircraftRequestFinished(){
             listView_1.model = DataModel.aircraftModel
-          onBatteryRequestFinished:
+          }
+          function onBatteryRequestFinished(){
             listView_1.model = DataModel.battryModel
-          onOperatorRequestFinished:
+          }
+          function onOperatorRequestFinished(){
             listView_1.model = DataModel.operatorModel;
+          }
         }
 
       anchors.fill: parent
@@ -119,68 +123,65 @@ Dialog {
                        CheckBox {
                          id : listViewCheckbox
                          checked: false
-
                          onCheckedChanged: {
+                           //!NOTE : 이미 한번 체크박스를 선택한 경우
                            if(tableDialog.listItemChecked){
-                               if (!checked) {
+                               //!NOTE : 선택한 체크박스가 본인인 경우
+                               if (index == checkedItemIndex) {
+                                 //!NOTE : 체크박스의 상태를 되돌린다
                                  listItemRec.color = Material.color(Material.Grey, Material.Shade800)
                                  tableDialog.listItemChecked = false
+                                 listViewCheckbox.checked = false
                                  return
                                }
-                               listViewCheckbox.checkState = Qt.Unchecked
-                               alertMessage.message = "1개의 항목만 선택 가능합니다."
-                               alertMessage.open()
+                               //!NOTE : 2개이상의 체크박스를 선택하려 하는경우
+                               else{
+                                 alertMessage.message = "1개의 항목만 선택 가능합니다."
+                                 alertMessage.open()
+                                 listViewCheckbox.checkState = Qt.Unchecked
+                               }
                            }
-                           else {
-                               if (checked) {
-                                 listItemRec.color = "white"
-                                 listView_1.currentIndex = index
-                                 if(tableDialog.requestDataType == "aircraft")
-                                 {
-                                   DataModel.aircraftName = model.aircraftName
-                                   tableDialog.aircraftName = model.aircraftName
-                                   tableDialog.aircraftRegisterNum = model.aircraftRegisterNum
-                                   tableDialog.aircraftSerialNum = model.aircraftSerialNum
-                                   tableDialog.aircraftType = model.aircraftType
-                                   tableDialog.aircraftMTOW = model.aircraftMTOW
-                                   tableDialog.aircraftDescription = model.aircraftDescription
-                                 }
-                                 else if(tableDialog.requestDataType == "battery")
-                                 {
-                                   DataModel.batterySerialNum = model.batterySerialNum
-                                   tableDialog.batterySerialNum = model.batterySerialNum
-                                   tableDialog.batteryType = model.batteryType
-                                   tableDialog.batteryCapacity = model.batteryCapacity
-                                   tableDialog.batteryCells = model.batteryCell
-                                   tableDialog.totalUsingTime = model.totalUsingTime
-                                 }
-                                 else if(tableDialog.requestDataType == "operator")
-                                 {
-                                   DataModel.operatorId = model.id
-                                   console.log(model.id)
-                                   tableDialog.operatorName = model.name
-                                   tableDialog.phoneNumber = model.phoneNumber;
-                                   tableDialog.position = model.position;
-                                   tableDialog.teamName = model.teamName;
-                                   tableDialog.certification = model.certification;
-                                 }
-                                 else if(tableDialog.requestDataType == "external"){
-                                   tableDialog.externalId = model.id
-                                   console.log(model.id)
-                                   console.log(model.phoneNumber)
-                                   tableDialog.externalName = model.name
-                                 }
-                                 else if(tableDialog.requestDataType == "internal"){
-                                   tableDialog.internalId = model.id
-                                   console.log(model.phoneNumber)
-                                   tableDialog.internalName = model.name
-                                 }
-                                 tableDialog.listItemChecked = true
-                               }
-                               else {
-                                 listItemRec.color = Material.color(Material.Grey, Material.Shade800)
-                                 tableDialog.listItemChecked = false
-                               }
+                           //!NOTE 완전처음 선택하는 경우
+                           else{
+                             listItemRec.color = "white"
+                             tableDialog.listItemChecked = true
+                             checkedItemIndex = index
+                             if(tableDialog.requestDataType == "aircraft")
+                             {
+                               DataModel.aircraftName = model.aircraftName
+                               tableDialog.aircraftName = model.aircraftName
+                               tableDialog.aircraftRegisterNum = model.aircraftRegisterNum
+                               tableDialog.aircraftSerialNum = model.aircraftSerialNum
+                               tableDialog.aircraftType = model.aircraftType
+                               tableDialog.aircraftMTOW = model.aircraftMTOW
+                               tableDialog.aircraftDescription = model.aircraftDescription
+                             }
+                             else if(tableDialog.requestDataType == "battery")
+                             {
+                               DataModel.batterySerialNum = model.batterySerialNum
+                               tableDialog.batterySerialNum = model.batterySerialNum
+                               tableDialog.batteryType = model.batteryType
+                               tableDialog.batteryCapacity = model.batteryCapacity
+                               tableDialog.batteryCells = model.batteryCell
+                               tableDialog.totalUsingTime = model.totalUsingTime
+                             }
+                             else if(tableDialog.requestDataType == "operator")
+                             {
+                               DataModel.operatorId = model.id
+                               tableDialog.operatorName = model.name
+                               tableDialog.phoneNumber = model.phoneNumber;
+                               tableDialog.position = model.position;
+                               tableDialog.teamName = model.teamName;
+                               tableDialog.certification = model.certification;
+                             }
+                             else if(tableDialog.requestDataType == "external"){
+                               tableDialog.externalId = model.id
+                               tableDialog.externalName = model.name
+                             }
+                             else if(tableDialog.requestDataType == "internal"){
+                               tableDialog.internalId = model.id
+                               tableDialog.internalName = model.name
+                             }
                            }
                          }
                       }

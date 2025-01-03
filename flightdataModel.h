@@ -56,13 +56,13 @@ public:
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const override;
     virtual QVariant data(const QModelIndex &index, int role) const override;
     int totalTime(){
-      //QTime totalTime = QTime();
       int totalTime = 0;
       for(auto data : *_flightDataModel){
         QTime addTime = QTime::fromString(data["flightTime"].toString(), "hh:mm:ss");
-        if(!addTime.hour()){
+        if(addTime.hour()){
           totalTime += addTime.hour() * 60 + addTime.minute();
         }
+        else totalTime += addTime.minute();
       }
       return totalTime;
     }
@@ -76,9 +76,11 @@ public:
         dateCount[date]++;
       }
 
-      for (auto it = dateCount.begin(); it != dateCount.end(); ++it) {
-        if (it.value() == 1) { // 중복되지 않은 날짜
-          uniqueDateCount++;
+      if(dateCount.size() > 1){
+        for (auto it = dateCount.begin(); it != dateCount.end(); ++it) {
+          if (it.value() == 1) { // 중복되지 않은 날짜
+            uniqueDateCount++;
+          }
         }
       }
       return uniqueDateCount;

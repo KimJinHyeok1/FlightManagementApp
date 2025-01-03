@@ -39,6 +39,22 @@ dataModel::getFlightData()
 {
   _apiManager->RequestAllFlightData("flightData/all", _flightDataModel);
 }
+void
+dataModel::getFlightDataByAircraftName(QString aircraftName)
+{
+  _apiManager->RequestFlightDataByAircraftName("flightData/acName", aircraftName, _flightDataModel);
+}
+void
+dataModel::getFlightDataByDate(QDate startDate, QDate endDate)
+{
+  _apiManager->RequestFlightDataByDate("flightData/date", startDate, endDate, _flightDataModel);
+}
+void
+dataModel::getFlightDataByOperatorName(QString operatorName)
+{
+  _apiManager->RequestFlightDataByOperatorName("flightData/opName", operatorName, _flightDataModel);
+}
+
 
 
 

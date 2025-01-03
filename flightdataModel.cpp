@@ -6,7 +6,8 @@ void flightDataModel::setFlightData(QJsonArray flightData){
   for(auto value : flightData){
       if(value.isObject()){
         _flightDataModel->append(value.toObject());
-       _flightDate->append(QDate::fromString(value.toObject()["flightDate"].toString(), "yyyy-MM-dd"));
+       _flightDate->append(QDate::fromString(value.toObject()["flightDate"].toString(),
+                           "yyyy-MM-dd"));
       }
   }
 }
@@ -69,6 +70,5 @@ QVariant flightDataModel::data(const QModelIndex &index, int role) const
 
 QHash<int, QByteArray> flightDataModel::roleNames() const
 {
-  qDebug() << _roleName;
   return _roleName;
 }

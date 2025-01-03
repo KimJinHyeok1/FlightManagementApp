@@ -4,6 +4,7 @@
 #include <QQmlContext>
 #include "dataModel.h"
 #include "apiManager.h"
+#include "configParser.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,6 +13,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     dataModel dataModel;
     apiManager *apiManager = apiManager::getInstance();
+    configParser configParser;
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));

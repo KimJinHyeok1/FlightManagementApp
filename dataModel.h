@@ -24,12 +24,14 @@ class dataModel : public QObject
   Q_PROPERTY(QString      aircraftType           READ GetAircraftType           WRITE SetAircraftType           NOTIFY aircraftTypeChanged)
   Q_PROPERTY(QString      aircraftMtow           READ GetAircraftMtow           WRITE SetAircraftMtow           NOTIFY aircraftMtowChanged)
   Q_PROPERTY(QString      aircraftDescription    READ GetAircraftDescription    WRITE SetAircraftDescription    NOTIFY aircraftDescriptionChanged)
+  Q_PROPERTY(QStringList  aircraftList           READ GetAircraftList           WRITE SetAircraftList           NOTIFY aircraftListChanged)
 
   //Battery
   Q_PROPERTY(QString      batterySerialNum       READ GetBatterySerialNum       WRITE SetBatterySerialNum       NOTIFY batterySerialNumChanged)
   Q_PROPERTY(QString      batteryType            READ GetBatteryType            WRITE SetBatteryType            NOTIFY batteryTypeChanged)
   Q_PROPERTY(QString      batteryCapacity        READ GetBatteryCapacity        WRITE SetBatteryCapacity        NOTIFY batteryCapacityChanged)
   Q_PROPERTY(QString      batteryCells           READ GetBatteryCells           WRITE SetBatteryCells           NOTIFY batteryCellsChanged)
+  Q_PROPERTY(QStringList  batteryList            READ GetBatteryList            WRITE SetBatteryList            NOTIFY batteryListChanged)
 
   //Operator
   Q_PROPERTY(int          operatorId             READ GetOperatorId             WRITE SetOperatorId             NOTIFY operatorIdChanged)
@@ -38,8 +40,7 @@ class dataModel : public QObject
   Q_PROPERTY(QString      position               READ GetPosition               WRITE SetPosition               NOTIFY positionChanged)
   Q_PROPERTY(QString      teamName               READ GetTeamName               WRITE SetTeamName               NOTIFY teamNameChanged)
   Q_PROPERTY(QString      certification          READ GetCertification          WRITE SetCertification          NOTIFY certificationChanged)
-  Q_PROPERTY(QStringList  aircraftList           READ GetAircraftList           WRITE SetAircraftList           NOTIFY aircraftListChanged)
-  Q_PROPERTY(QStringList  batteryList            READ GetBatteryList            WRITE SetBatteryList            NOTIFY batteryListChanged)
+  Q_PROPERTY(QStringList  operatorList           READ GetOperatorList           WRITE SetOperatorList           NOTIFY operatorListChanged)
 
   //FlightData
   Q_PROPERTY(QString      windDirection          READ GetWindDirection          WRITE SetWindDirection          NOTIFY windDirectionChanged)
@@ -83,6 +84,7 @@ class dataModel : public QObject
     void teamNameChanged();
     void certificationChanged();
     void operatorIdChanged();
+    void operatorListChanged();
 
     void operationFinished();
     void flightDateChanged();
@@ -110,6 +112,10 @@ public:
     Q_INVOKABLE void getBatteryData();
     Q_INVOKABLE void getOperatorData();
     Q_INVOKABLE void getFlightData();
+    Q_INVOKABLE void getFlightDataByAircraftName(QString aircraftName);
+    Q_INVOKABLE void getFlightDataByDate(QDate startDate, QDate endDate);
+    Q_INVOKABLE void getFlightDataByOperatorName(QString operatorName);
+
 
     Q_INVOKABLE int getFlightNum() { return _flightDataModel->rowCount(); }
     Q_INVOKABLE int getTotalFlightTime(){ return _flightDataModel->totalTime(); }
@@ -206,6 +212,10 @@ public:
     void SetCertification(QString certification){
       _certification = certification;
       emit certificationChanged();
+    }
+    void SetOperatorList(QStringList operatorList){
+      _operatorList = operatorList;
+      emit operatorListChanged();
     }
 
 
@@ -327,6 +337,7 @@ public:
     QString     GetPhoneNumber()         {return _teamName;}
     QString     GetCertification()       {return _certification;}
     int         GetOperatorId()          {return _operatorId;}
+    QStringList GetOperatorList()        {return _operatorList;}
 
     //FlightData
     QDate       GetFlightDate()          {return _flightDate;}

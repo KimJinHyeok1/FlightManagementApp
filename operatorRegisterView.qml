@@ -6,10 +6,11 @@ import QtQuick.Dialogs 1.1
 import QtQuick.Controls.Material 2.12
 import "./CustomComponent"
 
-Item {
-  id : operatorRegisterItem
+//Item {
+//  id : operatorRegisterItem
   Rectangle{
-    anchors.fill : parent
+    id : operatorRegisterItem
+    //anchors.fill : parent
     color : Material.color(Material.Grey, Material.Shade800)
     ListViewDialog {
       id : operatorListView
@@ -29,7 +30,6 @@ Item {
       ScrollBar.vertical.policy: ScrollBar.AlwaysOn
       ColumnLayout{
         Layout.preferredWidth: parent.width
-        anchors.fill: parent
         Label
         {
           text : "개인정보"
@@ -206,7 +206,7 @@ Item {
         {
           Layout.topMargin: 15
           Layout.bottomMargin: 15
-          anchors.horizontalCenter: parent
+          //anchors.horizontalCenter: parent
           Layout.preferredWidth : parent.width * 0.9
           Button{
             text : "수정"
@@ -241,4 +241,4 @@ Item {
     }//ScrollView
   }//Rectangle
 
-}
+//}
