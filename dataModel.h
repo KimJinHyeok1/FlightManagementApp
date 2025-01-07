@@ -6,7 +6,7 @@
 #include <QTime>
 #include <QStringListModel>
 #include "apiManager.h"
-#endif // DATAMODEL_H
+
 
 class dataModel : public QObject
 {
@@ -49,6 +49,7 @@ class dataModel : public QObject
   Q_PROPERTY(QString      temperature            READ GetTemperature            WRITE SetTemperature            NOTIFY temperatureChanged)
   Q_PROPERTY(QDate        flightDate             READ GetFlightDate             WRITE SetFlightDate             NOTIFY flightDateChanged)
   Q_PROPERTY(QTime        flightTime             READ GetFlightTime             WRITE SetFlightTime             NOTIFY flightTimeChanged)
+  Q_PROPERTY(QString      flightSpot             READ GetFlightSpot             WRITE SetFlightSpot             NOTIFY flightSpotChanged)
   Q_PROPERTY(QTime        startTime              READ GetStartTime              WRITE SetStartTime              NOTIFY startTimeChanged)
   Q_PROPERTY(QTime        endTime                READ GetEndTime                WRITE SetEndTime                NOTIFY endTimeChanged)
   Q_PROPERTY(QString      payloadType            READ GetPayloadType            WRITE SetPayloadType            NOTIFY payloadTypeChanged)
@@ -56,6 +57,15 @@ class dataModel : public QObject
   Q_PROPERTY(int          externalPilot          READ GetExternalPilot          WRITE SetExternalPilot          NOTIFY externalPilotChanged)
   Q_PROPERTY(int          internalPilot          READ GetInternalPilot          WRITE SetInternalPilot          NOTIFY internalPilotChanged)
   Q_PROPERTY(QStringList  flightBatteryList                                     WRITE SetFlightBatteryList      NOTIFY flightBatteryListChanged)
+
+  //ConfigParse Data
+  Q_PROPERTY(QStringList  flightSpotList         READ GetFlightSpotList                                         NOTIFY flightSpotListChanged)
+  Q_PROPERTY(QStringList  aircraftTypeList       READ GetAircraftTypeList                                       NOTIFY aircraftTypeListChanged)
+  Q_PROPERTY(QStringList  batteryCellList        READ GetBatteryCellList                                        NOTIFY batteryCellListChanged)
+  Q_PROPERTY(QStringList  batteryTypeList        READ GetBatteryTypeList                                        NOTIFY batteryTypeListChanged)
+  Q_PROPERTY(QStringList  positionList           READ GetPositionList                                           NOTIFY positionListChanged)
+  Q_PROPERTY(QStringList  teamNameList           READ GetTeamNameList                                           NOTIFY teamNameListChanged)
+  Q_PROPERTY(QStringList  certificationList      READ GetCertificationList                                      NOTIFY certificationListChanged)
 
 
   signals:
@@ -87,6 +97,7 @@ class dataModel : public QObject
     void operatorListChanged();
 
     void operationFinished();
+    void flightSpotChanged();
     void flightDateChanged();
     void windSpeedChanged();
     void windDirectionChanged();
@@ -101,6 +112,13 @@ class dataModel : public QObject
     void internalPilotChanged();
     void flightBatteryListChanged();
 
+    void flightSpotListChanged();
+    void aircraftTypeListChanged();
+    void batteryCellListChanged();
+    void batteryTypeListChanged();
+    void positionListChanged();
+    void teamNameListChanged();
+    void certificationListChanged();
 
 
 public:
@@ -217,6 +235,10 @@ public:
       _operatorList = operatorList;
       emit operatorListChanged();
     }
+    void SetFlightSpot(QString flightSpot){
+      _flightSpot = flightSpot;
+      emit flightSpotChanged();
+    }
 
 
     void SetAircraftData(aircraftModel* aircraftData){
@@ -235,7 +257,6 @@ public:
     }
 
     //FlightData
-
     void SetFlightData(flightDataModel* flightData){
       _flightDataModel = flightData;
       emit flightDataChanged();
@@ -262,22 +283,18 @@ public:
     }
     void SetStartTime(QTime startTime){
       _startTime = startTime;
-      qDebug() << _startTime << "/" << _endTime;
       _flightTime = QTime();
       if(!_startTime.isNull() && !_endTime.isNull() && _startTime <= _endTime) {
         _flightTime = _endTime.addSecs(-1 * _startTime.minute() * 60);
       }
-      qDebug() << _flightTime;
       emit startTimeChanged();
     }
     void SetEndTime(QTime endTime){
       _endTime = endTime;
-      qDebug() << _startTime << "/" << _endTime;
       _flightTime = QTime();
       if(!_startTime.isNull() && !_endTime.isNull() && _startTime <= _endTime) {
         _flightTime = _endTime.addSecs(-1 * _startTime.minute() * 60);
       }
-      qDebug() << _flightTime;
       emit endTimeChanged();
     }
     void SetPayloadType(QString payloadType){
@@ -305,8 +322,6 @@ public:
       _flightBatteryList = batteryList;
       emit flightBatteryListChanged();
     }
-
-
 
 
     //Getter
@@ -350,9 +365,19 @@ public:
     QString     GetTemperature()         {return _temperature;}
     QString     GetPayloadType()         {return _payloadType;}
     QString     GetPayloadWeight()       {return _payloadWeight;}
+    QString     GetFlightSpot()          {return _flightSpot;}
     int         GetExternalPilot()       {return _externalPilot;}
     int         GetInternalPilot()       {return _internalPilot;}
     flightDataModel* GetFlightData()     {return _flightDataModel;}
+
+    //Config Parsing
+    QStringList GetFlightSpotList()      {return _flightSpotList;}
+    QStringList GetAircraftTypeList()    {return _aircraftTypeList;}
+    QStringList GetBatteryCellList()     {return _batteryCellList;}
+    QStringList GetBatteryTypeList()     {return _batteryTypeList;}
+    QStringList GetPositionList()        {return _positionList;}
+    QStringList GetTeamNameList()        {return _teamNameList;}
+    QStringList GetCertificationList()   {return _certificationList;}
 
 private:
     static dataModel* gInstance;
@@ -387,9 +412,11 @@ private:
     QString     _windSpeed;
     QString     _humidity;
     QString     _temperature;
+    QString     _flightSpot;
     QString     _payloadType;
     QString     _payloadWeight;
     QStringList _flightBatteryList;
+    QStringList _flightSpotList;
     flightDataModel* _flightDataModel;
 
     //Operator Data
@@ -401,5 +428,16 @@ private:
     QString _certification;
     operatorModel* _operatorModel;
 
+    //ConfigFile Data
+    QStringList _aircraftTypeList;
+    QStringList _batteryCellList;
+    QStringList _batteryTypeList;
+    QStringList _positionList;
+    QStringList _teamNameList;
+    QStringList _certificationList;
+
+    configParser* _configParser;
     apiManager *_apiManager;
 };
+
+#endif // DATAMODEL_H

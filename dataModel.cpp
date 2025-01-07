@@ -12,6 +12,16 @@ dataModel::dataModel()
 {
   _startTime = QTime(0, 0, 0);
   _apiManager = apiManager::getInstance();
+  _configParser = configParser::getInstance();
+
+  _flightSpotList = _configParser->GetFlightSpotList();
+  _aircraftTypeList = _configParser->GetAircraftTypeList();
+  _batteryCellList = _configParser->GetBatteryCellList();
+  _batteryTypeList = _configParser->GetBatteryTypeList();
+  _positionList = _configParser->GetPositionList();
+  _certificationList = _configParser->GetCertificationList();
+  _teamNameList = _configParser->GetTeamNameList();
+
   qDebug()<<"Aircarft Data Model Created";
 }
 dataModel::~dataModel(){}
@@ -103,6 +113,7 @@ void dataModel::createData(QString dataType){
     DataObject["humidity"] = _humidity;
     DataObject["payloadWeight"] = _payloadWeight;
     DataObject["windSpeed"] = _windSpeed;
+    DataObject["flightSpot"] = _flightSpot;
     DataObject["windDirection"] = _windDirection;
     DataObject["temperature"] = _temperature;
     DataObject["flightDate"] = _flightDate.toString("yyyy-MM-dd");

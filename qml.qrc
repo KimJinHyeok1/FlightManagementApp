@@ -14,5 +14,9 @@
         <file>CustomComponent/ListViewDialog.qml</file>
         <file>CustomComponent/TimePicker.qml</file>
         <file>operatorRegisterView.qml</file>
+        <file>icon/battery-status-full.png</file>
+        <file>icon/drone.png</file>
+        <file>icon/folder.png</file>
+        <file>icon/user.png</file>
     </qresource>
 </RCC>

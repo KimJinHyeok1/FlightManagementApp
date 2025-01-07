@@ -129,7 +129,7 @@ import "./CustomComponent"
             {
               id : positionComboBox
               Layout.preferredWidth: parent.width * 0.9
-              model: ["사원", "주임", "대리", "과장", "차장", "부장", "팀장"]
+              model : DataModel.positionList
               currentIndex:{
                 model.indexOf(operatorListView.position)
               }
@@ -147,7 +147,7 @@ import "./CustomComponent"
             {
               id : teamComboBox
               Layout.preferredWidth: parent.width * 0.9
-              model: ["운영팀", "비행시험팀", "지원팀", "개발팀", "인사총무팀", "체계팀", "기타"]
+              model : DataModel.teamNameList
               currentIndex:{
                 model.indexOf(operatorListView.teamName)
               }
@@ -182,19 +182,7 @@ import "./CustomComponent"
               {
                 id : certificatedCombobox
                 Layout.preferredWidth: parent.width * 0.9
-                model: ["초경량비행장치 무인멀티콥터 1종",
-                    "초경량비행장치 무인멀티콥터 2종",
-                    "초경량비행장치 무인멀티콥터 3종",
-                    "초경량비행장치 무인멀티콥터 4종",
-                    "초경량비행장치 무인헬리콥터 1종",
-                    "초경량비행장치 무인멀티콥터 2종",
-                    "초경량비행장치 무인멀티콥터 3종",
-                    "초경량비행장치 무인멀티콥터 4종",
-                    "초경량비행장치 무인비행기 1종",
-                    "초경량비행장치 무인비행기 2종",
-                    "초경량비행장치 무인비행기 3종",
-                    "초경량비행장치 무인비행기 4종",
-                    ]
+                model : DataModel.certificationList
                 currentIndex:{
                   model.indexOf(operatorListView.certification)
                 }

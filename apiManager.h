@@ -13,6 +13,7 @@
 #include "batteryModel.h"
 #include "operatorModel.h"
 #include "flightdataModel.h"
+#include "configParser.h"
 
 #ifndef APIMANAGER_H
 #define APIMANAGER_H
@@ -74,6 +75,7 @@ private:
 
   static apiManager* gApiInstance;
   QNetworkAccessManager* _apiAccessManager;
+  configParser* _configParser;
   QString _baseUrl;
 };
 

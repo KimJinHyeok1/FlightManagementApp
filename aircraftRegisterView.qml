@@ -143,7 +143,8 @@ Item {
                   {
                     id : aircraftTypeComboBox
                     Layout.preferredWidth: parent.width * 0.9
-                    model: ["무인멀티콥터", "무인비행기", "복합형(VTOL)"]
+                    model : DataModel.aircraftTypeList
+                    //model: ["무인멀티콥터", "무인비행기", "복합형(VTOL)"]
                     currentIndex:{
                       if (listViewDialog.aircraftType === "무인멀티콥터")
                          return 0

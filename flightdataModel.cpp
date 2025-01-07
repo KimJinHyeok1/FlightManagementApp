@@ -5,8 +5,9 @@ void flightDataModel::setFlightData(QJsonArray flightData){
   _flightDate->clear();
   for(auto value : flightData){
       if(value.isObject()){
+        qDebug() << value.toObject();
         _flightDataModel->append(value.toObject());
-       _flightDate->append(QDate::fromString(value.toObject()["flightDate"].toString(),
+        _flightDate->append(QDate::fromString(value.toObject()["flightDate"].toString(),
                            "yyyy-MM-dd"));
       }
   }
@@ -42,6 +43,8 @@ QVariant flightDataModel::data(const QModelIndex &index, int role) const
         return flightData["battery"].toString();
        case flightDataColumnName::flightTime :
         return flightData["flightTime"].toString();
+       case flightDataColumnName::flightSpot :
+        return flightData["flightSpot"].toString();
        case flightDataColumnName::payloadItem :
         return flightData["payloadItem"].toString();
        case flightDataColumnName::payloadWeight :

@@ -3,10 +3,11 @@
 apiManager* apiManager::gApiInstance = nullptr;
 
 apiManager::apiManager(QObject *parent)
-  :_apiAccessManager(new QNetworkAccessManager()),
-   _baseUrl("http://localhost:8080/")
+  :_apiAccessManager(new QNetworkAccessManager())
 {
   Q_UNUSED(parent);
+  _configParser = configParser::getInstance();
+  _baseUrl = _configParser->GetBaseUrl();
   qDebug()<<"ApiManager Created";
 }
 

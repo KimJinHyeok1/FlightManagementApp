@@ -104,18 +104,8 @@ Item {
                   {
                     id : batteryTypeComboBox
                     Layout.preferredWidth: parent.width * 0.9
-                    model: ["Lipo", "Li-ion", "LiCa", "기타"]
-                    currentIndex:{
-                      if (batteryListViewDialog.batteryCells === "Lipo")
-                         return 0
-                      else if(batteryListViewDialog.batteryCells === "Li-ion")
-                          return 1
-                      else if(batteryListViewDialog.batteryCells === "LiCa")
-                          return 2
-                      else if(batteryListViewDialog.batteryCells === "기타")
-                          return 3
-                      else return 0
-                    }
+                    model : DataModel.batteryTypeList
+                    currentIndex: model.indexOf(batteryListViewDialog.batteryType)
                   }
 
 
@@ -164,35 +154,8 @@ Item {
                     {
                       id : cellCombobox
                       Layout.preferredWidth: parent.width * 0.5
-                      model: ["1", "2", "3", "4", "5", "6",
-                      "8", "10", "12", "16", "24"]
-                      currentIndex: {
-                            if (batteryListViewDialog.batteryCells === "1")
-                               return 0
-                            else if(batteryListViewDialog.batteryCells === "2")
-                                return 1
-                            else if(batteryListViewDialog.batteryCells === "3")
-                                return 2
-                            else if(batteryListViewDialog.batteryCells === "4")
-                                return 3
-                            else if(batteryListViewDialog.batteryCells === "4")
-                                return 4
-                            else if(batteryListViewDialog.batteryCells === "5")
-                                return 5
-                            else if(batteryListViewDialog.batteryCells === "6")
-                                return 6
-                            else if(batteryListViewDialog.batteryCells === "8")
-                                return 7
-                            else if(batteryListViewDialog.batteryCells === "10")
-                                return 8
-                            else if(batteryListViewDialog.batteryCells === "12")
-                                return 9
-                            else if(batteryListViewDialog.batteryCells === "16")
-                                return 10
-                            else if(batteryListViewDialog.batteryCells === "24")
-                                return 11
-                            else return 0
-                        }
+                      model : DataModel.batteryCellList
+                      currentIndex: model.indexOf(batteryListViewDialog.batteryCells.toString())
                     }
                     Label{
                       leftPadding: 15

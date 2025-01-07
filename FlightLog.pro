@@ -20,6 +20,7 @@ SOURCES += \
         aircraftModel.cpp \
         apimanager.cpp \
         batteryModel.cpp \
+        configPaser.cpp \
         dataModel.cpp \
         flightdataModel.cpp \
         main.cpp \

@@ -23,6 +23,7 @@ public:
       _roleName[static_cast<int>(flightDataColumnName::internalPilot)] = "internalPilot";
       _roleName[static_cast<int>(flightDataColumnName::flightNumber)] = "flightNumber";
       _roleName[static_cast<int>(flightDataColumnName::flightDate)] = "flightDate";
+      _roleName[static_cast<int>(flightDataColumnName::flightSpot)] = "flightSpot";
       _roleName[static_cast<int>(flightDataColumnName::aircraftName)] = "aircraftName";
       _roleName[static_cast<int>(flightDataColumnName::battery)] = "battery";
       _roleName[static_cast<int>(flightDataColumnName::flightTime)] = "flightTime";
@@ -41,6 +42,7 @@ public:
       externalPilot,
       internalPilot,
       flightDate,
+      flightSpot,
       aircraftName,
       battery,
       flightTime,

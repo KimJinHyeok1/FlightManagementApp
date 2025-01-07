@@ -180,6 +180,21 @@ Item {
                       DataModel.date = selectedDate
                     }
                   }
+                  Label
+                  {
+                    id : flightSpot
+                    text : "4. 비행 장소"
+                    Layout.topMargin: 20
+                    font.pointSize: 15
+                    font.bold : true
+                    color: "white"
+                  }
+                  ComboBox
+                  {
+                    id : flightSpotCombobox
+                    Layout.preferredWidth: parent.width * 0.6
+                    model : DataModel.flightSpotList
+                  }
                 }
               }
               Label
@@ -438,7 +453,7 @@ Item {
                     {
                       id : payloadCombobox
                       Layout.preferredWidth: parent.width * 0.3
-                      model: ["카메라", "배송장치", "기타"]
+                      model : DataModel.payloadType
                     }
                     TextField
                     {

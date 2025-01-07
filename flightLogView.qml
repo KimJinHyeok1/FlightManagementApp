@@ -215,7 +215,7 @@ Item {
               ColumnLayout{
                 Label
                 {
-                  text : "Start Date"
+                  text : "End Date"
                   font.pointSize: 15
                   font.bold : true
                   color: "white"
@@ -319,6 +319,11 @@ Item {
           OldControls.TableViewColumn {
             role: "flightTime"
             title: "Flight Time"
+            width: 100
+          }
+          OldControls.TableViewColumn {
+            role: "flightSpot"
+            title: "Flight Spot"
             width: 100
           }
           OldControls.TableViewColumn {

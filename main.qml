@@ -66,7 +66,7 @@ ApplicationWindow {
             onClicked: {
               drawer.close()
               toolbarText.text = "비행시험팀 비행이력 관리 프로그램"
-              stackView.push("qrc:/homeView.qml")
+              stackView.clear()
             }
           }
         }
@@ -81,7 +81,7 @@ ApplicationWindow {
                     mainWindow.height = 1000
                     drawer.close();
                     toolbarText.text = "기체 등록 관리"
-                    stackView.push("qrc:/aircraftRegisterView.qml");
+                    stackView.replace("qrc:/aircraftRegisterView.qml");
                 }
               }
               ToolButton {
@@ -94,7 +94,7 @@ ApplicationWindow {
                     mainWindow.height = 1000
                     drawer.close();
                     toolbarText.text = "배터리 관리"
-                    stackView.push("qrc:/batteryRegisterView.qml");
+                    stackView.replace("qrc:/batteryRegisterView.qml");
                 }
               }
               ToolButton {
@@ -107,7 +107,7 @@ ApplicationWindow {
                     mainWindow.height = 1000
                     drawer.close();
                     toolbarText.text = "운용자 관리"
-                    stackView.push("qrc:/operatorRegisterView.qml");
+                    stackView.replace("qrc:/operatorRegisterView.qml");
                 }
               }
               ToolButton {
@@ -120,7 +120,7 @@ ApplicationWindow {
                     mainWindow.height = 1000
                     drawer.close();
                     toolbarText.text = "비행 데이터 등록 관리"
-                    stackView.push("qrc:/flightDataRegisterView.qml");
+                    stackView.replace("qrc:/flightDataRegisterView.qml");
                 }
               }
               ToolButton {
@@ -133,7 +133,7 @@ ApplicationWindow {
                     mainWindow.width = 1400
                     mainWindow.height = 1000
                     toolbarText.text = "비행 이력 검색"
-                    stackView.push("qrc:/flightLogView.qml");
+                    stackView.replace("qrc:/flightLogView.qml");
                 }
               }
           }
