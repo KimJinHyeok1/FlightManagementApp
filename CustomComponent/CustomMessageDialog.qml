@@ -9,6 +9,8 @@ MessageDialog {
     property var message: "등록하시겠습니까?"
     property bool isRegister : true
     property var dataType : ""
+    property var isDelete : false
+    property var currentIndex : 0
 
     title: "알림"
     contentItem:
@@ -36,6 +38,22 @@ MessageDialog {
                   Layout.alignment: Qt.AlignCenter
                   text : "확인"
                   onClicked:{
+                    if(isDelete){
+                      if (dataType == "aircraft")
+                      {
+                        listView_1.model = DataModel.aircraftModel
+                        DataModel.deleteData(currentIndex, dataType);
+                      }
+                      else if (dataType == "battery"){
+                        listView_1.model = DataModel.battryModel
+                        DataModel.deleteData(currentIndex, dataType);
+                      }
+                      else{
+                        listView_1.model = DataModel.operatorModel
+                        DataModel.deleteData(currentIndex, dataType);
+                      }
+                    }
+
                     messageDialog.isRegister ? DataModel.createData(dataType)
                                              : DataModel.modifyData(dataType);
                     messageDialog.close()

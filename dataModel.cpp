@@ -172,6 +172,6 @@ void dataModel::deleteData(int row, QString dataType){
   else if(dataType == "operator"){
     _apiManager->DeleteOperatorData("/operator", _operatorId);
     _operatorModel->remove(row);
-    emit batteryDatasChanged();
+    emit operatorDataChanged();
   }
 }

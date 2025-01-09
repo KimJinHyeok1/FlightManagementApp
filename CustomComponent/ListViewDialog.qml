@@ -77,18 +77,17 @@ Dialog {
               DialogButtonBox.buttonRole: DialogButtonBox.DestructiveRole
               onClicked: {
                   tableDialog.listItemChecked = false;
-                  if (requestDataType == "aircraft")
-                  {
-                    listView_1.model = DataModel.aircraftModel
-                    DataModel.deleteData(listView_1.currentIndex, requestDataType);
+                  alertMessage.message = "선택한 항목을 삭제하시겠습니까?"
+                  alertMessage.isDelete = true
+                  alertMessage.open()
+                  if (requestDataType == "aircraft"){
+                    alertMessage.dataType = "aircraft"
                   }
                   else if (requestDataType == "battery"){
-                    listView_1.model = DataModel.battryModel
-                    DataModel.deleteData(listView_1.currentIndex, requestDataType);
+                    alertMessage.dataType = "battery"
                   }
                   else{
-                    listView_1.model = DataModel.operatorModel
-                    DataModel.deleteData(listView_1.currentIndex, requestDataType);
+                    alertMessage.dataType = "operator"
                   }
               }
           }
@@ -146,6 +145,8 @@ Dialog {
                              listItemRec.color = "white"
                              tableDialog.listItemChecked = true
                              checkedItemIndex = index
+                             alertMessage.currentIndex = checkedItemIndex
+                             console.log(alertMessage.currentIndex)
                              if(tableDialog.requestDataType == "aircraft")
                              {
                                DataModel.aircraftName = model.aircraftName
@@ -183,6 +184,7 @@ Dialog {
                                tableDialog.internalName = model.name
                              }
                            }
+
                          }
                       }
                       anchors.fill: parent
